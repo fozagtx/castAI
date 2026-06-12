@@ -9,9 +9,11 @@ import type {
 import { fetchResource } from "./index.js";
 
 export type PaymentTesterProps = {
+  defaultHeaders?: string | undefined;
   defaultScheme?: PaymentScheme | undefined;
   defaultUrl?: string | undefined;
   mppFetch?: FetchLike | undefined;
+  onError?: ((error: Error) => void) | undefined;
   onResult?: ((result: AgentResourceResponse) => void) | undefined;
   title?: string | undefined;
   x402Fetch?: FetchLike | undefined;
@@ -55,9 +57,11 @@ const buttonStyle = {
 } satisfies CSSProperties;
 
 export function PaymentTester({
+  defaultHeaders = "",
   defaultScheme = "x402",
   defaultUrl = "",
   mppFetch,
+  onError,
   onResult,
   title = "castAI payment tester",
   x402Fetch,
@@ -65,6 +69,7 @@ export function PaymentTester({
   const [scheme, setScheme] = useState<PaymentScheme>(defaultScheme);
   const [url, setUrl] = useState(defaultUrl);
   const [method, setMethod] = useState("GET");
+  const [headers, setHeaders] = useState(defaultHeaders);
   const [body, setBody] = useState("");
   const [result, setResult] = useState<AgentResourceResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -85,13 +90,17 @@ export function PaymentTester({
 
       const nextResult = await fetchResource(selectedFetch, {
         body: body || undefined,
+        headers: parseHeaders(headers),
         method,
         url,
       });
       setResult(nextResult);
       onResult?.(nextResult);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Payment request failed.");
+      const error =
+        err instanceof Error ? err : new Error("Payment request failed.");
+      setError(error.message);
+      onError?.(error);
     } finally {
       setBusy(false);
     }
@@ -152,6 +161,17 @@ export function PaymentTester({
       </label>
 
       <label style={{ display: "grid", gap: 8 }}>
+        <span>Headers</span>
+        <textarea
+          onChange={(event) => setHeaders(event.currentTarget.value)}
+          placeholder='Optional JSON object, for example {"accept":"application/json"}'
+          rows={3}
+          style={inputStyle}
+          value={headers}
+        />
+      </label>
+
+      <label style={{ display: "grid", gap: 8 }}>
         <span>Body</span>
         <textarea
           onChange={(event) => setBody(event.currentTarget.value)}
@@ -209,5 +229,24 @@ export function PaymentError({ message }: { message: string }) {
     >
       {message}
     </div>
+  );
+}
+
+function parseHeaders(value: string): Record<string, string> | undefined {
+  if (!value.trim()) return undefined;
+
+  const parsed = JSON.parse(value) as unknown;
+  if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
+    throw new Error("Headers must be a JSON object.");
+  }
+
+  return Object.fromEntries(
+    Object.entries(parsed).map(([key, headerValue]) => {
+      if (typeof headerValue !== "string") {
+        throw new Error(`Header ${key} must be a string.`);
+      }
+
+      return [key, headerValue];
+    })
   );
 }

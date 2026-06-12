@@ -21,9 +21,12 @@ bun add @castai/ai-sdk ai @castai/x402 @castai/mpp casper-js-sdk
 
 ```ts
 import {
+  createCastaiAgent,
   createCastaiAgentTools,
   createCasperMppFetch,
   createCasperX402Fetch,
+  generateCastaiText,
+  llm,
 } from "@castai/ai-sdk";
 ```
 
@@ -41,3 +44,11 @@ import { PaymentTester } from "@castai/ai-sdk/react";
 | `payMppResource` | Fetch an MPP-protected resource using a configured MPP fetcher |
 
 The tools do not simulate payment. If a payment fetcher is missing, the tool throws a setup error.
+
+## Higher level helpers
+
+| Helper | Purpose |
+| --- | --- |
+| `createCastaiAgent` | Builds x402/MPP fetchers, AI SDK tools, and a default system instruction from one config |
+| `generateCastaiText` | Calls Vercel AI SDK `generateText` with castAI tools and multi-step tool calling |
+| `llm.text` | Formats paid resource responses as plain text for model context |

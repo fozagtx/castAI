@@ -1,6 +1,13 @@
+import type {
+  CallSettings,
+  GenerateTextResult,
+  LanguageModel,
+  Prompt,
+  StopCondition,
+} from "ai";
 import { x402Client } from "@x402/core/client";
 import { wrapFetchWithPayment } from "@x402/fetch";
-import { tool } from "ai";
+import { generateText, stepCountIs, tool } from "ai";
 import { Mppx } from "mppx/client";
 import { z } from "zod";
 
@@ -51,6 +58,44 @@ export type CreateCastaiAgentToolsOptions = {
   };
 };
 
+export type CastaiAgentFetchOptions = {
+  mpp?: CreateMppFetchOptions | undefined;
+  x402?: CreateX402FetchOptions | undefined;
+};
+
+export type CastaiAgentFetches = {
+  mpp?: FetchLike | undefined;
+  x402?: FetchLike | undefined;
+};
+
+export type CastaiAgentTools = ReturnType<typeof createCastaiAgentTools>;
+
+export type CastaiAgent = {
+  fetches: CastaiAgentFetches;
+  system: string;
+  tools: CastaiAgentTools;
+};
+
+export type GenerateCastaiTextOptions = CallSettings &
+  Prompt & {
+    model: LanguageModel;
+    mpp?: CreateMppFetchOptions | undefined;
+    stopWhen?:
+      | StopCondition<CastaiAgentTools>
+      | Array<StopCondition<CastaiAgentTools>>
+      | undefined;
+    tools?: CastaiAgentTools | undefined;
+    x402?: CreateX402FetchOptions | undefined;
+  };
+
+export type LlmTextOptions = {
+  includeHeaders?: boolean | undefined;
+  maxBodyCharacters?: number | undefined;
+};
+
+export const DEFAULT_CASTAI_AGENT_SYSTEM =
+  "You can use castAI tools to fetch paid HTTP resources through real Casper CSPR x402 or MPP payment flows. Do not invent payment success, transaction hashes, deploy hashes, signatures, or protected resource content. If a configured payment tool fails, report the failure from the tool result.";
+
 const requestSchema = z.object({
   body: z.string().optional().describe("Optional raw request body."),
   headers: z
@@ -87,6 +132,30 @@ export function createCasperMppFetch(
   return client.fetch.bind(client) as FetchLike;
 }
 
+export function createCastaiAgentFetches(
+  options: CastaiAgentFetchOptions
+): CastaiAgentFetches {
+  return {
+    mpp: options.mpp ? createCasperMppFetch(options.mpp) : undefined,
+    x402: options.x402 ? createCasperX402Fetch(options.x402) : undefined,
+  };
+}
+
+export function createCastaiAgent(
+  options: CastaiAgentFetchOptions
+): CastaiAgent {
+  const fetches = createCastaiAgentFetches(options);
+
+  return {
+    fetches,
+    system: DEFAULT_CASTAI_AGENT_SYSTEM,
+    tools: createCastaiAgentTools({
+      mpp: { fetch: fetches.mpp },
+      x402: { fetch: fetches.x402 },
+    }),
+  };
+}
+
 export function createCastaiAgentTools(options: CreateCastaiAgentToolsOptions) {
   return {
     payX402Resource: tool({
@@ -117,6 +186,22 @@ export function createCastaiAgentTools(options: CreateCastaiAgentToolsOptions) {
   };
 }
 
+export async function generateCastaiText(
+  options: GenerateCastaiTextOptions
+): Promise<GenerateTextResult<CastaiAgentTools, never>> {
+  const { mpp, stopWhen, system, tools, x402, ...generateOptions } = options;
+  const agent = tools
+    ? { system: DEFAULT_CASTAI_AGENT_SYSTEM, tools }
+    : createCastaiAgent({ mpp, x402 });
+
+  return generateText<CastaiAgentTools>({
+    ...(generateOptions as CallSettings & Prompt & { model: LanguageModel }),
+    stopWhen: stopWhen ?? stepCountIs(5),
+    system: [agent.system, system].filter(Boolean).join("\n\n"),
+    tools: agent.tools,
+  });
+}
+
 export async function fetchResource(
   paymentFetch: FetchLike,
   request: AgentResourceRequest
@@ -129,6 +214,50 @@ export async function fetchResource(
 
   return readResponse(response, request.url);
 }
+
+export async function getPaidResourceText(
+  paymentFetch: FetchLike,
+  request: AgentResourceRequest,
+  options?: LlmTextOptions | undefined
+): Promise<string> {
+  return paidResourceResponseToText(
+    await fetchResource(paymentFetch, request),
+    options
+  );
+}
+
+export function paidResourceResponseToText(
+  response: AgentResourceResponse,
+  options: LlmTextOptions = {}
+): string {
+  const maxBodyCharacters = options.maxBodyCharacters ?? 12_000;
+  const body =
+    typeof response.body === "string"
+      ? response.body
+      : JSON.stringify(response.body, null, 2);
+  const clippedBody =
+    body.length > maxBodyCharacters
+      ? `${body.slice(0, maxBodyCharacters)}\n[truncated]`
+      : body;
+  const lines = [
+    `URL: ${response.url}`,
+    `Status: ${response.status} ${response.statusText}`.trim(),
+    `OK: ${response.ok}`,
+    response.contentType ? `Content-Type: ${response.contentType}` : undefined,
+  ];
+
+  if (options.includeHeaders) {
+    lines.push(`Headers: ${JSON.stringify(response.headers, null, 2)}`);
+  }
+
+  lines.push("", "Body:", clippedBody || "null");
+
+  return lines.filter((line) => line !== undefined).join("\n");
+}
+
+export const llm = {
+  text: paidResourceResponseToText,
+} as const;
 
 async function readResponse(
   response: Response,

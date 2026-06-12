@@ -3,7 +3,26 @@ title: Agent Tools
 description: Configure an AI SDK agent with castAI x402 and MPP tools.
 ---
 
-## x402 agent
+## One-call text agent
+
+```ts
+import { generateCastaiText } from "@castai/ai-sdk";
+
+const result = await generateCastaiText({
+  model: "openai/gpt-4.1",
+  x402: {
+    networks: ["casper:testnet"],
+    privateKeyPem: process.env.CASPER_PRIVATE_KEY_PEM,
+  },
+  prompt: "Fetch the paid weather endpoint and summarize the JSON.",
+});
+
+console.log(result.text);
+```
+
+`generateCastaiText` uses AI SDK `generateText`, provides the castAI tools, and defaults to `stepCountIs(5)` so the model can call a payment tool and then write the final answer.
+
+## x402 agent with explicit tools
 
 ```ts
 import { generateText } from "ai";
@@ -63,6 +82,22 @@ const tools = createCastaiAgentTools({
 ```
 
 The model can choose `payX402Resource` or `payMppResource` based on the URL or instruction.
+
+## Agent factory
+
+```ts
+import { createCastaiAgent } from "@castai/ai-sdk";
+
+const agent = createCastaiAgent({
+  x402: {
+    networks: ["casper:testnet"],
+    privateKeyPem: process.env.CASPER_PRIVATE_KEY_PEM,
+  },
+});
+
+// agent.tools works with generateText.
+// agent.system can be appended to your existing system prompt.
+```
 
 ## Required environment
 

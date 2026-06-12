@@ -1,0 +1,45 @@
+---
+title: LLM Text
+description: Convert paid resource responses into plain text for model context.
+---
+
+`llm.text` formats a paid resource response into a stable plain-text block for an LLM.
+
+Use it when your app fetches a paid resource outside an AI SDK tool call, then needs to pass the result into a prompt or message.
+
+```ts
+import { fetchResource, llm } from "@castai/ai-sdk";
+
+const response = await fetchResource(x402Fetch, {
+  url: "https://api.example.com/protected",
+});
+
+const text = llm.text(response, {
+  includeHeaders: false,
+  maxBodyCharacters: 12_000,
+});
+```
+
+Output shape:
+
+```txt
+URL: https://api.example.com/protected
+Status: 200 OK
+OK: true
+Content-Type: application/json
+
+Body:
+{ ... }
+```
+
+For one-shot usage:
+
+```ts
+import { getPaidResourceText } from "@castai/ai-sdk";
+
+const text = await getPaidResourceText(x402Fetch, {
+  url: "https://api.example.com/protected",
+});
+```
+
+This helper does not create or invent payment data. It only formats the actual paid HTTP response.

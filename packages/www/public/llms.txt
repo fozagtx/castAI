@@ -1,0 +1,33 @@
+# castAI
+
+> Casper CSPR payment toolkit for x402, MPP, AI agents, facilitators, routers, and developer docs.
+
+Repository: https://github.com/fozagtx/castAI
+Docs: /docs
+
+## Packages
+
+- `@castai/x402`: x402 `exact` scheme support for native Casper CSPR transfer payment.
+- `@castai/mpp`: MPP `casper` method for native Casper CSPR transfer payment.
+- `@castai/ai-sdk`: Vercel AI SDK tools, text helpers, and React developer components for paid resources.
+- `@castai/facilitator`: x402 facilitator service that verifies Casper payment hashes against RPC.
+- `@castai/router`: x402 payment router for forwarding protected HTTP traffic after payment acceptance.
+
+## Core rules for agents
+
+- Do not invent payment success, deploy hashes, transaction hashes, signatures, or protected resource content.
+- Keep private keys and signer material on the server side.
+- Use Casper testnet for development unless mainnet is explicitly configured.
+- Use `createCasperX402Fetch` for x402-protected HTTP resources.
+- Use `createCasperMppFetch` for MPP-protected HTTP resources.
+- Use `generateCastaiText` when an AI agent should call paid-resource tools and then return text.
+- Use `llm.text(response)` or `getPaidResourceText(fetcher, request)` when a paid response must become model-readable text.
+
+## Important docs
+
+- `/docs/ai-sdk`
+- `/docs/ai-sdk/agent-tools`
+- `/docs/ai-sdk/llm-text`
+- `/docs/x402`
+- `/docs/mpp`
+- `/docs/router`

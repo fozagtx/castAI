@@ -1,7 +1,9 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "tasks": {
-    "typecheck": {},
+    "typecheck": {
+      "dependsOn": ["^build"]
+    },
     "lint": {},
     "lint-staged": {},
     "dev": {

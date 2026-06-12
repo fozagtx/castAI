@@ -29,6 +29,7 @@ const mppFetch = createCasperMppFetch({
 export function DevPaymentPanel() {
   return (
     <PaymentTester
+      defaultHeaders='{"accept":"application/json"}'
       defaultScheme="x402"
       defaultUrl="https://api.example.com/protected"
       mppFetch={mppFetch}
@@ -41,7 +42,7 @@ export function DevPaymentPanel() {
 ## Component behavior
 
 - Lets a developer choose `x402` or `MPP`.
-- Lets a developer enter URL, method, and optional raw body.
+- Lets a developer enter URL, method, optional JSON headers, and optional raw body.
 - Sends a real paid request through the configured fetcher.
 - Renders status, headers, and response body.
 - Shows setup errors when a payment fetcher is missing.

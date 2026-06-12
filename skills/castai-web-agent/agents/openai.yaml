@@ -1,0 +1,3 @@
+display_name: castAI Web Agent
+short_description: Build real Casper x402, MPP, and AI-agent payment integrations.
+default_prompt: Use castAI to add real Casper payment-gated resources, AI SDK tools, docs, or verification to this web app.

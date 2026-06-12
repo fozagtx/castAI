@@ -32,4 +32,6 @@ The agent receives two tools:
 - `payX402Resource`
 - `payMppResource`
 
-The tools do not mock settlement. They use configured payment fetchers.
+The example uses `generateCastaiText`, which wires those tools into Vercel AI SDK `generateText` and enables multi-step tool calls.
+
+The tools use configured payment fetchers. Settlement success must come from the payment flow.

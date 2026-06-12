@@ -1,7 +1,14 @@
 import { describe, expect, it, vi } from "vitest";
 
 import type { AgentResourceRequest, AgentResourceResponse } from "./index.js";
-import { createCastaiAgentTools, fetchResource } from "./index.js";
+import {
+  createCastaiAgent,
+  createCastaiAgentTools,
+  fetchResource,
+  getPaidResourceText,
+  llm,
+  paidResourceResponseToText,
+} from "./index.js";
 
 type ExecutableTool = {
   execute(request: AgentResourceRequest): Promise<AgentResourceResponse>;
@@ -87,5 +94,53 @@ describe("castAI AI SDK tools", () => {
         url: "https://api.castai.test/mpp",
       })
     ).rejects.toThrow("MPP fetch is not configured for this agent.");
+  });
+
+  it("creates an agent shell with configured tools and system instructions", async () => {
+    const agent = createCastaiAgent({});
+
+    expect(agent.system).toContain("real Casper CSPR x402 or MPP");
+    expect(agent.fetches).toEqual({ mpp: undefined, x402: undefined });
+    expect(Object.keys(agent.tools)).toEqual([
+      "payX402Resource",
+      "payMppResource",
+    ]);
+  });
+
+  it("formats paid resource responses as LLM text", async () => {
+    const text = paidResourceResponseToText(
+      {
+        body: { answer: 42 },
+        contentType: "application/json",
+        headers: { "x-castai": "paid" },
+        ok: true,
+        status: 200,
+        statusText: "OK",
+        url: "https://api.castai.test/data",
+      },
+      { includeHeaders: true }
+    );
+
+    expect(text).toContain("URL: https://api.castai.test/data");
+    expect(text).toContain("Status: 200 OK");
+    expect(text).toContain('"x-castai": "paid"');
+    expect(text).toContain('"answer": 42');
+    expect(llm.text).toBe(paidResourceResponseToText);
+  });
+
+  it("fetches a paid resource and returns clipped LLM text", async () => {
+    const paymentFetch = vi
+      .fn()
+      .mockResolvedValue(new Response("abcdefghijklmnopqrstuvwxyz"));
+
+    const text = await getPaidResourceText(
+      paymentFetch,
+      {
+        url: "https://api.castai.test/text",
+      },
+      { maxBodyCharacters: 5 }
+    );
+
+    expect(text).toContain("Body:\nabcde\n[truncated]");
   });
 });

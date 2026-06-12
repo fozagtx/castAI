@@ -1,9 +1,4 @@
-import {
-  createCastaiAgentTools,
-  createCasperMppFetch,
-  createCasperX402Fetch,
-} from "@castai/ai-sdk";
-import { generateText } from "ai";
+import { generateCastaiText } from "@castai/ai-sdk";
 
 function env(name: string, fallback?: string) {
   const value = process.env[name] ?? fallback;
@@ -11,26 +6,20 @@ function env(name: string, fallback?: string) {
   return value;
 }
 
-const x402Fetch = createCasperX402Fetch({
-  networks: ["casper:testnet"],
-  privateKeyPem: env("CASPER_PRIVATE_KEY_PEM"),
-});
-
-const mppFetch = createCasperMppFetch({
-  network: "casper:testnet",
-  privateKeyPem: env("CASPER_PRIVATE_KEY_PEM"),
-});
-
-const result = await generateText({
+const result = await generateCastaiText({
   model: env("AI_MODEL", "openai/gpt-4.1"),
-  tools: createCastaiAgentTools({
-    mpp: { fetch: mppFetch },
-    x402: { fetch: x402Fetch },
-  }),
+  mpp: {
+    network: "casper:testnet",
+    privateKeyPem: env("CASPER_PRIVATE_KEY_PEM"),
+  },
   prompt: env(
     "AGENT_PROMPT",
     "Fetch the paid x402 weather resource at http://localhost:3000/weather and summarize the JSON."
   ),
+  x402: {
+    networks: ["casper:testnet"],
+    privateKeyPem: env("CASPER_PRIVATE_KEY_PEM"),
+  },
 });
 
 console.log(result.text);
