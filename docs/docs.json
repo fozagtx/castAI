@@ -1,0 +1,33 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "castAI",
+  "colors": {
+    "primary": "#00a878"
+  },
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Guides",
+        "groups": [
+          {
+            "group": "Start",
+            "pages": ["introduction"]
+          },
+          {
+            "group": "x402",
+            "pages": ["x402/overview", "x402/quickstart", "x402/facilitator"]
+          },
+          {
+            "group": "MPP",
+            "pages": ["mpp/overview", "mpp/quickstart"]
+          },
+          {
+            "group": "Router",
+            "pages": ["router/overview"]
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,15 @@
+<svg width="960" height="240" viewBox="0 0 960 240" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">castAI</title>
+  <desc id="desc">castAI wordmark with a Casper payment node mark.</desc>
+  <rect width="960" height="240" rx="28" fill="#0B0C0E"/>
+  <g transform="translate(54 42)">
+    <rect x="0" y="0" width="156" height="156" rx="26" fill="#111318" stroke="#334155" stroke-width="2"/>
+    <path d="M42 52.5C50.7 37.3 66.5 28 84.2 28C100.5 28 113.8 34.7 122.6 46.6L108.9 58.4C102.8 50.6 94.8 46.7 84.7 46.7C72.7 46.7 62.3 53.2 56.5 63.9L42 52.5Z" fill="#E2E8F0"/>
+    <path d="M42 103.5L56.5 92.1C62.3 102.8 72.7 109.3 84.7 109.3C94.8 109.3 102.8 105.4 108.9 97.6L122.6 109.4C113.8 121.3 100.5 128 84.2 128C66.5 128 50.7 118.7 42 103.5Z" fill="#E2E8F0"/>
+    <path d="M77.8 66.5H132V89.5H77.8V66.5Z" fill="#CAA0FF"/>
+    <circle cx="36" cy="78" r="10" fill="#CAA0FF"/>
+    <circle cx="132" cy="78" r="10" fill="#E2E8F0"/>
+  </g>
+  <text x="260" y="145" fill="#F8FAFC" font-family="Inter, Arial, sans-serif" font-size="96" font-weight="800" letter-spacing="0">castAI</text>
+  <text x="264" y="180" fill="#94A3B8" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="600" letter-spacing="0">CASPER PAYMENT SDK</text>
+</svg>

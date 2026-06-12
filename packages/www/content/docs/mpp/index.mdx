@@ -1,0 +1,34 @@
+---
+title: MPP on Casper
+description: Casper CSPR charge method for Machine Payments Protocol.
+---
+
+`@castai/mpp` exposes a `casper` method for native CSPR transfer payments.
+
+The method can either submit a real Casper transfer from the client or accept an existing deploy or transaction hash supplied by the caller.
+
+## Credential payloads
+
+```ts
+type CasperMppPayload =
+  | { type: "deployHash"; deployHash: string; publicKey?: string }
+  | { type: "transactionHash"; transactionHash: string; publicKey?: string };
+```
+
+## Server verification
+
+The server verifies:
+
+- CSPR transfer type.
+- Transfer amount.
+- Recipient public key or account hash.
+- Execution status.
+- Optional sender public key.
+- Replay use through the MPP store.
+
+## Networks
+
+| Network | Chain name |
+| --- | --- |
+| `casper:mainnet` | `casper` |
+| `casper:testnet` | `casper-test` |

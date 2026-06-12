@@ -1,0 +1,42 @@
+---
+title: Router
+description: Casper x402 payment router.
+---
+
+`@castai/router` proxies an x402-protected destination and advertises Casper payment requirements to the client.
+
+## Route
+
+```txt
+/route/x402?url=<destination-url>
+```
+
+## Behavior
+
+1. Proxy the original request to the destination.
+2. If the destination returns success, return that response unchanged.
+3. If the destination returns non-402 failure, return that response unchanged.
+4. If the destination returns `402 Payment Required`, decode its payment requirements.
+5. Keep only supported `exact` Casper network requirements.
+6. Replace `payTo` with the router's configured Casper recipient.
+7. Use x402 middleware to verify the client payment.
+8. Forward the settled request through the registered x402 client.
+
+## Supported payment mapping
+
+| Input | Router output |
+| --- | --- |
+| `scheme: exact` | `scheme: exact` |
+| `network: casper:testnet` | `network: casper:testnet` |
+| `amount: <motes>` | `price.amount: <motes>` |
+| destination asset metadata | `CSPR`, 9 decimals |
+| destination URL | router extension `castai-router.url` |
+
+## Test coverage
+
+The router has unit tests for:
+
+- Successful upstream pass-through.
+- Upstream `402` conversion to Casper payment requirements.
+- Paid forwarding through the x402 client path.
+- Supported network configuration.

@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json.schemastore.org/package.json",
+  "name": "@castai/ai-sdk",
+  "version": "0.0.1",
+  "description": "AI SDK tools and React developer components for castAI Casper x402 and MPP payments",
+  "type": "module",
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/index.d.cts",
+        "default": "./dist/cjs/index.cjs"
+      }
+    },
+    "./react": {
+      "import": {
+        "types": "./dist/esm/react.d.ts",
+        "default": "./dist/esm/react.js"
+      },
+      "require": {
+        "types": "./dist/cjs/react.d.cts",
+        "default": "./dist/cjs/react.cjs"
+      }
+    }
+  },
+  "main": "./dist/esm/index.js",
+  "types": "./dist/esm/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "lint": "biome check",
+    "lint-staged": "biome check --write --staged --files-ignore-unknown=true --no-errors-on-unmatched",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "@castai/mpp": "workspace:*",
+    "@castai/x402": "workspace:*",
+    "@x402/core": "2.12.0",
+    "@x402/fetch": "2.12.0",
+    "ai": "^5.0.0",
+    "mppx": "0.6.20",
+    "zod": "catalog:"
+  },
+  "peerDependencies": {
+    "react": ">=18.3.0 || >=19.0.0"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@biomejs/biome": "catalog:",
+    "@tsconfig/node22": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "19.2.17",
+    "tsup": "8.5.1",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  }
+}

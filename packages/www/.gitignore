@@ -1,0 +1,11 @@
+# deps
+.wrangler
+
+# Output
+.output
+/.svelte-kit
+/build
+
+# Vite
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*

@@ -1,0 +1,29 @@
+{
+  "name": "@castai/facilitator",
+  "version": "0.1.4",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy --minify",
+    "cf-typegen": "wrangler types --env-interface CloudflareBindings",
+    "typecheck": "tsc --noEmit",
+    "lint": "biome check",
+    "lint-staged": "biome check --write --staged --files-ignore-unknown=true --no-errors-on-unmatched",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "@hono/zod-validator": "0.7.6",
+    "@x402/core": "2.12.0",
+    "@x402/extensions": "2.12.0",
+    "@castai/x402": "workspace:*",
+    "casper-js-sdk": "5.0.12",
+    "hono": "4.12.14",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "catalog:",
+    "@cloudflare/vitest-pool-workers": "0.14.7",
+    "vitest": "catalog:",
+    "wrangler": "4.83.0"
+  }
+}

@@ -1,0 +1,48 @@
+---
+title: MPP Quickstart
+description: Use the Casper MPP charge method.
+---
+
+## Install
+
+```sh
+bun add @castai/mpp mppx casper-js-sdk
+```
+
+## Server
+
+```ts
+import { Mppx } from "mppx/server";
+import { casper } from "@castai/mpp/server";
+
+const mppx = Mppx.create({
+  methods: [
+    casper({
+      network: "casper:testnet",
+      recipient: "01...",
+    }),
+  ],
+});
+```
+
+## Client
+
+```ts
+import { Mppx } from "mppx/client";
+import { casper } from "@castai/mpp/client";
+
+const mppx = Mppx.create({
+  methods: [
+    casper({
+      network: "casper:testnet",
+      privateKeyPem: process.env.CASPER_PRIVATE_KEY_PEM,
+    }),
+  ],
+});
+```
+
+## Notes
+
+- Amounts are converted to motes.
+- The default asset is `CSPR`.
+- A used hash is stored to prevent replay.

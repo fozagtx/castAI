@@ -1,0 +1,73 @@
+---
+title: Agent Tools
+description: Configure an AI SDK agent with castAI x402 and MPP tools.
+---
+
+## x402 agent
+
+```ts
+import { generateText } from "ai";
+import {
+  createCastaiAgentTools,
+  createCasperX402Fetch,
+} from "@castai/ai-sdk";
+
+const x402Fetch = createCasperX402Fetch({
+  networks: ["casper:testnet"],
+  privateKeyPem: process.env.CASPER_PRIVATE_KEY_PEM,
+});
+
+const result = await generateText({
+  model: "openai/gpt-4.1",
+  tools: createCastaiAgentTools({
+    x402: { fetch: x402Fetch },
+  }),
+  prompt: "Fetch the paid weather endpoint and summarize the result.",
+});
+
+console.log(result.text);
+```
+
+## MPP agent
+
+```ts
+import { generateText } from "ai";
+import {
+  createCastaiAgentTools,
+  createCasperMppFetch,
+} from "@castai/ai-sdk";
+
+const mppFetch = createCasperMppFetch({
+  network: "casper:testnet",
+  privateKeyPem: process.env.CASPER_PRIVATE_KEY_PEM,
+});
+
+const result = await generateText({
+  model: "openai/gpt-4.1",
+  tools: createCastaiAgentTools({
+    mpp: { fetch: mppFetch },
+  }),
+  prompt: "Fetch the MPP protected endpoint and return the JSON payload.",
+});
+
+console.log(result.toolResults);
+```
+
+## Combined agent
+
+```ts
+const tools = createCastaiAgentTools({
+  x402: { fetch: x402Fetch },
+  mpp: { fetch: mppFetch },
+});
+```
+
+The model can choose `payX402Resource` or `payMppResource` based on the URL or instruction.
+
+## Required environment
+
+```txt
+CASPER_PRIVATE_KEY_PEM=-----BEGIN PRIVATE KEY-----
+```
+
+Use funded testnet keys for testnet payment tests.

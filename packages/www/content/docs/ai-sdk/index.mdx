@@ -1,0 +1,43 @@
+---
+title: AI SDK
+description: AI SDK tools for agents that can pay x402 and MPP resources with Casper CSPR.
+---
+
+`@castai/ai-sdk` provides Vercel AI SDK tools and React testing components for castAI payment flows.
+
+Use it when an agent needs to request protected resources that require:
+
+- x402 payment over HTTP.
+- MPP payment over HTTP.
+- Casper CSPR settlement.
+
+## Install
+
+```sh
+bun add @castai/ai-sdk ai @castai/x402 @castai/mpp casper-js-sdk
+```
+
+## Exports
+
+```ts
+import {
+  createCastaiAgentTools,
+  createCasperMppFetch,
+  createCasperX402Fetch,
+} from "@castai/ai-sdk";
+```
+
+React components are exported separately:
+
+```tsx
+import { PaymentTester } from "@castai/ai-sdk/react";
+```
+
+## What the tools do
+
+| Tool | Purpose |
+| --- | --- |
+| `payX402Resource` | Fetch an x402-protected resource using a configured paid x402 fetcher |
+| `payMppResource` | Fetch an MPP-protected resource using a configured MPP fetcher |
+
+The tools do not simulate payment. If a payment fetcher is missing, the tool throws a setup error.

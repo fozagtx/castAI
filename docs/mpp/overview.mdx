@@ -1,0 +1,15 @@
+---
+title: MPP Overview
+description: Casper payment method for MPP.
+---
+
+`@castai/mpp` exposes a `casper` charge method.
+
+The method creates or accepts a native CSPR transfer hash, then verifies the transfer through Casper RPC.
+
+Credential payloads:
+
+```ts
+{ type: "deployHash", deployHash: "..." }
+{ type: "transactionHash", transactionHash: "..." }
+```

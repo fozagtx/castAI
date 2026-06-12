@@ -1,0 +1,17 @@
+{
+  "name": "castai-mpp-example",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@castai/mpp": "workspace:*",
+    "casper-js-sdk": "^5.0.12",
+    "hono": "^4.12.14",
+    "mppx": ">=0.4.8"
+  }
+}

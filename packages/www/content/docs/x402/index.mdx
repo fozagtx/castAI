@@ -1,0 +1,35 @@
+---
+title: x402 on Casper
+description: x402 exact scheme support for native CSPR transfer settlement.
+---
+
+`@castai/x402` registers an x402 `exact` scheme for Casper.
+
+The client creates a payment payload by submitting a native CSPR transfer. The resource server and facilitator verify the returned deploy or transaction hash through Casper RPC.
+
+## Flow
+
+1. Client requests a protected HTTP resource.
+2. Server returns `402 Payment Required` with Casper payment requirements.
+3. Client submits a native CSPR transfer.
+4. Client retries the request with the x402 payment payload.
+5. Facilitator verifies the hash through Casper RPC.
+6. Server returns the paid resource and settlement response.
+
+## Payment fields
+
+| Field | Value |
+| --- | --- |
+| `scheme` | `exact` |
+| `network` | `casper:mainnet` or `casper:testnet` |
+| `asset` | `CSPR` |
+| `payTo` | Casper public key hex or account hash |
+| `amount` | motes |
+
+## Exports
+
+```ts
+import { registerExactCasperScheme } from "@castai/x402/server";
+import { registerExactCasperClientScheme } from "@castai/x402/client";
+import { registerExactCasperFacilitatorScheme } from "@castai/x402/facilitator";
+```

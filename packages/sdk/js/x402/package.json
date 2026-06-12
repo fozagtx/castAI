@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json.schemastore.org/package.json",
+  "name": "@castai/x402",
+  "type": "module",
+  "version": "0.1.4",
+  "description": "JavaScript SDK for x402 payments on Casper",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/castai/protocol.git",
+    "directory": "packages/sdk/js/x402"
+  },
+  "homepage": "https://github.com/castai/protocol#readme",
+  "bugs": {
+    "url": "https://github.com/castai/protocol/issues"
+  },
+  "keywords": [
+    "castai",
+    "x402",
+    "sdk",
+    "casper",
+    "micropayments",
+    "payments",
+    "web3",
+    "cspr"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc --noEmit"
+  },
+  "exports": {
+    "./client": {
+      "import": {
+        "types": "./dist/esm/client.d.ts",
+        "default": "./dist/esm/client.js"
+      },
+      "require": {
+        "types": "./dist/cjs/client.d.cts",
+        "default": "./dist/cjs/client.cjs"
+      }
+    },
+    "./facilitator": {
+      "import": {
+        "types": "./dist/esm/facilitator.d.ts",
+        "default": "./dist/esm/facilitator.js"
+      },
+      "require": {
+        "types": "./dist/cjs/facilitator.d.cts",
+        "default": "./dist/cjs/facilitator.cjs"
+      }
+    },
+    "./server": {
+      "import": {
+        "types": "./dist/esm/server.d.ts",
+        "default": "./dist/esm/server.js"
+      },
+      "require": {
+        "types": "./dist/cjs/server.d.cts",
+        "default": "./dist/cjs/server.cjs"
+      }
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "devDependencies": {
+    "@biomejs/biome": "catalog:",
+    "@tsconfig/node22": "catalog:",
+    "@types/node": "catalog:",
+    "tsup": "8.5.1",
+    "typescript": "catalog:"
+  },
+  "dependencies": {
+    "casper-js-sdk": "5.0.12",
+    "@x402/core": "2.12.0",
+    "zod": "catalog:"
+  }
+}

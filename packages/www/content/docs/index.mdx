@@ -1,0 +1,44 @@
+---
+title: castAI
+description: Casper payment infrastructure for x402, MPP, facilitators, and routers.
+---
+
+castAI is a Casper payment toolkit for AI agents and HTTP services.
+
+It provides:
+
+| Package | Role |
+| --- | --- |
+| `@castai/x402` | x402 `exact` scheme support for Casper CSPR payments |
+| `@castai/mpp` | MPP `casper` method for native CSPR transfers |
+| `@castai/facilitator` | Cloudflare Worker that verifies and settles x402 Casper payments |
+| `@castai/router` | Cloudflare Worker that forwards x402-protected traffic through Casper payment |
+
+## Supported networks
+
+| Network | Chain name | Default RPC |
+| --- | --- | --- |
+| `casper:mainnet` | `casper` | `https://node.mainnet.casper.network/rpc` |
+| `casper:testnet` | `casper-test` | `https://node.testnet.casper.network/rpc` |
+
+## Asset model
+
+| Asset | Unit | Decimals |
+| --- | --- | --- |
+| `CSPR` | motes | 9 |
+
+## Payment behavior
+
+- Client code signs and submits native Casper CSPR transfer deploys when a private key or signer is configured.
+- Facilitator code verifies submitted deploy or transaction hashes through the configured Casper RPC.
+- Verification checks network, recipient, CSPR amount, execution state, sender where available, and replay use.
+- Router code forwards protected requests only after the x402 middleware accepts the Casper payment path.
+
+## Install
+
+```sh
+bun install --ignore-scripts
+bun run lint
+bun run typecheck
+bun run build
+```

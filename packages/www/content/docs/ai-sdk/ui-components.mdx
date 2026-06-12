@@ -1,0 +1,49 @@
+---
+title: UI Components
+description: Premade React components for testing x402 and MPP payment flows.
+---
+
+`@castai/ai-sdk/react` ships a small developer tester component.
+
+It is intended for local development and payment flow verification.
+
+## PaymentTester
+
+```tsx
+import { PaymentTester } from "@castai/ai-sdk/react";
+import {
+  createCasperMppFetch,
+  createCasperX402Fetch,
+} from "@castai/ai-sdk";
+
+const x402Fetch = createCasperX402Fetch({
+  networks: ["casper:testnet"],
+  privateKeyPem: process.env.CASPER_PRIVATE_KEY_PEM,
+});
+
+const mppFetch = createCasperMppFetch({
+  network: "casper:testnet",
+  privateKeyPem: process.env.CASPER_PRIVATE_KEY_PEM,
+});
+
+export function DevPaymentPanel() {
+  return (
+    <PaymentTester
+      defaultScheme="x402"
+      defaultUrl="https://api.example.com/protected"
+      mppFetch={mppFetch}
+      x402Fetch={x402Fetch}
+    />
+  );
+}
+```
+
+## Component behavior
+
+- Lets a developer choose `x402` or `MPP`.
+- Lets a developer enter URL, method, and optional raw body.
+- Sends a real paid request through the configured fetcher.
+- Renders status, headers, and response body.
+- Shows setup errors when a payment fetcher is missing.
+
+Do not put private keys directly in browser bundles. For browser apps, call a server route that owns the signer.

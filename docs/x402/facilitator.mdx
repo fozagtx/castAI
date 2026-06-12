@@ -1,0 +1,25 @@
+---
+title: Facilitator
+description: Casper x402 facilitator Worker.
+---
+
+The facilitator registers Casper exact payment support for:
+
+| Network | Env RPC override |
+|---|---|
+| `casper:mainnet` | `CASPER_MAINNET_RPC_URL` |
+| `casper:testnet` | `CASPER_TESTNET_RPC_URL` |
+
+Optional signer metadata:
+
+```txt
+CASPER_FACILITATOR_SIGNERS=01...,01...
+```
+
+Worker endpoints:
+
+| Endpoint | Purpose |
+|---|---|
+| `/supported` | Returns supported Casper x402 kinds |
+| `/verify` | Verifies a Casper payment payload |
+| `/settle` | Marks a verified Casper payment as settled |

@@ -1,0 +1,178 @@
+@import "tailwindcss";
+@import "fumadocs-ui/css/neutral.css";
+@import "fumadocs-ui/css/preset.css";
+
+@source "../node_modules/fumadocs-ui/dist/**/*.js";
+
+:root {
+  --font-sans:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+}
+
+.docs-nav-logo {
+  display: block;
+  height: 28px;
+  width: 28px;
+  object-fit: contain;
+}
+
+.floating-doc-header {
+  position: fixed;
+  top: 20px;
+  left: 24px;
+  right: 24px;
+  z-index: 80;
+  margin: 0 auto;
+  max-width: 1320px;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  border-radius: 8px;
+  background: rgba(11, 12, 14, 0.88);
+  box-shadow: 0 20px 80px rgba(0, 0, 0, 0.42);
+  backdrop-filter: blur(18px);
+}
+
+.floating-doc-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 16px;
+}
+
+.floating-doc-brand {
+  display: inline-flex;
+  align-items: center;
+  color: rgb(248, 250, 252);
+  font-family: var(--font-mono);
+  font-size: 0.86rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-decoration: none;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.floating-doc-logo {
+  display: block;
+  height: 28px;
+  width: 112px;
+  object-fit: contain;
+}
+
+.floating-doc-nav {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+  overflow-x: auto;
+}
+
+.floating-doc-nav a {
+  border-radius: 5px;
+  color: rgb(148, 163, 184);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  padding: 8px 10px;
+  text-decoration: none;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.floating-doc-nav a:hover,
+.floating-doc-nav a:focus-visible {
+  background: rgba(148, 163, 184, 0.1);
+  color: rgb(248, 250, 252);
+  outline: none;
+}
+
+.home-shell {
+  min-height: 100vh;
+  padding: 120px 24px 72px;
+  background:
+    radial-gradient(
+      circle at 18% 0%,
+      rgba(202, 160, 255, 0.1),
+      transparent 34rem
+    ),
+    rgb(11, 12, 14);
+  color: rgb(226, 232, 240);
+}
+
+.home-inner {
+  margin: 0 auto;
+  max-width: 1080px;
+}
+
+.home-title {
+  color: rgb(248, 250, 252);
+  font-family: var(--font-mono);
+  font-size: clamp(2.5rem, 8vw, 6.5rem);
+  font-weight: 800;
+  letter-spacing: 0;
+  line-height: 0.98;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.home-copy {
+  color: rgb(203, 213, 225);
+  font-size: 1.05rem;
+  line-height: 1.75;
+  margin: 24px 0 0;
+  max-width: 680px;
+}
+
+.home-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 36px;
+}
+
+.home-actions a {
+  border: 1px solid rgba(148, 163, 184, 0.28);
+  border-radius: 6px;
+  color: rgb(248, 250, 252);
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 12px 14px;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.home-actions a:first-child {
+  background: rgb(202, 160, 255);
+  border-color: rgb(202, 160, 255);
+  color: rgb(11, 12, 14);
+}
+
+@media (max-width: 720px) {
+  .floating-doc-header {
+    left: 10px;
+    right: 10px;
+    top: 10px;
+  }
+
+  .floating-doc-header__inner {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .floating-doc-nav {
+    justify-content: flex-start;
+    width: 100%;
+  }
+}

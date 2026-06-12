@@ -1,0 +1,9 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="castAI">
+  <rect width="64" height="64" rx="14" fill="#0B0C0E"/>
+  <rect x="8" y="8" width="48" height="48" rx="10" fill="#111318" stroke="#334155" stroke-width="1.5"/>
+  <path d="M19 22.5C22.2 16.9 28 13.5 34.5 13.5C40.5 13.5 45.4 16 48.6 20.4L43.6 24.7C41.4 21.8 38.4 20.4 34.7 20.4C30.3 20.4 26.5 22.8 24.4 26.7L19 22.5Z" fill="#E2E8F0"/>
+  <path d="M19 41.5L24.4 37.3C26.5 41.2 30.3 43.6 34.7 43.6C38.4 43.6 41.4 42.2 43.6 39.3L48.6 43.6C45.4 48 40.5 50.5 34.5 50.5C28 50.5 22.2 47.1 19 41.5Z" fill="#E2E8F0"/>
+  <path d="M32 27.8H53V36.2H32V27.8Z" fill="#CAA0FF"/>
+  <circle cx="16" cy="32" r="4.4" fill="#CAA0FF"/>
+  <circle cx="53" cy="32" r="4.4" fill="#E2E8F0"/>
+</svg>

@@ -1,0 +1,34 @@
+---
+title: Facilitator
+description: Verify and settle Casper x402 payment hashes.
+---
+
+The facilitator verifies Casper payment hashes through RPC and returns x402 settlement responses.
+
+It does not invent signatures, deploy hashes, or transaction hashes.
+
+## Required environment
+
+```txt
+CASPER_MAINNET_RPC_URL=https://node.mainnet.casper.network/rpc
+CASPER_TESTNET_RPC_URL=https://node.testnet.casper.network/rpc
+CASPER_FACILITATOR_SIGNERS=01...,01...
+```
+
+`CASPER_FACILITATOR_SIGNERS` is optional. Use it only when the service must restrict accepted sender public keys.
+
+## Verification checks
+
+- Hash exists on the configured Casper RPC.
+- Transfer is native CSPR.
+- Execution is confirmed and not failed.
+- Recipient matches `payTo`.
+- Amount matches the x402 payment requirement in motes.
+- Sender matches configured signer rules when signer rules exist.
+
+## Deploy
+
+```sh
+cd packages/facilitator
+wrangler deploy --minify
+```

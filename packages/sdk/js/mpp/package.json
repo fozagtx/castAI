@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json.schemastore.org/package.json",
+  "name": "@castai/mpp",
+  "version": "0.0.6",
+  "description": "Casper CSPR payment method for the Machine Payments Protocol",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/castai/protocol.git",
+    "directory": "packages/sdk/js/mpp"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/index.d.cts",
+        "default": "./dist/cjs/index.cjs"
+      }
+    },
+    "./server": {
+      "import": {
+        "types": "./dist/esm/server.d.ts",
+        "default": "./dist/esm/server.js"
+      },
+      "require": {
+        "types": "./dist/cjs/server.d.cts",
+        "default": "./dist/cjs/server.cjs"
+      }
+    },
+    "./client": {
+      "import": {
+        "types": "./dist/esm/client.d.ts",
+        "default": "./dist/esm/client.js"
+      },
+      "require": {
+        "types": "./dist/cjs/client.d.cts",
+        "default": "./dist/cjs/client.cjs"
+      }
+    }
+  },
+  "main": "./dist/esm/index.js",
+  "types": "./dist/esm/index.d.ts",
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "casper-js-sdk": ">=5.0.12",
+    "typescript": "catalog:",
+    "mppx": ">=0.4.8",
+    "zod": "catalog:"
+  },
+  "peerDependenciesMeta": {
+    "typescript": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@biomejs/biome": "catalog:",
+    "@tsconfig/node22": "catalog:",
+    "@types/node": "catalog:",
+    "tsup": "8.5.1",
+    "typescript": "catalog:"
+  }
+}

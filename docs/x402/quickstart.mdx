@@ -1,0 +1,39 @@
+---
+title: x402 Quickstart
+description: Register Casper x402 schemes.
+---
+
+Install:
+
+```sh
+bun add @castai/x402 @x402/core @x402/fetch @x402/hono casper-js-sdk
+```
+
+Server:
+
+```ts
+import { HTTPFacilitatorClient, x402ResourceServer } from "@x402/core/server";
+import { registerExactCasperScheme } from "@castai/x402/server";
+
+const server = new x402ResourceServer(
+  new HTTPFacilitatorClient({ url: process.env.FACILITATOR_URL })
+);
+
+registerExactCasperScheme(server, {
+  networks: ["casper:testnet"],
+});
+```
+
+Client:
+
+```ts
+import { registerExactCasperClientScheme } from "@castai/x402/client";
+import { x402Client } from "@x402/core/client";
+
+const client = new x402Client();
+
+registerExactCasperClientScheme(client, {
+  networks: ["casper:testnet"],
+  privateKeyPem: process.env.CASPER_PRIVATE_KEY_PEM,
+});
+```
