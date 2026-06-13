@@ -43,3 +43,17 @@ const text = await getPaidResourceText(x402Fetch, {
 ```
 
 This helper does not create or invent payment data. It only formats the actual paid HTTP response.
+
+## Docs AI Chat
+
+The docs site also exposes a Fumadocs Ask AI panel. It uses the Markdown docs routes and the server-side docs search tool before answering.
+
+Configure the server route with:
+
+```txt
+OPENROUTER_API_KEY=
+CASTAI_DOCS_SITE_URL=
+CASTAI_DOCS_AI_MODELS=
+```
+
+`CASTAI_DOCS_AI_MODELS` is optional. When it is empty, the server uses the built-in free fallback pool. The public UI does not display model names.

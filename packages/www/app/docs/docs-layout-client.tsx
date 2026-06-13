@@ -3,8 +3,16 @@
 import type { Root } from "fumadocs-core/page-tree";
 import type { ComponentProps, ReactNode } from "react";
 import { DocsLayout } from "fumadocs-ui/layouts/docs";
-import { Bot, FileText } from "lucide-react";
+import { Bot, FileText, MessageCircleIcon } from "lucide-react";
 import Image from "next/image";
+
+import {
+  AISearch,
+  AISearchPanel,
+  AISearchTrigger,
+} from "@/components/ai/search";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 type DocsLayoutClientProps = {
   children: ReactNode;
@@ -86,6 +94,22 @@ export function DocsLayoutClient({ children, tree }: DocsLayoutClientProps) {
         ),
       }}
     >
+      <AISearch>
+        <AISearchPanel />
+        <AISearchTrigger
+          position="float"
+          className={cn(
+            buttonVariants({
+              variant: "secondary",
+              size: "lg",
+            }),
+            "rounded-2xl border border-border bg-background/95 px-3 text-foreground shadow-lg backdrop-blur supports-[backdrop-filter]:bg-background/80"
+          )}
+        >
+          <MessageCircleIcon className="size-4" />
+          Ask AI
+        </AISearchTrigger>
+      </AISearch>
       {children}
     </DocsLayout>
   );
