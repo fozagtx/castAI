@@ -1,7 +1,7 @@
 {
   "$schema": "https://json.schemastore.org/package.json",
   "name": "@castaisdk/cli",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "castAI CLI for scaffolding Casper x402, MPP, AI, MCP, and React checkout projects",
   "license": "Apache-2.0",
   "repository": {
