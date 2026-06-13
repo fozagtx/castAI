@@ -723,11 +723,15 @@ function NetworkOrb({ compact = false }: { compact?: boolean }) {
     <div className={cn("network-orb", compact && "network-orb--compact")}>
       <div className="network-orb__ring" />
       <div className="network-orb__core">
-        <Coins aria-hidden="true" />
+        <Image
+          alt=""
+          aria-hidden="true"
+          className="network-orb__logo"
+          height={compact ? 116 : 156}
+          src="/favicon.svg"
+          width={compact ? 116 : 156}
+        />
       </div>
-      <span className="network-orb__node network-orb__node--one" />
-      <span className="network-orb__node network-orb__node--two" />
-      <span className="network-orb__node network-orb__node--three" />
     </div>
   );
 }
