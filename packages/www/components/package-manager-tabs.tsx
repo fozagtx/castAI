@@ -1,10 +1,11 @@
 "use client";
 
+import { CheckmarkCircle01Icon, Copy01Icon } from "@hugeicons/core-free-icons";
 import { Tab, Tabs } from "fumadocs-ui/components/tabs";
-import { Check, Copy } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
+import { HugeIcon } from "@/components/ui/huge-icon";
 
 type PackageManagerTabsProps = {
   packages?: string;
@@ -55,7 +56,11 @@ function CodeLine({ children }: { children: string }) {
         type="button"
         variant="outline"
       >
-        {copied ? <Check aria-hidden="true" /> : <Copy aria-hidden="true" />}
+        <HugeIcon
+          aria-hidden="true"
+          icon={copied ? CheckmarkCircle01Icon : Copy01Icon}
+          size={16}
+        />
       </Button>
     </div>
   );

@@ -1320,12 +1320,6 @@ body {
   margin: 6px 0 0;
 }
 
-.footer-mark svg {
-  height: 120px;
-  width: 120px;
-  color: rgba(255, 255, 255, 0.05);
-}
-
 .footer-links {
   justify-content: flex-end;
 }

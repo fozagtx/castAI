@@ -4,15 +4,15 @@ import type { UseChatHelpers } from "@ai-sdk/react";
 import type { Tool, UIMessage, UIToolInvocation } from "ai";
 import type { ComponentProps, ReactNode, SyntheticEvent } from "react";
 import { useChat } from "@ai-sdk/react";
-import { DefaultChatTransport } from "ai";
 import {
-  Loader2,
-  MessageCircleIcon,
-  RefreshCw,
-  SearchIcon,
-  Send,
-  X,
-} from "lucide-react";
+  Cancel01Icon,
+  ChatIcon,
+  Loading03Icon,
+  MailSend02Icon,
+  RefreshIcon,
+  Search01Icon,
+} from "@hugeicons/core-free-icons";
+import { DefaultChatTransport } from "ai";
 import {
   createContext,
   useCallback,
@@ -27,6 +27,7 @@ import { cn } from "@/lib/utils";
 
 import { Markdown } from "../markdown";
 import { buttonVariants } from "../ui/button";
+import { HugeIcon } from "../ui/huge-icon";
 
 export type ChatUIMessage = UIMessage<
   never,
@@ -157,7 +158,7 @@ export function AISearchPanelHeader({
         tabIndex={-1}
         type="button"
       >
-        <X />
+        <HugeIcon aria-hidden="true" icon={Cancel01Icon} size={16} />
       </button>
     </div>
   );
@@ -183,7 +184,7 @@ export function AISearchPanelList({
     >
       {messages.length === 0 ? (
         <div className="flex size-full flex-col items-center justify-center gap-2 text-center text-sm text-fd-muted-foreground/80">
-          <MessageCircleIcon fill="currentColor" stroke="none" />
+          <HugeIcon aria-hidden="true" icon={ChatIcon} size={22} />
           <p>Ask about x402, MPP, checkout UI, or agent setup.</p>
         </div>
       ) : (
@@ -225,7 +226,7 @@ export function AISearchInputActions() {
           onClick={() => regenerate()}
           type="button"
         >
-          <RefreshCw className="size-4" />
+          <HugeIcon aria-hidden="true" icon={RefreshIcon} size={16} />
           Retry
         </button>
       )}
@@ -319,7 +320,12 @@ export function AISearchInput(props: ComponentProps<"form">) {
           onClick={stop}
           type="button"
         >
-          <Loader2 className="size-4 animate-spin text-fd-muted-foreground" />
+          <HugeIcon
+            aria-hidden="true"
+            className="animate-spin text-fd-muted-foreground"
+            icon={Loading03Icon}
+            size={16}
+          />
           Stop
         </button>
       ) : (
@@ -334,7 +340,7 @@ export function AISearchInput(props: ComponentProps<"form">) {
           key="send"
           type="submit"
         >
-          <Send className="size-4" />
+          <HugeIcon aria-hidden="true" icon={MailSend02Icon} size={16} />
         </button>
       )}
     </form>
@@ -385,7 +391,7 @@ function Message({
             className="mt-3 flex flex-row items-center gap-2 rounded-lg border bg-fd-secondary p-2 text-xs text-fd-muted-foreground"
             key={call.toolCallId}
           >
-            <SearchIcon className="size-4" />
+            <HugeIcon aria-hidden="true" icon={Search01Icon} size={16} />
             {call.state === "output-error" || call.state === "output-denied" ? (
               <p className="text-fd-error">
                 {call.errorText ?? "Search failed"}

@@ -1,23 +1,24 @@
 import type * as React from "react";
 import {
-  BookOpen,
-  Code2,
-  Coins,
-  ExternalLink,
-  Globe2,
-  Lock,
-  Network,
-  Package,
-  Route,
-  Server,
-  ShieldCheck,
-  Terminal,
-  Wallet,
-  Zap,
-} from "lucide-react";
+  BookOpenTextIcon,
+  CodeXmlIcon,
+  Coins01Icon,
+  ComputerTerminal01Icon,
+  ExternalLinkIcon,
+  GithubIcon,
+  Globe02Icon,
+  LockIcon,
+  PackageIcon,
+  Route01Icon,
+  ServerStack01Icon,
+  ShieldEnergyIcon,
+  Wallet01Icon,
+  ZapIcon,
+} from "@hugeicons/core-free-icons";
 import Image from "next/image";
 import Link from "next/link";
 
+import type { IconSvgElement } from "@/components/ui/huge-icon";
 import {
   Accordion,
   AccordionContent,
@@ -33,6 +34,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { HugeIcon } from "@/components/ui/huge-icon";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
@@ -86,22 +88,22 @@ const networkStats = [
 
 const paymentSteps = [
   {
-    icon: Wallet,
+    icon: Wallet01Icon,
     title: "1. Client Signs Payment",
     copy: "Private key or signer submits native CSPR transfer deploys.",
   },
   {
-    icon: ShieldCheck,
+    icon: ShieldEnergyIcon,
     title: "2. Facilitator Verifies",
     copy: "Checks network, recipient, amount, execution state, sender, and replay use.",
   },
   {
-    icon: Lock,
+    icon: LockIcon,
     title: "3. x402 Middleware Accepts",
     copy: "Protected request is approved after payment verification.",
   },
   {
-    icon: Route,
+    icon: Route01Icon,
     title: "4. Router Forwards Traffic",
     copy: "Paid HTTP requests are forwarded to the target AI service.",
   },
@@ -109,19 +111,19 @@ const paymentSteps = [
 
 const developerCards = [
   {
-    icon: Code2,
+    icon: CodeXmlIcon,
     title: "AI SDK Tools",
     copy: "Give agents the ability to pay for x402 and MPP resources with Casper CSPR.",
     code: "createCastaiAgentTools({ x402Fetch })",
   },
   {
-    icon: Wallet,
+    icon: Wallet01Icon,
     title: "Checkout UI",
     copy: "Drop in React components for payment prompts and developer-friendly checkout flows.",
     code: '<CastaiCheckout scheme="x402" />',
   },
   {
-    icon: Server,
+    icon: ServerStack01Icon,
     title: "Protected HTTP Routes",
     copy: "Gate APIs, model endpoints, tools, and services behind verified CSPR payments.",
     code: "router.forwardAfterPayment(request)",
@@ -130,17 +132,17 @@ const developerCards = [
 
 const useCases = [
   {
-    icon: Zap,
+    icon: ZapIcon,
     title: "Paid AI Tools",
     copy: "Charge agents before they call premium tools or model endpoints.",
   },
   {
-    icon: Globe2,
+    icon: Globe02Icon,
     title: "API Monetization",
     copy: "Protect HTTP services with x402 payment middleware.",
   },
   {
-    icon: Coins,
+    icon: Coins01Icon,
     title: "Casper Payment Rails",
     copy: "Use native CSPR transfers for machine-to-machine payments.",
   },
@@ -149,7 +151,7 @@ const useCases = [
 const faqs = [
   [
     "What is castAI?",
-    "castAI is open-source Casper payment infrastructure for AI agents, x402 resources, MPP transfers, facilitators, routers, checkout UI, and HTTP services.",
+    "castAI is an open-source Casper payments infrastructure layer for AI agents, x402 resources, MPP transfers, facilitators, routers, checkout UI, and HTTP services.",
   ],
   [
     "What packages are included?",
@@ -218,10 +220,10 @@ export default function HomePage() {
           </div>
         </div>
         <div className="hero-copy">
-          <h1>Casper Payments for AI Agents.</h1>
+          <h1>Casper Payments Infrastructure Layer for AI Agents.</h1>
           <p>
-            castAI is an open-source Casper payment toolkit for AI agents, x402
-            resources, MPP transfers, facilitators, routers, and HTTP services.
+            castAI is an open-source infrastructure layer for AI agents to pay,
+            verify, route, and unlock x402 resources with native Casper CSPR.
           </p>
           <div className="hero-actions">
             <LandingButton href="/docs/ai-sdk" tone="primary">
@@ -232,7 +234,7 @@ export default function HomePage() {
             </LandingButton>
           </div>
           <div className="install-snippet">
-            <Terminal aria-hidden="true" />
+            <HugeIcon aria-hidden="true" icon={ComputerTerminal01Icon} />
             <code>npm install @castaisdk/ai-sdk @castaisdk/x402</code>
           </div>
         </div>
@@ -451,8 +453,9 @@ export default function HomePage() {
         <Badge className="section-badge">Open Source</Badge>
         <h2>Build Casper-native paid AI services.</h2>
         <p>
-          Use castAI to add x402 payments, MPP transfers, facilitators, routers,
-          and checkout experiences to AI agents and HTTP APIs.
+          Use castAI to add a Casper payments infrastructure layer across AI
+          agents, x402 resources, MPP transfers, facilitators, routers, and
+          checkout experiences.
         </p>
         <div className="final-cta__actions">
           <LandingButton href="/docs/ai-sdk" tone="inverse">
@@ -475,22 +478,19 @@ export default function HomePage() {
             <strong>castAI</strong>
           </div>
           <p>
-            Casper payment infrastructure for x402, MPP, facilitators, routers,
-            AI SDK tools, and HTTP services.
+            Casper payments infrastructure layer for AI agents, x402, MPP,
+            facilitators, routers, AI SDK tools, and HTTP services.
           </p>
-        </div>
-        <div className="footer-mark" aria-hidden="true">
-          <Network />
         </div>
         <div className="footer-links">
           <Link aria-label="GitHub" href="https://github.com/fozagtx/castAI">
-            <GithubGlyph />
+            <HugeIcon aria-hidden="true" icon={GithubIcon} />
           </Link>
           <Link aria-label="Docs" href="/docs">
-            <BookOpen />
+            <HugeIcon aria-hidden="true" icon={BookOpenTextIcon} />
           </Link>
           <Link aria-label="X" href="https://x.com">
-            <ExternalLink />
+            <HugeIcon aria-hidden="true" icon={ExternalLinkIcon} />
           </Link>
           <span>© 2026 castAI</span>
         </div>
@@ -574,7 +574,7 @@ function PackageCard({
     <Card className="package-card">
       <CardContent>
         <div className="package-card__icon">
-          <Package aria-hidden="true" />
+          <HugeIcon aria-hidden="true" icon={PackageIcon} />
         </div>
         <div className="package-card__body">
           <span>{role}</span>
@@ -616,14 +616,14 @@ function PaymentStepCard({
   title,
 }: {
   copy: string;
-  icon: React.ComponentType<{ className?: string }>;
+  icon: IconSvgElement;
   title: string;
 }) {
   return (
     <Card className="payment-step-card">
       <CardContent>
         <div className="icon-square">
-          <Icon aria-hidden="true" />
+          <HugeIcon aria-hidden="true" icon={Icon} />
         </div>
         <div>
           <h3>{title}</h3>
@@ -642,14 +642,14 @@ function DeveloperFeatureCard({
 }: {
   code: string;
   copy: string;
-  icon: React.ComponentType<{ className?: string }>;
+  icon: IconSvgElement;
   title: string;
 }) {
   return (
     <Card className="developer-card">
       <CardHeader>
         <div className="icon-square">
-          <Icon aria-hidden="true" />
+          <HugeIcon aria-hidden="true" icon={Icon} />
         </div>
         <CardTitle>{title}</CardTitle>
         <CardDescription>{copy}</CardDescription>
@@ -667,14 +667,14 @@ function UseCaseCard({
   title,
 }: {
   copy: string;
-  icon: React.ComponentType<{ className?: string }>;
+  icon: IconSvgElement;
   title: string;
 }) {
   return (
     <Card className="usecase-card">
       <CardHeader>
         <div className="icon-square">
-          <Icon aria-hidden="true" />
+          <HugeIcon aria-hidden="true" icon={Icon} />
         </div>
         <CardTitle>{title}</CardTitle>
         <CardDescription>{copy}</CardDescription>
@@ -707,14 +707,6 @@ function TerminalCard({
         </pre>
       </CardContent>
     </Card>
-  );
-}
-
-function GithubGlyph() {
-  return (
-    <svg aria-hidden="true" fill="currentColor" viewBox="0 0 24 24">
-      <path d="M12 .3a12 12 0 0 0-3.79 23.39c.6.11.82-.26.82-.58v-2.24c-3.34.73-4.04-1.42-4.04-1.42-.55-1.39-1.33-1.76-1.33-1.76-1.09-.74.08-.73.08-.73 1.2.09 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.49 1 .11-.78.42-1.3.76-1.6-2.67-.31-5.47-1.34-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.11-3.18 0 0 1.01-.32 3.3 1.23a11.46 11.46 0 0 1 6 0c2.28-1.55 3.29-1.23 3.29-1.23.65 1.66.24 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.8 5.62-5.48 5.92.43.37.82 1.1.82 2.22v3.3c0 .32.21.7.83.58A12 12 0 0 0 12 .3Z" />
-    </svg>
   );
 }
 

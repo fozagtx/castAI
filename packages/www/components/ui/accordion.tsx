@@ -2,8 +2,9 @@
 
 import type * as React from "react";
 import * as AccordionPrimitive from "@base-ui/react/accordion";
-import { ChevronDown } from "lucide-react";
+import { ChevronDownIcon } from "@hugeicons/core-free-icons";
 
+import { HugeIcon } from "@/components/ui/huge-icon";
 import { cn } from "@/lib/utils";
 
 function Accordion({
@@ -48,7 +49,7 @@ function AccordionTrigger({
         {...props}
       >
         {children}
-        <ChevronDown aria-hidden="true" />
+        <HugeIcon aria-hidden="true" icon={ChevronDownIcon} size={16} />
       </AccordionPrimitive.Accordion.Trigger>
     </AccordionPrimitive.Accordion.Header>
   );

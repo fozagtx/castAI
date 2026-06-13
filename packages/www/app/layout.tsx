@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     template: "%s - castAI Docs",
   },
   description:
-    "Casper x402, MPP, facilitator, and router documentation for castAI.",
+    "Casper payments infrastructure layer for AI agents, x402, MPP, facilitators, and routers.",
   icons: {
     icon: [
       { url: "/icon.svg", type: "image/svg+xml" },

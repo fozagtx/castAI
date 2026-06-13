@@ -1,7 +1,11 @@
 "use client";
 
 import type { FileSystemTree, WebContainer } from "@webcontainer/api";
-import { Play, RotateCcw, Terminal } from "lucide-react";
+import {
+  ComputerTerminal01Icon,
+  PlayIcon,
+  RotateClockwiseIcon,
+} from "@hugeicons/core-free-icons";
 import { useMemo, useRef, useState } from "react";
 
 import { Badge } from "@/components/ui/badge";
@@ -13,6 +17,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { HugeIcon } from "@/components/ui/huge-icon";
 
 type PlaygroundState = "idle" | "booting" | "running" | "blocked" | "error";
 
@@ -343,11 +348,21 @@ export function WebContainerPlayground() {
       <CardContent className="webcontainer-playground__content">
         <div className="webcontainer-playground__actions">
           <Button disabled={!canStart} onClick={start} type="button">
-            <Play aria-hidden="true" data-icon="inline-start" />
+            <HugeIcon
+              aria-hidden="true"
+              data-icon="inline-start"
+              icon={PlayIcon}
+              size={16}
+            />
             Start runtime
           </Button>
           <Button onClick={resetPanel} type="button" variant="outline">
-            <RotateCcw aria-hidden="true" data-icon="inline-start" />
+            <HugeIcon
+              aria-hidden="true"
+              data-icon="inline-start"
+              icon={RotateClockwiseIcon}
+              size={16}
+            />
             Reset panel
           </Button>
         </div>
@@ -365,7 +380,7 @@ export function WebContainerPlayground() {
 
           <div className="webcontainer-playground__terminal">
             <div>
-              <Terminal aria-hidden="true" />
+              <HugeIcon aria-hidden="true" icon={ComputerTerminal01Icon} />
               <span>Runtime log</span>
             </div>
             <pre>{logs.join("\n")}</pre>
