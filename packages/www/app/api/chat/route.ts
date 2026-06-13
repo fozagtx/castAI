@@ -78,6 +78,8 @@ const defaultModelPool = [
   "nvidia/nemotron-3-nano-30b-a3b:free",
 ] as const;
 
+const maxOpenRouterFallbackModels = 3;
+
 function getModelPool() {
   const configured = process.env.CASTAI_DOCS_AI_MODELS?.split(",")
     .map((model) => model.trim())
@@ -105,7 +107,11 @@ export async function POST(req: Request) {
 
   const reqJson = await req.json();
   const messages = normalizeMessages(reqJson.messages);
-  const [primaryModel, ...fallbackModels] = getModelPool();
+  const [primaryModel, ...configuredFallbackModels] = getModelPool();
+  const fallbackModels = configuredFallbackModels.slice(
+    0,
+    maxOpenRouterFallbackModels
+  );
 
   const result = streamText({
     model: openrouter.chat(primaryModel, {
@@ -119,22 +125,20 @@ export async function POST(req: Request) {
     stopWhen: stepCountIs(5),
     temperature: 0.2,
     toolChoice: "auto",
+    system: systemPrompt,
     tools: {
       search: searchTool,
     },
-    messages: [
-      { role: "system", content: systemPrompt },
-      ...(await convertToModelMessages<ChatUIMessage>(messages, {
-        convertDataPart(part) {
-          if (part.type === "data-client") {
-            return {
-              type: "text",
-              text: `[Client Context: ${JSON.stringify(part.data)}]`,
-            };
-          }
-        },
-      })),
-    ],
+    messages: await convertToModelMessages<ChatUIMessage>(messages, {
+      convertDataPart(part) {
+        if (part.type === "data-client") {
+          return {
+            type: "text",
+            text: `[Client Context: ${JSON.stringify(part.data)}]`,
+          };
+        }
+      },
+    }),
   });
 
   return result.toUIMessageStreamResponse<ChatUIMessage>({
