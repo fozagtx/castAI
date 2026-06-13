@@ -82,4 +82,4 @@ app.get("/weather", async (c) => {
 });
 
 serve({ fetch: app.fetch, port });
-console.log(`x402 example listening on http://localhost:${port}`);
+console.log(`x402 example listening on http://127.0.0.1:${port}`);

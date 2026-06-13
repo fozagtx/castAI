@@ -2,7 +2,7 @@
   "mcpServers": {
     "castai": {
       "command": "npx",
-      "args": ["-y", "@castai/mcp@latest"]
+      "args": ["-y", "@castaisdk/mcp@latest"]
     }
   }
 }

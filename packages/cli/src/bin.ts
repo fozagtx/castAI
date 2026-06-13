@@ -44,10 +44,12 @@ export async function main(argv = process.argv.slice(2)) {
 
     if (parsed.command === "mcp-config" || parsed.command === "claude-code") {
       const packageManager = readPackageManager(parsed);
+      const url = readStringFlag(parsed, "url") ?? process.env.CASTAI_MCP_URL;
       writeOutput(
         createMcpConfig({
           client: "claude-code",
           packageManager,
+          url,
         }),
         parsed.flags.has("json")
       );
@@ -115,6 +117,11 @@ function readPackageManager(parsed: ParsedArgs): PackageManager {
   return "npm";
 }
 
+function readStringFlag(parsed: ParsedArgs, key: string): string | undefined {
+  const value = parsed.flags.get(key);
+  return typeof value === "string" && value ? value : undefined;
+}
+
 function writeOutput(value: unknown, json: boolean) {
   if (json) {
     console.log(JSON.stringify(value, null, 2));
@@ -137,8 +144,8 @@ function printHelp() {
 Commands:
   castai templates [--json]
   castai scaffold <template> <directory> [--package-manager npm|pnpm|yarn|bun] [--force] [--json]
-  castai mcp-config [--package-manager npm|pnpm|yarn|bun] [--json]
-  castai claude-code [--package-manager npm|pnpm|yarn|bun] [--json]
+  castai mcp-config [--url https://space.hf.space/gradio_api/mcp] [--package-manager npm|pnpm|yarn|bun] [--json]
+  castai claude-code [--url https://space.hf.space/gradio_api/mcp] [--package-manager npm|pnpm|yarn|bun] [--json]
   castai doctor [--json]
 
 Package managers: ${packageManagers.join(", ")}

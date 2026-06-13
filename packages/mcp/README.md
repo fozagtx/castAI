@@ -10,6 +10,13 @@ npm install @castaisdk/mcp
 
 ## Run
 
+Hosted Hugging Face MCP:
+
+```sh
+# CASTAI_MCP_URL must contain the deployed Hugging Face MCP endpoint.
+castai claude-code --url "$CASTAI_MCP_URL" --json
+```
+
 stdio:
 
 ```sh
@@ -33,6 +40,18 @@ Hugging Face Docker Space template:
 
 ```txt
 spaces/huggingface-mcp
+```
+
+Remote MCP client config:
+
+```json
+{
+  "mcpServers": {
+    "castai": {
+      "url": "$CASTAI_MCP_URL"
+    }
+  }
+}
 ```
 
 ## Tools

@@ -68,4 +68,4 @@ app.get(
 );
 
 serve({ fetch: app.fetch, port });
-console.log(`MPP example listening on http://localhost:${port}`);
+console.log(`MPP example listening on http://127.0.0.1:${port}`);

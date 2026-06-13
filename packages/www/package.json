@@ -9,7 +9,7 @@
     "build": "next build",
     "build:vercel": "CASTAI_DOCS_RUNTIME=server next build",
     "preview": "next start",
-    "typecheck": "next typegen && tsc --noEmit",
+    "typecheck": "fumadocs-mdx && next typegen && tsc --noEmit",
     "lint": "biome check",
     "lint-staged": "biome check --write --staged --files-ignore-unknown=true --no-errors-on-unmatched"
   },

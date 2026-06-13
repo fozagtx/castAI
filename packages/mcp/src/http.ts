@@ -69,7 +69,7 @@ server.listen(port, host, () => {
 });
 
 function readPathname(url: string | undefined, headerHost: string | undefined) {
-  return new URL(url ?? "/", `http://${headerHost ?? "localhost"}`).pathname;
+  return new URL(url ?? "/", `http://${headerHost ?? "127.0.0.1"}`).pathname;
 }
 
 function setCorsHeaders(res: ServerResponse) {

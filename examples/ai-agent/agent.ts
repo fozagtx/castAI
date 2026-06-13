@@ -18,7 +18,7 @@ const result = await generateCastaiText({
   },
   prompt: env(
     "AGENT_PROMPT",
-    "Fetch the paid x402 weather resource at http://localhost:3000/weather and summarize the JSON."
+    "Fetch the paid x402 weather resource at https://api.example.com/weather and summarize the JSON."
   ),
   x402: {
     networks: [network],

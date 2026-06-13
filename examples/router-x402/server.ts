@@ -85,4 +85,4 @@ app.get("/weather", async (c) => {
 });
 
 serve({ fetch: app.fetch, port });
-console.log(`Router destination example listening on http://localhost:${port}`);
+console.log(`Router destination example listening on http://127.0.0.1:${port}`);

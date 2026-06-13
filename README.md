@@ -73,7 +73,7 @@ const result = await generateCastaiText({
     privateKeyPem: process.env.CASPER_PRIVATE_KEY_PEM,
   },
   prompt:
-    "Fetch the paid x402 weather resource at http://localhost:3000/weather and summarize the JSON.",
+    "Fetch the paid x402 weather resource at https://api.example.com/weather and summarize the JSON.",
 });
 
 console.log(result.text);
@@ -138,6 +138,13 @@ import { createCastaiGoatPlugin } from "@castaisdk/ai-sdk/adapters/goat";
 
 ## MCP and CLI
 
+Use the deployed Hugging Face MCP endpoint through one environment variable:
+
+```sh
+# CASTAI_MCP_URL must contain the deployed Hugging Face MCP endpoint.
+castai claude-code --url "$CASTAI_MCP_URL" --json
+```
+
 ```sh
 castai templates
 castai scaffold next-checkout ./my-checkout --package-manager pnpm
@@ -149,6 +156,20 @@ PORT=7860 castai-mcp-http
 Claude Code plugin files are in `plugins/claude-code/castai`.
 
 Hugging Face Docker Space files are in `spaces/huggingface-mcp`.
+
+```mermaid
+flowchart LR
+  agent["Coding agent or app"] --> client["MCP client"]
+  client --> hosted["CASTAI_MCP_URL"]
+  hosted --> hf["Hugging Face Space"]
+  hf --> tools["castAI MCP tools"]
+  tools --> x402["x402 paid resource"]
+  tools --> mpp["MPP paid resource"]
+  x402 --> casper["Casper verification"]
+  mpp --> casper
+  casper --> text["Paid payload text"]
+  text --> agent
+```
 
 Programmatic DOM mount:
 

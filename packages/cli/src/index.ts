@@ -35,6 +35,7 @@ export type ScaffoldResult = {
 };
 
 export type CastaiDoctorResult = {
+  mcpUrlConfigured: boolean;
   node: string;
   packageManagers: readonly PackageManager[];
   signerConfigured: boolean;
@@ -99,6 +100,7 @@ export function createDoctorResult(
   env: Record<string, string | undefined> = process.env
 ): CastaiDoctorResult {
   return {
+    mcpUrlConfigured: Boolean(env.CASTAI_MCP_URL),
     node: process.version,
     packageManagers,
     signerConfigured: Boolean(
@@ -115,8 +117,19 @@ export function createMcpConfig(
   options: {
     client?: "claude-code" | "generic" | undefined;
     packageManager?: PackageManager | undefined;
+    url?: string | undefined;
   } = {}
 ) {
+  if (options.url) {
+    return {
+      mcpServers: {
+        castai: {
+          url: options.url,
+        },
+      },
+    };
+  }
+
   const packageManager = options.packageManager ?? "npm";
   const command = mcpCommand(packageManager);
 
@@ -418,6 +431,13 @@ function mcpClaudeCodeTemplate({
       "```sh",
       "export CASPER_PRIVATE_KEY_PEM=...",
       "export CASPER_NETWORK=casper:testnet",
+      "```",
+      "",
+      "For a hosted Hugging Face MCP server, generate remote config from the deployed endpoint:",
+      "",
+      "```sh",
+      "# Set CASTAI_MCP_URL to the deployed Hugging Face MCP endpoint.",
+      'castai claude-code --url "$CASTAI_MCP_URL" --json',
       "```",
       "",
       "Available MCP tools:",

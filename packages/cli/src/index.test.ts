@@ -35,10 +35,28 @@ describe("castAI CLI library", () => {
     });
   });
 
+  it("creates remote MCP config for hosted servers", () => {
+    expect(
+      createMcpConfig({
+        url: "https://castai-mcp.hf.space/gradio_api/mcp",
+      })
+    ).toEqual({
+      mcpServers: {
+        castai: {
+          url: "https://castai-mcp.hf.space/gradio_api/mcp",
+        },
+      },
+    });
+  });
+
   it("reports signer status without exposing secret values", () => {
     expect(
-      createDoctorResult({ CASPER_PRIVATE_KEY_PEM: "secret" })
+      createDoctorResult({
+        CASPER_PRIVATE_KEY_PEM: "secret",
+        CASTAI_MCP_URL: "https://castai-mcp.hf.space/gradio_api/mcp",
+      })
     ).toMatchObject({
+      mcpUrlConfigured: true,
       signerConfigured: true,
     });
   });

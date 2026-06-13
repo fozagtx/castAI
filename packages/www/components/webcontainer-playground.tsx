@@ -50,7 +50,11 @@ const files = {
     file: {
       contents: `import { useMemo, useState } from "react";
 import { createRoot } from "react-dom/client";
-import { CastaiCheckout, CastaiCheckoutHeadless } from "@castaisdk/ai-sdk/react";
+import {
+  CastaiCheckout,
+  CastaiCheckoutHeadless,
+  PaymentTester,
+} from "@castaisdk/ai-sdk/react";
 import "./style.css";
 
 const blockedFetch = async () => {
@@ -119,6 +123,15 @@ function App() {
           </section>
         )}
       </CastaiCheckoutHeadless>
+
+      <PaymentTester
+        defaultHeaders='{"accept":"application/json"}'
+        defaultScheme={scheme}
+        defaultUrl={resourceUrl}
+        mppFetch={blockedFetch}
+        title="castAI payment tester"
+        x402Fetch={blockedFetch}
+      />
     </main>
   );
 }

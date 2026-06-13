@@ -15,7 +15,7 @@ const network = env("PAYMENT_NETWORK", "casper:testnet") as
   | "casper:mainnet"
   | "casper:testnet";
 const port = Number(env("PORT", "3000"));
-const resourceUrl = `http://localhost:${port}/weather`;
+const resourceUrl = `http://127.0.0.1:${port}/weather`;
 const upstreamUrl = env(
   "RESOURCE_UPSTREAM_URL",
   "https://api.weather.gov/gridpoints/TOP/32,81/forecast"
@@ -27,7 +27,7 @@ const upstreamUserAgent = env(
 
 const resourceServer = new x402ResourceServer(
   new HTTPFacilitatorClient({
-    url: env("FACILITATOR_URL", "http://localhost:8787"),
+    url: env("FACILITATOR_URL", "https://facilitator.example.com"),
   })
 );
 
@@ -86,4 +86,4 @@ app.get("/weather", async (c) => {
 });
 
 serve({ fetch: app.fetch, port });
-console.log(`x402 gated server listening on http://localhost:${port}`);
+console.log(`x402 gated server listening on http://127.0.0.1:${port}`);

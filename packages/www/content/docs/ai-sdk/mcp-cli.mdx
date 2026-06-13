@@ -27,37 +27,28 @@ Templates:
 
 ## MCP Server
 
-Use stdio for local coding agents that spawn the server as a child process.
-Use Streamable HTTP when the MCP server is hosted on a normal web URL.
-
-stdio:
+Use the deployed Hugging Face MCP endpoint through one environment variable.
 
 ```sh
-castai-mcp
+# CASTAI_MCP_URL must contain the deployed Hugging Face MCP endpoint.
+castai claude-code --url "$CASTAI_MCP_URL" --json
 ```
 
-Streamable HTTP:
+Deployed endpoints:
+
+| Purpose | Value |
+| --- | --- |
+| MCP Streamable HTTP | `$CASTAI_MCP_URL` |
+| Hugging Face MCP path | `/gradio_api/mcp` |
+| Hugging Face SSE-compatible path | `/gradio_api/mcp/sse` |
+| Health check | `$CASTAI_MCP_HEALTH_URL` |
+
+Health check:
 
 ```sh
-PORT=7860 castai-mcp-http
+export CASTAI_MCP_HEALTH_URL="${CASTAI_MCP_URL%/gradio_api/mcp}/health"
+curl "$CASTAI_MCP_HEALTH_URL"
 ```
-
-Local URLs:
-
-| Purpose | URL |
-| --- | --- |
-| MCP Streamable HTTP | `http://localhost:7860/mcp` |
-| Hugging Face MCP path | `http://localhost:7860/gradio_api/mcp` |
-| Hugging Face SSE-compatible path | `http://localhost:7860/gradio_api/mcp/sse` |
-| Health check | `http://localhost:7860/health` |
-
-Hosted URL templates:
-
-| Host | MCP URL |
-| --- | --- |
-| Any HTTP host | `https://<your-domain>/mcp` |
-| Hugging Face Space | `https://<owner>-<space>.hf.space/gradio_api/mcp` |
-| Hugging Face Space SSE path | `https://<owner>-<space>.hf.space/gradio_api/mcp/sse` |
 
 MCP client config:
 
@@ -65,16 +56,22 @@ MCP client config:
 {
   "mcpServers": {
     "castai": {
-      "url": "https://<owner>-<space>.hf.space/gradio_api/mcp"
+      "url": "$CASTAI_MCP_URL"
     }
   }
 }
 ```
 
-Health check:
+Local stdio fallback:
 
 ```sh
-curl https://<owner>-<space>.hf.space/health
+castai-mcp
+```
+
+Local Streamable HTTP fallback:
+
+```sh
+PORT=7860 castai-mcp-http
 ```
 
 Server paths:
@@ -103,8 +100,9 @@ MCP tools:
 flowchart LR
   agent["Coding agent or app"] --> client["MCP client"]
   client --> transport{"Transport"}
-  transport --> stdio["stdio: castai-mcp"]
-  transport --> http["HTTP: /mcp or /gradio_api/mcp"]
+  transport --> hosted["CASTAI_MCP_URL"]
+  transport --> stdio["Local stdio fallback"]
+  hosted --> http["Hugging Face /gradio_api/mcp"]
   stdio --> tools["castAI MCP tools"]
   http --> tools
   tools --> x402["x402 paid resource"]

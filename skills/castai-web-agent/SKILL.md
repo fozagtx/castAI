@@ -10,6 +10,7 @@ description: Use when building web apps, docs, API routes, AI agents, or coding-
 - Adding x402 or MPP paid-resource access to a web app.
 - Adding AI SDK tools that can pay for protected HTTP resources.
 - Building server routes that own Casper signer material.
+- Wiring coding agents to the hosted Hugging Face MCP endpoint.
 - Writing docs, examples, or `llms.txt` for castAI integrations.
 - Auditing whether a castAI integration uses the real payment path.
 
@@ -26,6 +27,7 @@ description: Use when building web apps, docs, API routes, AI agents, or coding-
 - x402-protected HTTP resource: use `@castaisdk/x402` or `createCasperX402Fetch`.
 - MPP-protected HTTP resource: use `@castaisdk/mpp` or `createCasperMppFetch`.
 - AI agent fetching paid resources: use `@castaisdk/ai-sdk`.
+- Coding agent paid-resource access: use hosted MCP through `CASTAI_MCP_URL` when configured.
 - Local developer UI: use `PaymentTester` from `@castaisdk/ai-sdk/react`.
 - Router/facilitator service work: inspect `packages/router` and `packages/facilitator`.
 
@@ -81,6 +83,17 @@ const otherText = llm.text(response);
 - Browser UI should call your server route, not import signer keys.
 - For quick local verification, render `PaymentTester` and pass server-safe fetchers only in server-capable environments.
 - Add inline setup errors for missing network, recipient, facilitator URL, RPC URL, and signer config.
+
+## MCP Pattern
+
+Use the deployed Hugging Face MCP endpoint for coding agents:
+
+```sh
+# CASTAI_MCP_URL must contain the deployed Hugging Face MCP endpoint.
+castai claude-code --url "$CASTAI_MCP_URL" --json
+```
+
+Use local stdio only when the hosted endpoint is unavailable.
 
 ## Verification
 

@@ -18,8 +18,8 @@ registerExactCasperClientScheme(client, {
 });
 
 const fetchWithPayment = wrapFetchWithPayment(fetch, client);
-const routerUrl = env("ROUTER_URL", "http://localhost:8787");
-const destination = "http://localhost:3000/weather";
+const routerUrl = env("ROUTER_URL", "https://router.example.com");
+const destination = env("RESOURCE_URL", "https://api.example.com/weather");
 
 const response = await fetchWithPayment(
   `${routerUrl}/route/x402?url=${encodeURIComponent(destination)}`

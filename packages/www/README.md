@@ -20,11 +20,7 @@ yarn dev
 bun run dev
 ```
 
-Local URL:
-
-```txt
-http://localhost:3000
-```
+The dev server prints its browser URL after startup.
 
 ## Content
 

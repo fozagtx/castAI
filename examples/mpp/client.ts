@@ -19,8 +19,8 @@ const mppx = Mppx.create({
   ],
 });
 
-const baseUrl = env("SERVER_URL", "http://localhost:3000");
-const response = await mppx.fetch(`${baseUrl}/weather`);
+const resourceUrl = env("RESOURCE_URL", "https://api.example.com/weather");
+const response = await mppx.fetch(resourceUrl);
 const data = await response.json();
 
 console.log("Response:", data);

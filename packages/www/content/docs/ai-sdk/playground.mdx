@@ -4,6 +4,8 @@ description: Fumadocs Story and WebContainer previews for checkout UI.
 ---
 
 import { checkoutStory } from "@/components/checkout.story";
+import { headlessCheckoutStory } from "@/components/headless-checkout.story";
+import { paymentTesterStory } from "@/components/payment-tester.story";
 import { WebContainerPlayground } from "@/components/webcontainer-playground";
 
 The checkout UI has two docs surfaces:
@@ -16,6 +18,10 @@ The checkout UI has two docs surfaces:
 Fumadocs Story is used here as the component preview layer for docs. It is close to Storybook in purpose, but focused on docs pages and component props.
 
 <checkoutStory.WithControl />
+
+<headlessCheckoutStory.WithControl />
+
+<paymentTesterStory.WithControl />
 
 ## WebContainer Runtime
 

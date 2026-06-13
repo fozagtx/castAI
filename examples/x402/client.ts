@@ -19,7 +19,9 @@ registerExactCasperClientScheme(client, {
 
 const fetchWithPayment = wrapFetchWithPayment(fetch, client);
 
-const response = await fetchWithPayment("http://localhost:3000/weather");
+const response = await fetchWithPayment(
+  env("RESOURCE_URL", "https://api.example.com/weather")
+);
 const data = await response.json();
 console.log("Response:", data);
 
