@@ -27,6 +27,9 @@ Templates:
 
 ## MCP Server
 
+Use stdio for local coding agents that spawn the server as a child process.
+Use Streamable HTTP when the MCP server is hosted on a normal web URL.
+
 stdio:
 
 ```sh
@@ -39,7 +42,42 @@ Streamable HTTP:
 PORT=7860 castai-mcp-http
 ```
 
-HTTP endpoints:
+Local URLs:
+
+| Purpose | URL |
+| --- | --- |
+| MCP Streamable HTTP | `http://localhost:7860/mcp` |
+| Hugging Face MCP path | `http://localhost:7860/gradio_api/mcp` |
+| Hugging Face SSE-compatible path | `http://localhost:7860/gradio_api/mcp/sse` |
+| Health check | `http://localhost:7860/health` |
+
+Hosted URL templates:
+
+| Host | MCP URL |
+| --- | --- |
+| Any HTTP host | `https://<your-domain>/mcp` |
+| Hugging Face Space | `https://<owner>-<space>.hf.space/gradio_api/mcp` |
+| Hugging Face Space SSE path | `https://<owner>-<space>.hf.space/gradio_api/mcp/sse` |
+
+MCP client config:
+
+```json
+{
+  "mcpServers": {
+    "castai": {
+      "url": "https://<owner>-<space>.hf.space/gradio_api/mcp"
+    }
+  }
+}
+```
+
+Health check:
+
+```sh
+curl https://<owner>-<space>.hf.space/health
+```
+
+Server paths:
 
 - `/mcp`
 - `/gradio_api/mcp`
@@ -58,6 +96,22 @@ MCP tools:
 - `castai_pay_x402_resource`
 - `castai_pay_mpp_resource`
 - `castai_format_paid_resource`
+
+```mermaid
+flowchart LR
+  agent["Coding agent or app"] --> client["MCP client"]
+  client --> transport{"Transport"}
+  transport --> stdio["stdio: castai-mcp"]
+  transport --> http["HTTP: /mcp or /gradio_api/mcp"]
+  stdio --> tools["castAI MCP tools"]
+  http --> tools
+  tools --> x402["x402 paid resource"]
+  tools --> mpp["MPP paid resource"]
+  x402 --> casper["Casper payment verification"]
+  mpp --> casper
+  casper --> resource["Paid payload as text"]
+  resource --> agent
+```
 
 Set signer configuration in the process environment:
 
