@@ -5,12 +5,14 @@ import { createMDX } from "fumadocs-mdx/next";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const workspaceRoot = resolve(__dirname, "../..");
+const isServerRuntime = process.env.CASTAI_DOCS_RUNTIME === "server";
 
 /** @type {import('next').NextConfig} */
 const config = {
-  output: "export",
+  ...(isServerRuntime ? {} : { output: "export" }),
+  outputFileTracingRoot: workspaceRoot,
   reactStrictMode: true,
-  ...(process.env.NODE_ENV === "development"
+  ...(process.env.NODE_ENV === "development" || isServerRuntime
     ? {
         async headers() {
           return [

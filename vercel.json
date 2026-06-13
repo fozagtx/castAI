@@ -1,0 +1,67 @@
+{
+  "buildCommand": "bun --filter @castai/www build:vercel",
+  "cleanUrls": true,
+  "framework": "nextjs",
+  "installCommand": "bun install --frozen-lockfile",
+  "outputDirectory": "packages/www/.next",
+  "headers": [
+    {
+      "source": "/docs/ai-sdk/playground",
+      "headers": [
+        {
+          "key": "Cross-Origin-Embedder-Policy",
+          "value": "require-corp"
+        },
+        {
+          "key": "Cross-Origin-Opener-Policy",
+          "value": "same-origin"
+        }
+      ]
+    },
+    {
+      "source": "/docs/ai-sdk/playground/:path*",
+      "headers": [
+        {
+          "key": "Cross-Origin-Embedder-Policy",
+          "value": "require-corp"
+        },
+        {
+          "key": "Cross-Origin-Opener-Policy",
+          "value": "same-origin"
+        }
+      ]
+    },
+    {
+      "source": "/docs/ai-sdk/playground.mdx",
+      "headers": [
+        {
+          "key": "Cross-Origin-Embedder-Policy",
+          "value": "require-corp"
+        },
+        {
+          "key": "Cross-Origin-Opener-Policy",
+          "value": "same-origin"
+        }
+      ]
+    },
+    {
+      "source": "/docs/ai-sdk/playground.mdx/:path*",
+      "headers": [
+        {
+          "key": "Cross-Origin-Embedder-Policy",
+          "value": "require-corp"
+        },
+        {
+          "key": "Cross-Origin-Opener-Policy",
+          "value": "same-origin"
+        }
+      ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/docs/ai-sdk/playground.mdx",
+      "destination": "/docs/ai-sdk/playground.mdx.html"
+    }
+  ]
+}

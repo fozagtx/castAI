@@ -30,6 +30,7 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 .source
 .serena
 .playwright-mcp
+.vercel
 *.tsbuildinfo
 
 # IntelliJ based IDEs
