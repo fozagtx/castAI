@@ -104,9 +104,7 @@ export async function POST(req: Request) {
   }
 
   const reqJson = await req.json();
-  const messages = Array.isArray(reqJson.messages)
-    ? (reqJson.messages as ChatUIMessage[])
-    : [];
+  const messages = normalizeMessages(reqJson.messages);
   const [primaryModel, ...fallbackModels] = getModelPool();
 
   const result = streamText({
@@ -147,6 +145,59 @@ export async function POST(req: Request) {
       return "Docs AI is temporarily unavailable. Try again.";
     },
   });
+}
+
+function normalizeMessages(input: unknown): ChatUIMessage[] {
+  if (!Array.isArray(input)) return [];
+
+  return input.flatMap((message, index) => {
+    if (!isRecord(message)) return [];
+
+    const role = normalizeRole(message.role);
+    const id = typeof message.id === "string" ? message.id : `msg-${index}`;
+
+    if (Array.isArray(message.parts)) {
+      return [{ ...message, id, role } as ChatUIMessage];
+    }
+
+    const text = contentToText(message.content).trim();
+    if (!text) return [];
+
+    return [
+      {
+        id,
+        role,
+        parts: [{ type: "text", text }],
+      } as ChatUIMessage,
+    ];
+  });
+}
+
+function normalizeRole(role: unknown): ChatUIMessage["role"] {
+  return role === "assistant" || role === "system" || role === "user"
+    ? role
+    : "user";
+}
+
+function contentToText(content: unknown): string {
+  if (typeof content === "string") return content;
+
+  if (Array.isArray(content)) {
+    return content
+      .map((part) => {
+        if (typeof part === "string") return part;
+        if (isRecord(part) && typeof part.text === "string") return part.text;
+        return "";
+      })
+      .filter(Boolean)
+      .join("\n");
+  }
+
+  return "";
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null;
 }
 
 const searchTool = tool({
