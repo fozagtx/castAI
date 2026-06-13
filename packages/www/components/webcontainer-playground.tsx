@@ -19,204 +19,193 @@ type PlaygroundState = "idle" | "booting" | "running" | "blocked" | "error";
 let webContainerPromise: Promise<WebContainer> | null = null;
 
 const files = {
+  "index.html": {
+    file: {
+      contents: `<div id="root"></div><script type="module" src="/src/App.jsx"></script>`,
+    },
+  },
   "package.json": {
     file: {
       contents: JSON.stringify(
         {
-          type: "module",
-          scripts: {
-            dev: "node server.mjs",
+          dependencies: {
+            "@castai/ai-sdk": "latest",
+            "@vitejs/plugin-react": "latest",
+            vite: "latest",
+            react: "latest",
+            "react-dom": "latest",
           },
+          devDependencies: {},
+          scripts: {
+            dev: "vite --host 0.0.0.0",
+          },
+          type: "module",
         },
         null,
         2
       ),
     },
   },
-  "server.mjs": {
+  "src/App.jsx": {
     file: {
-      contents: `import http from "node:http";
+      contents: `import { useMemo, useState } from "react";
+import { createRoot } from "react-dom/client";
+import { CastaiCheckout, CastaiCheckoutHeadless } from "@castai/ai-sdk/react";
+import "./style.css";
 
-const html = \`<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>castAI checkout DOM mount</title>
-    <style>
-      :root {
-        color-scheme: dark;
-        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      }
+const blockedFetch = async () => {
+  throw new Error("Connect a server-owned Casper payment fetcher to submit.");
+};
 
-      body {
-        margin: 0;
-        min-height: 100vh;
-        background: #f8fafc;
-        color: #0f172a;
-      }
+function App() {
+  const [amount, setAmount] = useState("0.001");
+  const [scheme, setScheme] = useState("x402");
+  const [resourceUrl, setResourceUrl] = useState("https://api.example.com/protected");
+  const request = useMemo(() => ({ url: resourceUrl }), [resourceUrl]);
 
-      main {
-        display: grid;
-        gap: 16px;
-        margin: 0 auto;
-        max-width: 760px;
-        padding: 24px;
-      }
-
-      label {
-        display: grid;
-        gap: 6px;
-        color: #64748b;
-        font-size: 0.78rem;
-        font-weight: 700;
-        text-transform: uppercase;
-      }
-
-      input,
-      select {
-        border: 1px solid #e2e8f0;
-        border-radius: 6px;
-        background: #ffffff;
-        color: #0f172a;
-        font: inherit;
-        padding: 10px 12px;
-      }
-
-      button {
-        width: fit-content;
-        border: 1px solid #171717;
-        border-radius: 6px;
-        background: #171717;
-        color: #fafafa;
-        cursor: pointer;
-        font-weight: 800;
-        padding: 10px 12px;
-      }
-
-      .grid {
-        display: grid;
-        gap: 10px;
-        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      }
-
-      .checkout {
-        display: grid;
-        gap: 14px;
-        border: 1px solid #e2e8f0;
-        border-radius: 8px;
-        background: #ffffff;
-        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
-        padding: 16px;
-      }
-
-      .checkout h1 {
-        margin: 0;
-        color: #0f172a;
-        font-size: 0.95rem;
-        font-weight: 650;
-      }
-
-      .meta {
-        display: grid;
-        gap: 8px;
-        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      }
-
-      .meta div {
-        display: grid;
-        gap: 4px;
-        border: 1px solid #e2e8f0;
-        border-radius: 6px;
-        background: #f8fafc;
-        padding: 10px;
-      }
-
-      .meta span {
-        color: #64748b;
-        font-size: 0.72rem;
-      }
-
-      code {
-        overflow-wrap: anywhere;
-        color: #0f172a;
-      }
-    </style>
-  </head>
-  <body>
+  return (
     <main>
-      <section class="grid" aria-label="Checkout controls">
+      <section className="controls" aria-label="Checkout controls">
         <label>
           Scheme
-          <select id="scheme">
+          <select value={scheme} onChange={(event) => setScheme(event.target.value)}>
             <option value="x402">x402</option>
             <option value="mpp">MPP</option>
           </select>
         </label>
         <label>
           Amount
-          <input id="amount" value="0.001" />
-        </label>
-        <label>
-          Network
-          <select id="network">
-            <option value="casper:testnet">casper:testnet</option>
-            <option value="casper:mainnet">casper:mainnet</option>
-          </select>
+          <input value={amount} onChange={(event) => setAmount(event.target.value)} />
         </label>
         <label>
           Resource
-          <input id="resource" value="https://api.example.com/protected" />
+          <input value={resourceUrl} onChange={(event) => setResourceUrl(event.target.value)} />
         </label>
       </section>
 
-      <div id="castai-checkout"></div>
-    </main>
+      <CastaiCheckout
+        actionLabel={\`Pay \${amount} CSPR\`}
+        amount={amount}
+        description="Live SDK checkout component running inside a WebContainer Vite app."
+        mppFetch={scheme === "mpp" ? blockedFetch : undefined}
+        network="casper:testnet"
+        recipient="Configured recipient"
+        request={request}
+        scheme={scheme}
+        showResponse={false}
+        title="castAI checkout"
+        x402Fetch={scheme === "x402" ? blockedFetch : undefined}
+      />
 
-    <script>
-      const mount = document.querySelector("#castai-checkout");
-      const ids = ["scheme", "amount", "network", "resource"];
-
-      function value(id) {
-        return document.querySelector("#" + id).value;
-      }
-
-      function renderCheckout() {
-        mount.innerHTML = \`
-          <section class="checkout" aria-label="castAI checkout">
-            <h1>castAI checkout</h1>
-            <p>Programmatic DOM mount for a protected HTTP resource.</p>
-            <div class="meta">
-              <div><span>Scheme</span><strong>\${value("scheme")}</strong></div>
-              <div><span>Network</span><strong>\${value("network")}</strong></div>
-              <div><span>Amount</span><strong>\${value("amount")} CSPR</strong></div>
+      <CastaiCheckoutHeadless
+        mppFetch={scheme === "mpp" ? blockedFetch : undefined}
+        request={request}
+        scheme={scheme}
+        x402Fetch={scheme === "x402" ? blockedFetch : undefined}
+      >
+        {({ canSubmit, error, reset, result, submit }) => (
+          <section className="headless" aria-label="Headless checkout state">
+            <strong>Headless state</strong>
+            <span>canSubmit: {String(canSubmit)}</span>
+            <span>status: {error ? error.message : result ? "paid" : "ready"}</span>
+            <div>
+              <button type="button" onClick={() => submit().catch(() => undefined)}>
+                Run headless submit
+              </button>
+              <button type="button" onClick={reset}>
+                Reset
+              </button>
             </div>
-            <div class="meta">
-              <div><span>Recipient</span><code>Configured recipient</code></div>
-              <div><span>Resource</span><code>\${value("resource")}</code></div>
-            </div>
-            <button type="button">Pay with Casper</button>
           </section>
-        \`;
-      }
+        )}
+      </CastaiCheckoutHeadless>
+    </main>
+  );
+}
 
-      for (const id of ids) {
-        document.querySelector("#" + id).addEventListener("input", renderCheckout);
-      }
+createRoot(document.querySelector("#root")).render(<App />);
+`,
+    },
+  },
+  "src/style.css": {
+    file: {
+      contents: `:root {
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: #0f172a;
+  background: #f8fafc;
+}
 
-      renderCheckout();
-    </script>
-  </body>
-</html>\`;
+* {
+  box-sizing: border-box;
+}
 
-const server = http.createServer((_request, response) => {
-  response.writeHead(200, { "content-type": "text/html; charset=utf-8" });
-  response.end(html);
-});
+body {
+  margin: 0;
+}
 
-server.listen(5173, "0.0.0.0", () => {
-  console.log("castAI checkout preview listening on port 5173");
-});
+main {
+  display: grid;
+  gap: 16px;
+  margin: 0 auto;
+  max-width: 780px;
+  padding: 24px;
+}
+
+.controls {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+}
+
+label {
+  display: grid;
+  gap: 6px;
+  color: #475569;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+input,
+select {
+  width: 100%;
+  border: 1px solid #dbe3ee;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #0f172a;
+  font: inherit;
+  padding: 10px 12px;
+}
+
+.headless {
+  display: grid;
+  gap: 8px;
+  border: 1px solid #dbe3ee;
+  border-radius: 8px;
+  background: #ffffff;
+  padding: 16px;
+}
+
+.headless div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.headless button {
+  border: 1px solid #171717;
+  border-radius: 6px;
+  background: #171717;
+  color: #fafafa;
+  cursor: pointer;
+  font-weight: 700;
+  padding: 10px 12px;
+}
+
+.headless button + button {
+  border-color: #dbe3ee;
+  background: #ffffff;
+  color: #0f172a;
+}
 `,
     },
   },
@@ -277,7 +266,21 @@ export function WebContainerPlayground() {
           setLogs((current) => [...current, `Preview ready: ${url}`]);
         });
 
-        const process = await container.spawn("node", ["server.mjs"]);
+        const install = await container.spawn("npm", ["install"]);
+        void install.output.pipeTo(
+          new WritableStream({
+            write(data) {
+              setLogs((current) => [...current.slice(-8), data.trim()]);
+            },
+          })
+        );
+
+        const installExit = await install.exit;
+        if (installExit !== 0) {
+          throw new Error(`npm install failed with exit code ${installExit}.`);
+        }
+
+        const process = await container.spawn("npm", ["run", "dev"]);
         processStarted.current = true;
 
         void process.output.pipeTo(
@@ -309,10 +312,10 @@ export function WebContainerPlayground() {
           <p className="webcontainer-playground__eyebrow">
             StackBlitz WebContainers
           </p>
-          <CardTitle>Checkout UI in a browser runtime</CardTitle>
+          <CardTitle>SDK checkout in a browser runtime</CardTitle>
           <CardDescription>
-            Boot a small Node server in the browser, mount a page, and render
-            the checkout surface into a DOM node.
+            Boot a Vite app in the browser and render the castAI React checkout
+            and headless state API.
           </CardDescription>
         </div>
 

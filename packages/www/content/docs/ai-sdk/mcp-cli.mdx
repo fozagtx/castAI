@@ -1,0 +1,63 @@
+---
+title: MCP and CLI
+description: MCP server, Claude Code plugin, and scaffolder templates.
+---
+
+import { PackageInstall } from "@/components/package-manager-tabs";
+
+## Install
+
+<PackageInstall packages="@castai/cli @castai/mcp" />
+
+## CLI
+
+```sh
+castai templates
+castai scaffold next-checkout ./my-checkout --package-manager pnpm
+castai scaffold agent-vercel-ai ./my-agent --package-manager npm
+castai scaffold mcp-claude-code ./claude-code-castai --package-manager bun
+castai doctor --json
+```
+
+Templates:
+
+- `next-checkout`: Next.js checkout UI with a server-owned x402 fetcher.
+- `agent-vercel-ai`: Vercel AI SDK agent with castAI tools.
+- `mcp-claude-code`: Claude Code MCP config.
+
+## MCP Server
+
+```sh
+castai-mcp
+```
+
+MCP tools:
+
+- `castai_doctor`
+- `castai_pay_x402_resource`
+- `castai_pay_mpp_resource`
+- `castai_format_paid_resource`
+
+Set signer configuration in the process environment:
+
+```txt
+CASPER_PRIVATE_KEY_PEM=
+CASPER_PRIVATE_KEY_HEX=
+CASPER_NETWORK=casper:testnet
+```
+
+## Claude Code
+
+Generate MCP config:
+
+```sh
+castai claude-code --package-manager pnpm --json
+```
+
+Plugin files live at:
+
+```txt
+plugins/claude-code/castai
+```
+
+The plugin contains `.claude-plugin/plugin.json`, `.mcp.json`, and a `castai` skill.

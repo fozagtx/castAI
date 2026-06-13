@@ -10,6 +10,27 @@ const workspaceRoot = resolve(__dirname, "../..");
 const config = {
   output: "export",
   reactStrictMode: true,
+  ...(process.env.NODE_ENV === "development"
+    ? {
+        async headers() {
+          return [
+            {
+              source: "/(.*)",
+              headers: [
+                {
+                  key: "Cross-Origin-Embedder-Policy",
+                  value: "require-corp",
+                },
+                {
+                  key: "Cross-Origin-Opener-Policy",
+                  value: "same-origin",
+                },
+              ],
+            },
+          ];
+        },
+      }
+    : {}),
   images: {
     unoptimized: true,
   },

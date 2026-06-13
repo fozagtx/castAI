@@ -1,6 +1,6 @@
 ---
 title: Agent Tools
-description: Configure an AI SDK agent with castAI x402 and MPP tools.
+description: Configure castAI tools for Vercel AI, OpenAI, LangChain, AgentKit, and GOAT.
 ---
 
 ## One-call text agent
@@ -106,3 +106,78 @@ CASPER_PRIVATE_KEY_PEM=-----BEGIN PRIVATE KEY-----
 ```
 
 Use funded testnet keys for testnet payment tests.
+
+## Vercel AI SDK
+
+```ts
+import { openai } from "@ai-sdk/openai";
+import { generateText } from "ai";
+import { createCasperX402Fetch } from "@castai/ai-sdk";
+import { createCastaiVercelAITools } from "@castai/ai-sdk/adapters/vercel-ai";
+
+const x402Fetch = createCasperX402Fetch({
+  networks: ["casper:testnet"],
+  privateKeyPem: process.env.CASPER_PRIVATE_KEY_PEM,
+});
+
+const result = await generateText({
+  model: openai("gpt-4.1-mini"),
+  tools: createCastaiVercelAITools({
+    x402: { fetch: x402Fetch },
+  }),
+  prompt: "Fetch the protected resource and summarize the JSON.",
+});
+```
+
+## OpenAI Tool Calls
+
+```ts
+import { createCastaiOpenAITools } from "@castai/ai-sdk/adapters/openai";
+
+const castai = createCastaiOpenAITools({
+  x402: { fetch: x402Fetch },
+});
+
+// Use castai.tools with OpenAI Responses tool definitions.
+// Use castai.chatTools with Chat Completions function tools.
+const toolResult = await castai.executeToolCallText({
+  function: {
+    name: "payX402Resource",
+    arguments: JSON.stringify({
+      url: "https://api.example.com/protected",
+    }),
+  },
+});
+```
+
+## LangChain
+
+```ts
+import { tool } from "@langchain/core/tools";
+import { createCastaiLangChainTools } from "@castai/ai-sdk/adapters/langchain";
+
+const tools = createCastaiLangChainTools({
+  toolFactory: tool,
+  x402: { fetch: x402Fetch },
+});
+```
+
+## AgentKit
+
+```ts
+import { createCastaiAgentKitActionProvider } from "@castai/ai-sdk/adapters/agentkit";
+
+const actionProvider = createCastaiAgentKitActionProvider({
+  x402: { fetch: x402Fetch },
+});
+```
+
+## GOAT
+
+```ts
+import { createCastaiGoatPlugin } from "@castai/ai-sdk/adapters/goat";
+
+const goatPlugin = createCastaiGoatPlugin({
+  x402: { fetch: x402Fetch },
+});
+```

@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "castai": {
+      "command": "npx",
+      "args": ["-y", "@castai/mcp@latest"]
+    }
+  }
+}

@@ -65,6 +65,32 @@ export function DevPaymentPanel() {
 }
 ```
 
+## React layers
+
+Hooks:
+
+```tsx
+import { useCastaiPayment } from "@castai/ai-sdk/react/headless";
+
+const payment = useCastaiPayment({
+  request: { url: "https://api.example.com/weather" },
+  scheme: "x402",
+  x402Fetch,
+});
+```
+
+Headless component:
+
+```tsx
+import { CastaiCheckoutHeadless } from "@castai/ai-sdk/react/headless";
+```
+
+Styled UI kit:
+
+```tsx
+import { CastaiCheckout, PaymentTester } from "@castai/ai-sdk/react/ui";
+```
+
 ## Checkout UI
 
 ```tsx
@@ -98,4 +124,14 @@ await renderCastaiCheckout({
   scheme: "x402",
   x402Fetch,
 });
+```
+
+## Framework adapters
+
+```ts
+import { createCastaiVercelAITools } from "@castai/ai-sdk/adapters/vercel-ai";
+import { createCastaiOpenAITools } from "@castai/ai-sdk/adapters/openai";
+import { createCastaiLangChainTools } from "@castai/ai-sdk/adapters/langchain";
+import { createCastaiAgentKitActionProvider } from "@castai/ai-sdk/adapters/agentkit";
+import { createCastaiGoatPlugin } from "@castai/ai-sdk/adapters/goat";
 ```

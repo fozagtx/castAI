@@ -1,7 +1,12 @@
 import { describe, expect, it, vi } from "vitest";
 
 import type { AgentResourceRequest, AgentResourceResponse } from "./index.js";
+import { createCastaiAgentKitActionProvider } from "./adapters/agentkit.js";
+import { createCastaiGoatPlugin } from "./adapters/goat.js";
+import { createCastaiLangChainTools } from "./adapters/langchain.js";
+import { createCastaiOpenAITools } from "./adapters/openai.js";
 import {
+  castaiResourceRequestSchema,
   createCastaiAgent,
   createCastaiAgentTools,
   fetchResource,
@@ -126,6 +131,9 @@ describe("castAI AI SDK tools", () => {
     expect(text).toContain('"x-castai": "paid"');
     expect(text).toContain('"answer": 42');
     expect(llm.text).toBe(paidResourceResponseToText);
+    expect(castaiResourceRequestSchema.parse({ url: responseUrl() })).toEqual({
+      url: responseUrl(),
+    });
   });
 
   it("fetches a paid resource and returns clipped LLM text", async () => {
@@ -143,4 +151,46 @@ describe("castAI AI SDK tools", () => {
 
     expect(text).toContain("Body:\nabcde\n[truncated]");
   });
+
+  it("exposes dependency-light adapter surfaces", async () => {
+    const x402Fetch = vi
+      .fn()
+      .mockImplementation(() => Promise.resolve(new Response("adapter-ok")));
+    const options = {
+      x402: { fetch: x402Fetch },
+    };
+
+    const openai = createCastaiOpenAITools(options);
+    expect(openai.tools[0]).toMatchObject({
+      name: "payX402Resource",
+      type: "function",
+    });
+    await expect(
+      openai.executeToolCallText({
+        function: {
+          arguments: JSON.stringify({ url: responseUrl() }),
+          name: "payX402Resource",
+        },
+      })
+    ).resolves.toContain("adapter-ok");
+
+    const langchain = createCastaiLangChainTools(options);
+    await expect(langchain[0]?.func({ url: responseUrl() })).resolves.toContain(
+      "adapter-ok"
+    );
+
+    const agentkit = createCastaiAgentKitActionProvider(options);
+    await expect(
+      agentkit.getActions()[0]?.invoke(undefined, { url: responseUrl() })
+    ).resolves.toContain("adapter-ok");
+
+    const goat = createCastaiGoatPlugin(options);
+    await expect(
+      goat.getTools()[0]?.execute({ url: responseUrl() })
+    ).resolves.toContain("adapter-ok");
+  });
 });
+
+function responseUrl() {
+  return "https://api.castai.test/resource";
+}

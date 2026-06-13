@@ -8,8 +8,8 @@ import { WebContainerPlayground } from "@/components/webcontainer-playground";
 
 The checkout UI has two docs surfaces:
 
-- Fumadocs Story renders the React component with editable props.
-- StackBlitz WebContainers boot a browser Node runtime and render a checkout surface into a DOM node.
+- Fumadocs Story renders the workspace React component with editable props.
+- StackBlitz WebContainers boot a Vite app that imports `@castai/ai-sdk/react`.
 
 ## Fumadocs Story
 
@@ -26,11 +26,7 @@ Cross-Origin-Embedder-Policy: require-corp
 Cross-Origin-Opener-Policy: same-origin
 ```
 
-The runtime below mounts a small Node server and renders checkout UI into:
-
-```html
-<div id="castai-checkout"></div>
-```
+The runtime below installs the SDK package and renders `CastaiCheckout` plus `CastaiCheckoutHeadless` inside an iframe.
 
 <WebContainerPlayground />
 

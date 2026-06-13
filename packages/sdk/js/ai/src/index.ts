@@ -96,7 +96,7 @@ export type LlmTextOptions = {
 export const DEFAULT_CASTAI_AGENT_SYSTEM =
   "You can use castAI tools to fetch paid HTTP resources through real Casper CSPR x402 or MPP payment flows. Do not invent payment success, transaction hashes, deploy hashes, signatures, or protected resource content. If a configured payment tool fails, report the failure from the tool result.";
 
-const requestSchema = z.object({
+export const castaiResourceRequestSchema = z.object({
   body: z.string().optional().describe("Optional raw request body."),
   headers: z
     .record(z.string(), z.string())
@@ -161,7 +161,7 @@ export function createCastaiAgentTools(options: CreateCastaiAgentToolsOptions) {
     payX402Resource: tool({
       description:
         "Request an HTTP x402 resource and pay with configured Casper CSPR payment credentials.",
-      inputSchema: requestSchema,
+      inputSchema: castaiResourceRequestSchema,
       execute: async (request) => {
         if (!options.x402?.fetch) {
           throw new Error("x402 fetch is not configured for this agent.");
@@ -174,7 +174,7 @@ export function createCastaiAgentTools(options: CreateCastaiAgentToolsOptions) {
     payMppResource: tool({
       description:
         "Request an MPP-protected HTTP resource and pay with configured Casper CSPR payment credentials.",
-      inputSchema: requestSchema,
+      inputSchema: castaiResourceRequestSchema,
       execute: async (request) => {
         if (!options.mpp?.fetch) {
           throw new Error("MPP fetch is not configured for this agent.");

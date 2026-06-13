@@ -1,6 +1,6 @@
 "use client";
 
-import type { CSSProperties } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import { useMemo, useState } from "react";
 
 import type {
@@ -41,6 +41,31 @@ export type CastaiCheckoutProps = {
   x402Fetch?: FetchLike | undefined;
 };
 
+export type UseCastaiPaymentOptions = {
+  mppFetch?: FetchLike | undefined;
+  onError?: ((error: Error) => void) | undefined;
+  onResult?: ((result: AgentResourceResponse) => void) | undefined;
+  request: AgentResourceRequest;
+  scheme?: PaymentScheme | undefined;
+  x402Fetch?: FetchLike | undefined;
+};
+
+export type CastaiPaymentState = {
+  busy: boolean;
+  canSubmit: boolean;
+  error: Error | null;
+  request: AgentResourceRequest;
+  reset: () => void;
+  result: AgentResourceResponse | null;
+  scheme: PaymentScheme;
+  selectedFetch: FetchLike | undefined;
+  submit: () => Promise<AgentResourceResponse>;
+};
+
+export type CastaiCheckoutHeadlessProps = UseCastaiPaymentOptions & {
+  children: (state: CastaiPaymentState) => ReactNode;
+};
+
 export type CastaiCheckoutContainer = Element | DocumentFragment | string;
 
 export type RenderCastaiCheckoutOptions = CastaiCheckoutProps & {
@@ -59,6 +84,71 @@ export type CastaiCheckoutController = {
   ) => Promise<RenderedCastaiCheckout>;
   props: CastaiCheckoutProps;
 };
+
+export function useCastaiPayment({
+  mppFetch,
+  onError,
+  onResult,
+  request,
+  scheme = "x402",
+  x402Fetch,
+}: UseCastaiPaymentOptions): CastaiPaymentState {
+  const [result, setResult] = useState<AgentResourceResponse | null>(null);
+  const [error, setError] = useState<Error | null>(null);
+  const [busy, setBusy] = useState(false);
+
+  const selectedFetch = useMemo(() => {
+    return scheme === "x402" ? x402Fetch : mppFetch;
+  }, [mppFetch, scheme, x402Fetch]);
+
+  async function submit() {
+    setBusy(true);
+    setError(null);
+
+    try {
+      if (!selectedFetch) {
+        throw new Error(`${scheme} fetch is not configured.`);
+      }
+
+      const nextResult = await fetchResource(selectedFetch, request);
+      setResult(nextResult);
+      onResult?.(nextResult);
+      return nextResult;
+    } catch (err) {
+      const nextError =
+        err instanceof Error ? err : new Error("Payment request failed.");
+      setError(nextError);
+      onError?.(nextError);
+      throw nextError;
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return {
+    busy,
+    canSubmit: Boolean(request.url && selectedFetch && !busy),
+    error,
+    request,
+    reset: () => {
+      setError(null);
+      setResult(null);
+    },
+    result,
+    scheme,
+    selectedFetch,
+    submit,
+  };
+}
+
+export const useCastaiCheckout = useCastaiPayment;
+
+export function CastaiCheckoutHeadless({
+  children,
+  ...options
+}: CastaiCheckoutHeadlessProps) {
+  return <>{children(useCastaiPayment(options))}</>;
+}
 
 const shellStyle = {
   background: "var(--card, #ffffff)",
@@ -314,35 +404,14 @@ export function CastaiCheckout({
   title = "castAI checkout",
   x402Fetch,
 }: CastaiCheckoutProps) {
-  const [result, setResult] = useState<AgentResourceResponse | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [busy, setBusy] = useState(false);
-
-  const selectedFetch = useMemo(() => {
-    return scheme === "x402" ? x402Fetch : mppFetch;
-  }, [mppFetch, scheme, x402Fetch]);
-
-  async function submit() {
-    setBusy(true);
-    setError(null);
-
-    try {
-      if (!selectedFetch) {
-        throw new Error(`${scheme} fetch is not configured.`);
-      }
-
-      const nextResult = await fetchResource(selectedFetch, request);
-      setResult(nextResult);
-      onResult?.(nextResult);
-    } catch (err) {
-      const nextError =
-        err instanceof Error ? err : new Error("Checkout request failed.");
-      setError(nextError.message);
-      onError?.(nextError);
-    } finally {
-      setBusy(false);
-    }
-  }
+  const { busy, canSubmit, error, result, submit } = useCastaiPayment({
+    mppFetch,
+    onError,
+    onResult,
+    request,
+    scheme,
+    x402Fetch,
+  });
 
   return (
     <section aria-busy={busy} style={shellStyle}>
@@ -371,8 +440,10 @@ export function CastaiCheckout({
 
       <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
         <button
-          disabled={busy || !request.url}
-          onClick={submit}
+          disabled={!canSubmit}
+          onClick={() => {
+            void submit().catch(() => undefined);
+          }}
           style={buttonStyle}
           type="button"
         >
@@ -385,7 +456,7 @@ export function CastaiCheckout({
         ) : null}
       </div>
 
-      {error ? <PaymentError message={error} /> : null}
+      {error ? <PaymentError message={error.message} /> : null}
       {showResponse && result ? <PaymentResult result={result} /> : null}
     </section>
   );

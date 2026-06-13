@@ -1,3 +1,6 @@
+import type { x402Client } from "@x402/core/client";
+import type { x402Facilitator } from "@x402/core/facilitator";
+import type { x402ResourceServer } from "@x402/core/server";
 import type {
   AssetAmount,
   FacilitatorContext,
@@ -14,18 +17,21 @@ import type {
   SupportedKind,
   VerifyResponse,
 } from "@x402/core/types";
-import {
+import type {
+  Deploy,
+  PrivateKey as PrivateKeyType,
+  RpcClient as RpcClientType,
+} from "casper-js-sdk";
+import casperSdk from "casper-js-sdk";
+
+const {
   HttpHandler,
   KeyAlgorithm,
   PrivateKey,
   PublicKey,
   RpcClient,
   makeCsprTransferDeploy,
-} from "casper-js-sdk";
-import type { Deploy } from "casper-js-sdk";
-import type { x402Client } from "@x402/core/client";
-import type { x402Facilitator } from "@x402/core/facilitator";
-import type { x402ResourceServer } from "@x402/core/server";
+} = casperSdk as typeof import("casper-js-sdk");
 
 export const CASPER_MAINNET = "casper:mainnet" as const;
 export const CASPER_TESTNET = "casper:testnet" as const;
@@ -78,7 +84,9 @@ export type CasperSignerOptions = {
 
 export type CasperRpcOptions = {
   getClient?:
-    | ((parameters: { network: CasperNetwork }) => Promise<RpcClient> | RpcClient)
+    | ((parameters: {
+        network: CasperNetwork;
+      }) => Promise<RpcClientType> | RpcClientType)
     | undefined;
   rpcUrls?: Partial<Record<CasperNetwork, string>> | undefined;
 };
@@ -138,7 +146,9 @@ export class ExactCasperScheme implements SchemeNetworkServer {
 export class ExactCasperClientScheme implements SchemeNetworkClient {
   readonly scheme = "exact";
 
-  constructor(private readonly options: CasperSignerOptions & CasperRpcOptions) {}
+  constructor(
+    private readonly options: CasperSignerOptions & CasperRpcOptions
+  ) {}
 
   async createPaymentPayload(
     x402Version: number,
@@ -296,7 +306,9 @@ export class ExactCasperFacilitatorScheme implements SchemeNetworkFacilitator {
       return invalid(
         "casper_verification_failed",
         undefined,
-        error instanceof Error ? error.message : "Unknown Casper verification error."
+        error instanceof Error
+          ? error.message
+          : "Unknown Casper verification error."
       );
     }
   }
@@ -307,7 +319,9 @@ export function registerExactCasperScheme(
   config: { networks?: CasperNetwork[] | undefined } = {}
 ): x402ResourceServer {
   const networks = config.networks ?? [...CASPER_NETWORKS];
-  networks.forEach((network) => server.register(network, new ExactCasperScheme()));
+  networks.forEach((network) => {
+    server.register(network, new ExactCasperScheme());
+  });
   return server;
 }
 
@@ -379,7 +393,7 @@ function toPaymentPayload(
 async function submitWithPrivateKey(parameters: {
   amount: string;
   chainName: string;
-  client: RpcClient;
+  client: RpcClientType;
   keyAlgorithm?: CasperSignerOptions["keyAlgorithm"];
   privateKeyHex?: string | undefined;
   privateKeyPem?: string | undefined;
@@ -409,7 +423,7 @@ function resolvePrivateKey(parameters: {
   keyAlgorithm?: CasperSignerOptions["keyAlgorithm"];
   privateKeyHex?: string | undefined;
   privateKeyPem?: string | undefined;
-}): PrivateKey {
+}): PrivateKeyType {
   const algorithm =
     parameters.keyAlgorithm === "secp256k1"
       ? KeyAlgorithm.SECP256K1
@@ -430,14 +444,14 @@ function resolvePrivateKey(parameters: {
 async function resolveRpcClient(
   options: CasperRpcOptions,
   network: CasperNetwork
-): Promise<RpcClient> {
+): Promise<RpcClientType> {
   if (options.getClient) return options.getClient({ network });
   const rpcUrl = options.rpcUrls?.[network] ?? CASPER_RPC_URL[network];
   return new RpcClient(new HttpHandler(rpcUrl));
 }
 
 async function loadPaymentDeploy(
-  client: RpcClient,
+  client: RpcClientType,
   payload: Record<string, unknown>
 ) {
   const type = readPayloadString(payload, "type");

@@ -38,6 +38,76 @@
         "types": "./dist/cjs/react.d.cts",
         "default": "./dist/cjs/react.cjs"
       }
+    },
+    "./react/headless": {
+      "import": {
+        "types": "./dist/esm/react/headless.d.ts",
+        "default": "./dist/esm/react/headless.js"
+      },
+      "require": {
+        "types": "./dist/cjs/react/headless.d.cts",
+        "default": "./dist/cjs/react/headless.cjs"
+      }
+    },
+    "./react/ui": {
+      "import": {
+        "types": "./dist/esm/react/ui.d.ts",
+        "default": "./dist/esm/react/ui.js"
+      },
+      "require": {
+        "types": "./dist/cjs/react/ui.d.cts",
+        "default": "./dist/cjs/react/ui.cjs"
+      }
+    },
+    "./adapters/vercel-ai": {
+      "import": {
+        "types": "./dist/esm/adapters/vercel-ai.d.ts",
+        "default": "./dist/esm/adapters/vercel-ai.js"
+      },
+      "require": {
+        "types": "./dist/cjs/adapters/vercel-ai.d.cts",
+        "default": "./dist/cjs/adapters/vercel-ai.cjs"
+      }
+    },
+    "./adapters/openai": {
+      "import": {
+        "types": "./dist/esm/adapters/openai.d.ts",
+        "default": "./dist/esm/adapters/openai.js"
+      },
+      "require": {
+        "types": "./dist/cjs/adapters/openai.d.cts",
+        "default": "./dist/cjs/adapters/openai.cjs"
+      }
+    },
+    "./adapters/langchain": {
+      "import": {
+        "types": "./dist/esm/adapters/langchain.d.ts",
+        "default": "./dist/esm/adapters/langchain.js"
+      },
+      "require": {
+        "types": "./dist/cjs/adapters/langchain.d.cts",
+        "default": "./dist/cjs/adapters/langchain.cjs"
+      }
+    },
+    "./adapters/agentkit": {
+      "import": {
+        "types": "./dist/esm/adapters/agentkit.d.ts",
+        "default": "./dist/esm/adapters/agentkit.js"
+      },
+      "require": {
+        "types": "./dist/cjs/adapters/agentkit.d.cts",
+        "default": "./dist/cjs/adapters/agentkit.cjs"
+      }
+    },
+    "./adapters/goat": {
+      "import": {
+        "types": "./dist/esm/adapters/goat.d.ts",
+        "default": "./dist/esm/adapters/goat.js"
+      },
+      "require": {
+        "types": "./dist/cjs/adapters/goat.d.cts",
+        "default": "./dist/cjs/adapters/goat.cjs"
+      }
     }
   },
   "main": "./dist/esm/index.js",

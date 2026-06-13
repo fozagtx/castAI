@@ -10,6 +10,8 @@ requests settled on Casper.
 | Package | Purpose |
 | --- | --- |
 | `@castai/ai-sdk` | AI SDK tools, `generateCastaiText`, `llm.text`, checkout UI, and React developer components |
+| `@castai/cli` | Scaffolder and config generator for checkout, agent, and MCP projects |
+| `@castai/mcp` | MCP server for x402 and MPP paid-resource tools |
 | `@castai/x402` | x402 `exact` scheme support for Casper CSPR transfers |
 | `@castai/mpp` | MPP `casper` charge method for native CSPR transfers |
 | `@castai/facilitator` | x402 verification and settlement service for Casper payments |
@@ -31,6 +33,28 @@ yarn add @castai/ai-sdk ai @castai/x402 @castai/mpp casper-js-sdk
 
 ```sh
 bun add @castai/ai-sdk ai @castai/x402 @castai/mpp casper-js-sdk
+```
+
+CLI and MCP:
+
+```sh
+npm install -g @castai/cli
+npm install @castai/mcp
+```
+
+```sh
+pnpm add -g @castai/cli
+pnpm add @castai/mcp
+```
+
+```sh
+yarn global add @castai/cli
+yarn add @castai/mcp
+```
+
+```sh
+bun add -g @castai/cli
+bun add @castai/mcp
 ```
 
 ## AI Agent
@@ -81,6 +105,47 @@ export function Checkout() {
   );
 }
 ```
+
+Headless React state:
+
+```tsx
+import { useCastaiPayment } from "@castai/ai-sdk/react/headless";
+
+export function PayButton({ x402Fetch }) {
+  const payment = useCastaiPayment({
+    request: { url: "https://api.example.com/protected" },
+    scheme: "x402",
+    x402Fetch,
+  });
+
+  return (
+    <button disabled={!payment.canSubmit} onClick={() => payment.submit()}>
+      Pay
+    </button>
+  );
+}
+```
+
+## Framework Adapters
+
+```ts
+import { createCastaiVercelAITools } from "@castai/ai-sdk/adapters/vercel-ai";
+import { createCastaiOpenAITools } from "@castai/ai-sdk/adapters/openai";
+import { createCastaiLangChainTools } from "@castai/ai-sdk/adapters/langchain";
+import { createCastaiAgentKitActionProvider } from "@castai/ai-sdk/adapters/agentkit";
+import { createCastaiGoatPlugin } from "@castai/ai-sdk/adapters/goat";
+```
+
+## MCP and CLI
+
+```sh
+castai templates
+castai scaffold next-checkout ./my-checkout --package-manager pnpm
+castai claude-code --json
+castai-mcp
+```
+
+Claude Code plugin files are in `plugins/claude-code/castai`.
 
 Programmatic DOM mount:
 

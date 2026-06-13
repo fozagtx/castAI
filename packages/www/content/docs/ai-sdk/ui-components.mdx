@@ -1,21 +1,77 @@
 ---
 title: UI Components
-description: Premade React components for testing x402 and MPP payment flows.
+description: React hooks, headless components, and styled checkout UI.
 ---
 
-`@castai/ai-sdk/react` ships a small developer tester component.
+import { checkoutStory } from "@/components/checkout.story";
 
-It is intended for local development and payment flow verification.
+`@castai/ai-sdk/react` ships three React layers:
 
-For an interactive docs preview, open [Checkout Playground](./playground.mdx).
+- Hooks for owning payment state.
+- Headless components for custom UI.
+- Styled components for fast checkout testing.
 
-## Checkout UI
+## Live Checkout
+
+<checkoutStory.WithControl />
+
+## Hook
+
+Use `useCastaiPayment` when the product already has its own UI.
+
+```tsx
+import { useCastaiPayment } from "@castai/ai-sdk/react/headless";
+
+export function PayButton({ x402Fetch }) {
+  const payment = useCastaiPayment({
+    request: {
+      url: "https://api.example.com/protected",
+    },
+    scheme: "x402",
+    x402Fetch,
+  });
+
+  return (
+    <button disabled={!payment.canSubmit} onClick={() => payment.submit()}>
+      Pay
+    </button>
+  );
+}
+```
+
+## Headless Component
+
+```tsx
+import { CastaiCheckoutHeadless } from "@castai/ai-sdk/react/headless";
+
+export function CheckoutState({ x402Fetch }) {
+  return (
+    <CastaiCheckoutHeadless
+      request={{ url: "https://api.example.com/protected" }}
+      scheme="x402"
+      x402Fetch={x402Fetch}
+    >
+      {({ canSubmit, error, result, submit }) => (
+        <section>
+          <button disabled={!canSubmit} onClick={() => submit()}>
+            Pay
+          </button>
+          {error ? <p>{error.message}</p> : null}
+          {result ? <pre>{JSON.stringify(result, null, 2)}</pre> : null}
+        </section>
+      )}
+    </CastaiCheckoutHeadless>
+  );
+}
+```
+
+## Styled Checkout
 
 Use `CastaiCheckout` when a page needs a ready-made payment panel.
 
 ```tsx
 import { createCasperX402Fetch } from "@castai/ai-sdk";
-import { CastaiCheckout } from "@castai/ai-sdk/react";
+import { CastaiCheckout } from "@castai/ai-sdk/react/ui";
 
 const x402Fetch = createCasperX402Fetch({
   networks: ["casper:testnet"],
@@ -28,9 +84,7 @@ export function Checkout() {
       amount="0.001"
       network="casper:testnet"
       recipient={process.env.CASPER_RECIPIENT}
-      request={{
-        url: "https://api.example.com/protected",
-      }}
+      request={{ url: "https://api.example.com/protected" }}
       scheme="x402"
       x402Fetch={x402Fetch}
     />
@@ -38,25 +92,17 @@ export function Checkout() {
 }
 ```
 
-Use `renderCastaiCheckout` when code needs to create and mount checkout UI programmatically.
+## Programmatic Mount
 
 ```tsx
-import { createCasperX402Fetch } from "@castai/ai-sdk";
-import { renderCastaiCheckout } from "@castai/ai-sdk/react";
-
-const x402Fetch = createCasperX402Fetch({
-  networks: ["casper:testnet"],
-  privateKeyPem: process.env.CASPER_PRIVATE_KEY_PEM,
-});
+import { renderCastaiCheckout } from "@castai/ai-sdk/react/ui";
 
 const checkout = await renderCastaiCheckout({
   amount: "0.001",
   container: "#castai-checkout",
   network: "casper:testnet",
   recipient: process.env.CASPER_RECIPIENT,
-  request: {
-    url: "https://api.example.com/protected",
-  },
+  request: { url: "https://api.example.com/protected" },
   scheme: "x402",
   x402Fetch,
 });
@@ -74,11 +120,11 @@ The target page needs a DOM node:
 ## PaymentTester
 
 ```tsx
-import { PaymentTester } from "@castai/ai-sdk/react";
 import {
   createCasperMppFetch,
   createCasperX402Fetch,
 } from "@castai/ai-sdk";
+import { PaymentTester } from "@castai/ai-sdk/react/ui";
 
 const x402Fetch = createCasperX402Fetch({
   networks: ["casper:testnet"],

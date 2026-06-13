@@ -1,10 +1,13 @@
-import type { Deploy, RpcClient } from "casper-js-sdk";
-import { HttpHandler, RpcClient as CasperRpcClient } from "casper-js-sdk";
+import type { Deploy, RpcClient as RpcClientType } from "casper-js-sdk";
+import casperSdk from "casper-js-sdk";
 import { Method, Store } from "mppx";
 
 import type { MaybePromise } from "../types.js";
 import * as defaults from "../defaults.js";
 import * as Methods from "../Methods.js";
+
+const { HttpHandler, RpcClient: CasperRpcClient } =
+  casperSdk as typeof import("casper-js-sdk");
 
 export function charge(parameters: charge.Parameters = {}): Method.AnyServer {
   const {
@@ -21,7 +24,7 @@ export function charge(parameters: charge.Parameters = {}): Method.AnyServer {
 
   const resolveClient = async (
     resolvedNetwork: defaults.Network
-  ): Promise<RpcClient> => {
+  ): Promise<RpcClientType> => {
     if (parameters.getClient) return parameters.getClient({ network });
     return new CasperRpcClient(
       new HttpHandler(defaults.resolveRpcUrl(resolvedNetwork))
@@ -116,12 +119,12 @@ export function charge(parameters: charge.Parameters = {}): Method.AnyServer {
   });
 }
 
-async function loadDeployByHash(client: RpcClient, deployHash: string) {
+async function loadDeployByHash(client: RpcClientType, deployHash: string) {
   return client.getDeploy(deployHash);
 }
 
 async function loadDeployByTransactionHash(
-  client: RpcClient,
+  client: RpcClientType,
   transactionHash: string
 ) {
   const result = await client.getTransactionByTransactionHash(transactionHash);
@@ -252,7 +255,7 @@ export declare namespace charge {
     getClient?:
       | ((parameters: {
           network: defaults.Network;
-        }) => MaybePromise<RpcClient>)
+        }) => MaybePromise<RpcClientType>)
       | undefined;
     network?: defaults.Network | undefined;
     recipient?: string | undefined;

@@ -1,4 +1,6 @@
-import { PublicKey } from "casper-js-sdk";
+import casperSdk from "casper-js-sdk";
+
+const { PublicKey } = casperSdk as typeof import("casper-js-sdk");
 
 export const network = {
   mainnet: "casper:mainnet",

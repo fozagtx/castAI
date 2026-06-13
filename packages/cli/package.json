@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json.schemastore.org/package.json",
+  "name": "@castai/cli",
+  "version": "0.0.1",
+  "description": "castAI CLI for scaffolding Casper x402, MPP, AI, MCP, and React checkout projects",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fozagtx/castAI.git",
+    "directory": "packages/cli"
+  },
+  "homepage": "https://github.com/fozagtx/castAI#readme",
+  "bugs": {
+    "url": "https://github.com/fozagtx/castAI/issues"
+  },
+  "type": "module",
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "bin": {
+    "castai": "./dist/esm/bin.js"
+  },
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/index.d.cts",
+        "default": "./dist/cjs/index.cjs"
+      }
+    }
+  },
+  "main": "./dist/esm/index.js",
+  "types": "./dist/esm/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "lint": "biome check",
+    "lint-staged": "biome check --write --staged --files-ignore-unknown=true --no-errors-on-unmatched",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "catalog:",
+    "@tsconfig/node22": "catalog:",
+    "@types/node": "catalog:",
+    "tsup": "8.5.1",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  }
+}

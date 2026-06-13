@@ -1,0 +1,9 @@
+{
+  "$schema": "https://json.schemastore.org/claude-plugin.json",
+  "name": "castai",
+  "version": "0.0.1",
+  "description": "Claude Code plugin for castAI Casper x402 and MPP paid-resource tooling.",
+  "author": {
+    "name": "castAI"
+  }
+}

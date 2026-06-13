@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json.schemastore.org/package.json",
+  "name": "@castai/mcp",
+  "version": "0.0.1",
+  "description": "MCP server for castAI Casper x402 and MPP paid resources",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fozagtx/castAI.git",
+    "directory": "packages/mcp"
+  },
+  "homepage": "https://github.com/fozagtx/castAI#readme",
+  "bugs": {
+    "url": "https://github.com/fozagtx/castAI/issues"
+  },
+  "type": "module",
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "bin": {
+    "castai-mcp": "./dist/esm/stdio.js"
+  },
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/index.d.cts",
+        "default": "./dist/cjs/index.cjs"
+      }
+    },
+    "./stdio": {
+      "import": {
+        "types": "./dist/esm/stdio.d.ts",
+        "default": "./dist/esm/stdio.js"
+      },
+      "require": {
+        "types": "./dist/cjs/stdio.d.cts",
+        "default": "./dist/cjs/stdio.cjs"
+      }
+    }
+  },
+  "main": "./dist/esm/index.js",
+  "types": "./dist/esm/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "bun --filter @castai/ai-sdk build && tsup",
+    "lint": "biome check",
+    "lint-staged": "biome check --write --staged --files-ignore-unknown=true --no-errors-on-unmatched",
+    "typecheck": "bun --filter @castai/ai-sdk build && tsc --noEmit",
+    "test": "bun --filter @castai/ai-sdk build && vitest"
+  },
+  "dependencies": {
+    "@castai/ai-sdk": "workspace:*",
+    "@modelcontextprotocol/sdk": "1.29.0",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "catalog:",
+    "@tsconfig/node22": "catalog:",
+    "@types/node": "catalog:",
+    "tsup": "8.5.1",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  }
+}

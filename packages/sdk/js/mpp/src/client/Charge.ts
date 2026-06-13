@@ -1,15 +1,21 @@
-import {
-  HttpHandler,
-  KeyAlgorithm,
-  PrivateKey,
-  RpcClient,
-  makeCsprTransferDeploy,
+import type {
+  PrivateKey as PrivateKeyType,
+  RpcClient as RpcClientType,
 } from "casper-js-sdk";
+import casperSdk from "casper-js-sdk";
 import { Credential, Method, z } from "mppx";
 
 import type { MaybePromise } from "../types.js";
 import * as defaults from "../defaults.js";
 import * as Methods from "../Methods.js";
+
+const {
+  HttpHandler,
+  KeyAlgorithm,
+  PrivateKey,
+  RpcClient,
+  makeCsprTransferDeploy,
+} = casperSdk as typeof import("casper-js-sdk");
 
 type TransferResult =
   | {
@@ -27,7 +33,9 @@ export function charge(parameters: charge.Parameters = {}) {
   const resolveNetwork = (network?: defaults.Network | undefined) =>
     network ?? parameters.network ?? defaults.resolveNetwork(parameters);
 
-  const resolveClient = async (network: defaults.Network): Promise<RpcClient> => {
+  const resolveClient = async (
+    network: defaults.Network
+  ): Promise<RpcClientType> => {
     if (parameters.getClient) return parameters.getClient({ network });
     return new RpcClient(new HttpHandler(defaults.resolveRpcUrl(network)));
   };
@@ -111,7 +119,7 @@ export function charge(parameters: charge.Parameters = {}) {
 async function submitWithPrivateKey(parameters: {
   amount: string;
   chainName: string;
-  client: RpcClient;
+  client: RpcClientType;
   keyAlgorithm?: charge.KeyAlgorithmName | undefined;
   privateKeyHex?: string | undefined;
   privateKeyPem?: string | undefined;
@@ -141,7 +149,7 @@ function resolvePrivateKey(parameters: {
   keyAlgorithm?: charge.KeyAlgorithmName | undefined;
   privateKeyHex?: string | undefined;
   privateKeyPem?: string | undefined;
-}): PrivateKey {
+}): PrivateKeyType {
   const algorithm =
     parameters.keyAlgorithm === "secp256k1"
       ? KeyAlgorithm.SECP256K1
@@ -175,7 +183,7 @@ export declare namespace charge {
     getClient?:
       | ((parameters: {
           network: defaults.Network;
-        }) => MaybePromise<RpcClient>)
+        }) => MaybePromise<RpcClientType>)
       | undefined;
     keyAlgorithm?: KeyAlgorithmName | undefined;
     network?: defaults.Network | undefined;
