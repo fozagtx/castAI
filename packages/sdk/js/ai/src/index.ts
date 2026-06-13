@@ -11,10 +11,10 @@ import { generateText, stepCountIs, tool } from "ai";
 import { Mppx } from "mppx/client";
 import { z } from "zod";
 
-import type { casper as mppCasper } from "@castai/mpp/client";
-import type { CasperSignerOptions } from "@castai/x402/client";
-import { casper } from "@castai/mpp/client";
-import { registerExactCasperClientScheme } from "@castai/x402/client";
+import type { casper as mppCasper } from "@castaisdk/mpp/client";
+import type { CasperSignerOptions } from "@castaisdk/x402/client";
+import { casper } from "@castaisdk/mpp/client";
+import { registerExactCasperClientScheme } from "@castaisdk/x402/client";
 
 export type PaymentScheme = "x402" | "mpp";
 

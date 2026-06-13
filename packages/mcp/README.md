@@ -1,11 +1,11 @@
-# @castai/mcp
+# @castaisdk/mcp
 
 MCP server for castAI Casper x402 and MPP paid-resource tools.
 
 ## Install
 
 ```sh
-npm install @castai/mcp
+npm install @castaisdk/mcp
 ```
 
 ## Run

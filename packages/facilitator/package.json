@@ -1,5 +1,5 @@
 {
-  "name": "@castai/facilitator",
+  "name": "@castaisdk/facilitator",
   "version": "0.1.4",
   "type": "module",
   "license": "Apache-2.0",
@@ -25,7 +25,7 @@
     "@hono/zod-validator": "0.7.6",
     "@x402/core": "2.12.0",
     "@x402/extensions": "2.12.0",
-    "@castai/x402": "workspace:*",
+    "@castaisdk/x402": "workspace:*",
     "casper-js-sdk": "5.0.12",
     "hono": "4.12.14",
     "zod": "catalog:"

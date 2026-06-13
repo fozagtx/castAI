@@ -6,11 +6,11 @@ Repository: https://github.com/fozagtx/castAI
 
 ## Packages
 
-- `@castai/x402`: x402 `exact` scheme support for native Casper CSPR transfer payment.
-- `@castai/mpp`: MPP `casper` method for native Casper CSPR transfer payment.
-- `@castai/ai-sdk`: Vercel AI SDK tools, text helpers, and React developer components for paid resources.
-- `@castai/facilitator`: x402 facilitator service that verifies Casper payment hashes against RPC.
-- `@castai/router`: x402 payment router for forwarding protected HTTP traffic after payment acceptance.
+- `@castaisdk/x402`: x402 `exact` scheme support for native Casper CSPR transfer payment.
+- `@castaisdk/mpp`: MPP `casper` method for native Casper CSPR transfer payment.
+- `@castaisdk/ai-sdk`: Vercel AI SDK tools, text helpers, and React developer components for paid resources.
+- `@castaisdk/facilitator`: x402 facilitator service that verifies Casper payment hashes against RPC.
+- `@castaisdk/router`: x402 payment router for forwarding protected HTTP traffic after payment acceptance.
 
 ## Core rules for agents
 

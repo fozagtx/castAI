@@ -20,8 +20,8 @@
     "examples/ai-agent": {
       "name": "castai-ai-agent-example",
       "dependencies": {
-        "@castai/ai-sdk": "workspace:*",
-        "@castai/x402": "workspace:*",
+        "@castaisdk/ai-sdk": "workspace:*",
+        "@castaisdk/x402": "workspace:*",
         "@hono/node-server": "^1.19.6",
         "@x402/core": "2.12.0",
         "@x402/hono": "2.12.0",
@@ -38,7 +38,7 @@
     "examples/mpp": {
       "name": "castai-mpp-example",
       "dependencies": {
-        "@castai/mpp": "workspace:*",
+        "@castaisdk/mpp": "workspace:*",
         "@hono/node-server": "^1.19.6",
         "casper-js-sdk": "^5.0.12",
         "hono": "^4.12.14",
@@ -55,7 +55,7 @@
     "examples/router-x402": {
       "name": "castai-router-x402-example",
       "dependencies": {
-        "@castai/x402": "workspace:*",
+        "@castaisdk/x402": "workspace:*",
         "@hono/node-server": "^1.19.6",
         "@x402/core": "^2.12.0",
         "@x402/fetch": "^2.12.0",
@@ -74,7 +74,7 @@
     "examples/x402": {
       "name": "castai-x402-example",
       "dependencies": {
-        "@castai/x402": "workspace:*",
+        "@castaisdk/x402": "workspace:*",
         "@hono/node-server": "^1.19.6",
         "@x402/core": "^2.12.0",
         "@x402/fetch": "^2.12.0",
@@ -91,7 +91,7 @@
       },
     },
     "packages/cli": {
-      "name": "@castai/cli",
+      "name": "@castaisdk/cli",
       "version": "0.0.1",
       "bin": {
         "castai": "dist/esm/bin.js",
@@ -106,10 +106,10 @@
       },
     },
     "packages/facilitator": {
-      "name": "@castai/facilitator",
+      "name": "@castaisdk/facilitator",
       "version": "0.1.4",
       "dependencies": {
-        "@castai/x402": "workspace:*",
+        "@castaisdk/x402": "workspace:*",
         "@hono/zod-validator": "0.7.6",
         "@x402/core": "2.12.0",
         "@x402/extensions": "2.12.0",
@@ -125,13 +125,13 @@
       },
     },
     "packages/mcp": {
-      "name": "@castai/mcp",
+      "name": "@castaisdk/mcp",
       "version": "0.0.1",
       "bin": {
         "castai-mcp": "dist/esm/stdio.js",
       },
       "dependencies": {
-        "@castai/ai-sdk": "^0.0.1",
+        "@castaisdk/ai-sdk": "^0.0.1",
         "@modelcontextprotocol/sdk": "1.29.0",
         "zod": "^4.3.6",
       },
@@ -145,10 +145,10 @@
       },
     },
     "packages/router": {
-      "name": "@castai/router",
+      "name": "@castaisdk/router",
       "version": "0.1.1",
       "dependencies": {
-        "@castai/x402": "workspace:*",
+        "@castaisdk/x402": "workspace:*",
         "@hono/zod-validator": "0.7.6",
         "@x402/core": "2.12.0",
         "@x402/extensions": "2.12.0",
@@ -166,11 +166,11 @@
       },
     },
     "packages/sdk/js/ai": {
-      "name": "@castai/ai-sdk",
+      "name": "@castaisdk/ai-sdk",
       "version": "0.0.1",
       "dependencies": {
-        "@castai/mpp": "^0.0.6",
-        "@castai/x402": "^0.1.4",
+        "@castaisdk/mpp": "^0.0.6",
+        "@castaisdk/x402": "^0.1.4",
         "@x402/core": "2.12.0",
         "@x402/fetch": "2.12.0",
         "ai": "^5.0.0",
@@ -197,7 +197,7 @@
       ],
     },
     "packages/sdk/js/mpp": {
-      "name": "@castai/mpp",
+      "name": "@castaisdk/mpp",
       "version": "0.0.6",
       "devDependencies": {
         "@biomejs/biome": "2.4.10",
@@ -217,7 +217,7 @@
       ],
     },
     "packages/sdk/js/x402": {
-      "name": "@castai/x402",
+      "name": "@castaisdk/x402",
       "version": "0.1.4",
       "dependencies": {
         "@x402/core": "2.12.0",
@@ -233,12 +233,12 @@
       },
     },
     "packages/www": {
-      "name": "@castai/www",
+      "name": "@castaisdk/www",
       "version": "0.0.9",
       "dependencies": {
         "@ai-sdk/react": "3.0.206",
         "@base-ui/react": "1.5.0",
-        "@castai/ai-sdk": "workspace:*",
+        "@castaisdk/ai-sdk": "workspace:*",
         "@fumadocs/story": "1.1.1",
         "@openrouter/ai-sdk-provider": "2.9.1",
         "@webcontainer/api": "1.6.4",
@@ -379,21 +379,21 @@
 
     "@biomejs/cli-win32-x64": ["@biomejs/cli-win32-x64@2.4.10", "", { "os": "win32", "cpu": "x64" }, "sha512-aW/JU5GuyH4uxMrNYpoC2kjaHlyJGLgIa3XkhPEZI0uKhZhJZU8BuEyJmvgzSPQNGozBwWjC972RaNdcJ9KyJg=="],
 
-    "@castai/ai-sdk": ["@castai/ai-sdk@workspace:packages/sdk/js/ai"],
+    "@castaisdk/ai-sdk": ["@castaisdk/ai-sdk@workspace:packages/sdk/js/ai"],
 
-    "@castai/cli": ["@castai/cli@workspace:packages/cli"],
+    "@castaisdk/cli": ["@castaisdk/cli@workspace:packages/cli"],
 
-    "@castai/facilitator": ["@castai/facilitator@workspace:packages/facilitator"],
+    "@castaisdk/facilitator": ["@castaisdk/facilitator@workspace:packages/facilitator"],
 
-    "@castai/mcp": ["@castai/mcp@workspace:packages/mcp"],
+    "@castaisdk/mcp": ["@castaisdk/mcp@workspace:packages/mcp"],
 
-    "@castai/mpp": ["@castai/mpp@workspace:packages/sdk/js/mpp"],
+    "@castaisdk/mpp": ["@castaisdk/mpp@workspace:packages/sdk/js/mpp"],
 
-    "@castai/router": ["@castai/router@workspace:packages/router"],
+    "@castaisdk/router": ["@castaisdk/router@workspace:packages/router"],
 
-    "@castai/www": ["@castai/www@workspace:packages/www"],
+    "@castaisdk/www": ["@castaisdk/www@workspace:packages/www"],
 
-    "@castai/x402": ["@castai/x402@workspace:packages/sdk/js/x402"],
+    "@castaisdk/x402": ["@castaisdk/x402@workspace:packages/sdk/js/x402"],
 
     "@cfworker/json-schema": ["@cfworker/json-schema@4.1.1", "", {}, "sha512-gAmrUZSGtKc3AiBL71iNWxDsyUC5uMaKKGdvzYsBoTW/xi42JQHl7eKV2OYzCUqvc+D2RCcf7EXY2iCyFIk6og=="],
 
@@ -1983,11 +1983,11 @@
 
     "@babel/helper-create-class-features-plugin/semver": ["semver@6.3.1", "", { "bin": { "semver": "bin/semver.js" } }, "sha512-BR7VvDCVHO+q2xBEWskxS6DJE1qRnb7DxzUrogb71CWoSficBxYsiAGd+Kl0mmq/MprG9yArRkyrQxTO6XjMzA=="],
 
-    "@castai/facilitator/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+    "@castaisdk/facilitator/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
 
-    "@castai/router/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
+    "@castaisdk/router/zod": ["zod@4.3.6", "", {}, "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg=="],
 
-    "@castai/www/ai": ["ai@6.0.204", "", { "dependencies": { "@ai-sdk/gateway": "3.0.130", "@ai-sdk/provider": "3.0.10", "@ai-sdk/provider-utils": "4.0.29", "@opentelemetry/api": "^1.9.0" }, "peerDependencies": { "zod": "^3.25.76 || ^4.1.8" } }, "sha512-SudB8rUwaVhpWF8+qTJcxUptXPIdN9rWMknzTT3WbKa2QwiGRshyepFKNkDILWm882LgqlEyRZgKhNT14j0jpQ=="],
+    "@castaisdk/www/ai": ["ai@6.0.204", "", { "dependencies": { "@ai-sdk/gateway": "3.0.130", "@ai-sdk/provider": "3.0.10", "@ai-sdk/provider-utils": "4.0.29", "@opentelemetry/api": "^1.9.0" }, "peerDependencies": { "zod": "^3.25.76 || ^4.1.8" } }, "sha512-SudB8rUwaVhpWF8+qTJcxUptXPIdN9rWMknzTT3WbKa2QwiGRshyepFKNkDILWm882LgqlEyRZgKhNT14j0jpQ=="],
 
     "@cloudflare/vitest-pool-workers/zod": ["zod@3.25.76", "", {}, "sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ=="],
 
@@ -2091,11 +2091,11 @@
 
     "@ai-sdk/react/ai/@ai-sdk/provider": ["@ai-sdk/provider@3.0.10", "", { "dependencies": { "json-schema": "^0.4.0" } }, "sha512-Q3BZ27qfpYqnCYGvE3vt+Qi6LGOF9R5Nmzn+9JoM1lCRsD9mYaIhfJLkSunN48nfGXJ6n+XNV0J/XVpqGQl7Dw=="],
 
-    "@castai/www/ai/@ai-sdk/gateway": ["@ai-sdk/gateway@3.0.130", "", { "dependencies": { "@ai-sdk/provider": "3.0.10", "@ai-sdk/provider-utils": "4.0.29", "@vercel/oidc": "3.2.0" }, "peerDependencies": { "zod": "^3.25.76 || ^4.1.8" } }, "sha512-qenRdpoYM+2y8Ibj3Y7XngvfcG4NIpejaM+YqAKWXi3/N1qZYeIelrm19jxhIwQW0W/g7WUz0L2Agl7+FnwrQA=="],
+    "@castaisdk/www/ai/@ai-sdk/gateway": ["@ai-sdk/gateway@3.0.130", "", { "dependencies": { "@ai-sdk/provider": "3.0.10", "@ai-sdk/provider-utils": "4.0.29", "@vercel/oidc": "3.2.0" }, "peerDependencies": { "zod": "^3.25.76 || ^4.1.8" } }, "sha512-qenRdpoYM+2y8Ibj3Y7XngvfcG4NIpejaM+YqAKWXi3/N1qZYeIelrm19jxhIwQW0W/g7WUz0L2Agl7+FnwrQA=="],
 
-    "@castai/www/ai/@ai-sdk/provider": ["@ai-sdk/provider@3.0.10", "", { "dependencies": { "json-schema": "^0.4.0" } }, "sha512-Q3BZ27qfpYqnCYGvE3vt+Qi6LGOF9R5Nmzn+9JoM1lCRsD9mYaIhfJLkSunN48nfGXJ6n+XNV0J/XVpqGQl7Dw=="],
+    "@castaisdk/www/ai/@ai-sdk/provider": ["@ai-sdk/provider@3.0.10", "", { "dependencies": { "json-schema": "^0.4.0" } }, "sha512-Q3BZ27qfpYqnCYGvE3vt+Qi6LGOF9R5Nmzn+9JoM1lCRsD9mYaIhfJLkSunN48nfGXJ6n+XNV0J/XVpqGQl7Dw=="],
 
-    "@castai/www/ai/@ai-sdk/provider-utils": ["@ai-sdk/provider-utils@4.0.29", "", { "dependencies": { "@ai-sdk/provider": "3.0.10", "@standard-schema/spec": "^1.1.0", "eventsource-parser": "^3.0.8" }, "peerDependencies": { "zod": "^3.25.76 || ^4.1.8" } }, "sha512-uhukHaCBvqkwBHkT8C2PrnqKTCoLn3pdHXqtcR9I8ErH+flbzgW4o7VHSNIup9LRu+WBvZIZDQLsx6rwl2tiOA=="],
+    "@castaisdk/www/ai/@ai-sdk/provider-utils": ["@ai-sdk/provider-utils@4.0.29", "", { "dependencies": { "@ai-sdk/provider": "3.0.10", "@standard-schema/spec": "^1.1.0", "eventsource-parser": "^3.0.8" }, "peerDependencies": { "zod": "^3.25.76 || ^4.1.8" } }, "sha512-uhukHaCBvqkwBHkT8C2PrnqKTCoLn3pdHXqtcR9I8ErH+flbzgW4o7VHSNIup9LRu+WBvZIZDQLsx6rwl2tiOA=="],
 
     "@dotenvx/dotenvx/execa/get-stream": ["get-stream@6.0.1", "", {}, "sha512-ts6Wi+2j3jQjqi70w5AlN8DFnkSwC+MqmxEzdEALB2qXZYV3X/b1CTfgPLGJNMeAWxdPfU8FO1ms3NUfaHCPYg=="],
 
@@ -2241,7 +2241,7 @@
 
     "@ai-sdk/react/ai/@ai-sdk/gateway/@vercel/oidc": ["@vercel/oidc@3.2.0", "", {}, "sha512-UycprH3T6n3jH0k44NHMa7pnFHGu/N05MjojYr+Mc6I7obkoLIJujSWwin1pCvdy/eOxrI/l3uDLQsmcrOb4ug=="],
 
-    "@castai/www/ai/@ai-sdk/gateway/@vercel/oidc": ["@vercel/oidc@3.2.0", "", {}, "sha512-UycprH3T6n3jH0k44NHMa7pnFHGu/N05MjojYr+Mc6I7obkoLIJujSWwin1pCvdy/eOxrI/l3uDLQsmcrOb4ug=="],
+    "@castaisdk/www/ai/@ai-sdk/gateway/@vercel/oidc": ["@vercel/oidc@3.2.0", "", {}, "sha512-UycprH3T6n3jH0k44NHMa7pnFHGu/N05MjojYr+Mc6I7obkoLIJujSWwin1pCvdy/eOxrI/l3uDLQsmcrOb4ug=="],
 
     "@openrouter/ai-sdk-provider/ai/@ai-sdk/gateway/@vercel/oidc": ["@vercel/oidc@3.2.0", "", {}, "sha512-UycprH3T6n3jH0k44NHMa7pnFHGu/N05MjojYr+Mc6I7obkoLIJujSWwin1pCvdy/eOxrI/l3uDLQsmcrOb4ug=="],
 

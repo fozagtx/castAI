@@ -8,7 +8,7 @@ description: Convert paid resource responses into plain text for model context.
 Use it when your app fetches a paid resource outside an AI SDK tool call, then needs to pass the result into a prompt or message.
 
 ```ts
-import { fetchResource, llm } from "@castai/ai-sdk";
+import { fetchResource, llm } from "@castaisdk/ai-sdk";
 
 const response = await fetchResource(x402Fetch, {
   url: "https://api.example.com/protected",
@@ -35,7 +35,7 @@ Body:
 For one-shot usage:
 
 ```ts
-import { getPaidResourceText } from "@castai/ai-sdk";
+import { getPaidResourceText } from "@castaisdk/ai-sdk";
 
 const text = await getPaidResourceText(x402Fetch, {
   url: "https://api.example.com/protected",

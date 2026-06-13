@@ -1,18 +1,18 @@
-# @castai/x402
+# @castaisdk/x402
 
 Casper support for x402 `exact` payments.
 
 ## Install
 
 ```sh
-bun add @castai/x402 @x402/core casper-js-sdk
+bun add @castaisdk/x402 @x402/core casper-js-sdk
 ```
 
 ## Server
 
 ```ts
 import { HTTPFacilitatorClient, x402ResourceServer } from "@x402/core/server";
-import { registerExactCasperScheme } from "@castai/x402/server";
+import { registerExactCasperScheme } from "@castaisdk/x402/server";
 
 const server = new x402ResourceServer(
   new HTTPFacilitatorClient({ url: process.env.FACILITATOR_URL })
@@ -27,7 +27,7 @@ registerExactCasperScheme(server, {
 
 ```ts
 import { x402Client } from "@x402/core/client";
-import { registerExactCasperClientScheme } from "@castai/x402/client";
+import { registerExactCasperClientScheme } from "@castaisdk/x402/client";
 
 const client = new x402Client();
 
@@ -41,7 +41,7 @@ registerExactCasperClientScheme(client, {
 
 ```ts
 import { x402Facilitator } from "@x402/core/facilitator";
-import { registerExactCasperFacilitatorScheme } from "@castai/x402/facilitator";
+import { registerExactCasperFacilitatorScheme } from "@castaisdk/x402/facilitator";
 
 const facilitator = new x402Facilitator();
 

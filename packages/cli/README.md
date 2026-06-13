@@ -1,11 +1,11 @@
-# @castai/cli
+# @castaisdk/cli
 
 CLI for castAI scaffolding and MCP configuration.
 
 ## Install
 
 ```sh
-npm install -g @castai/cli
+npm install -g @castaisdk/cli
 ```
 
 ## Commands

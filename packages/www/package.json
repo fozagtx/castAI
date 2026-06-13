@@ -1,5 +1,5 @@
 {
-  "name": "@castai/www",
+  "name": "@castaisdk/www",
   "private": true,
   "version": "0.0.9",
   "type": "module",
@@ -26,7 +26,7 @@
   "dependencies": {
     "@ai-sdk/react": "3.0.206",
     "@base-ui/react": "1.5.0",
-    "@castai/ai-sdk": "workspace:*",
+    "@castaisdk/ai-sdk": "workspace:*",
     "@fumadocs/story": "1.1.1",
     "@openrouter/ai-sdk-provider": "2.9.1",
     "@webcontainer/api": "1.6.4",

@@ -147,15 +147,15 @@ export function installCommand(packageManager: PackageManager): string {
 
 function mcpCommand(packageManager: PackageManager) {
   if (packageManager === "bun") {
-    return { args: ["@castai/mcp@latest"], command: "bunx" };
+    return { args: ["@castaisdk/mcp@latest"], command: "bunx" };
   }
   if (packageManager === "pnpm") {
-    return { args: ["dlx", "@castai/mcp@latest"], command: "pnpm" };
+    return { args: ["dlx", "@castaisdk/mcp@latest"], command: "pnpm" };
   }
   if (packageManager === "yarn") {
-    return { args: ["dlx", "@castai/mcp@latest"], command: "yarn" };
+    return { args: ["dlx", "@castaisdk/mcp@latest"], command: "yarn" };
   }
-  return { args: ["-y", "@castai/mcp@latest"], command: "npx" };
+  return { args: ["-y", "@castaisdk/mcp@latest"], command: "npx" };
 }
 
 function nextCheckoutTemplate({
@@ -181,7 +181,7 @@ function nextCheckoutTemplate({
       "```",
       "",
     ].join("\n"),
-    "app/api/castai/x402/route.ts": `import { createCasperX402Fetch } from "@castai/ai-sdk";
+    "app/api/castai/x402/route.ts": `import { createCasperX402Fetch } from "@castaisdk/ai-sdk";
 import type { NextRequest } from "next/server";
 
 export async function POST(request: NextRequest) {
@@ -209,8 +209,8 @@ export async function POST(request: NextRequest) {
 `,
     "app/page.tsx": `"use client";
 
-import type { FetchLike } from "@castai/ai-sdk";
-import { CastaiCheckout } from "@castai/ai-sdk/react";
+import type { FetchLike } from "@castaisdk/ai-sdk";
+import { CastaiCheckout } from "@castaisdk/ai-sdk/react";
 
 const resourceUrl =
   process.env.NEXT_PUBLIC_CASTAI_RESOURCE_URL ??
@@ -264,7 +264,7 @@ export default config;
     "package.json": JSON.stringify(
       {
         dependencies: {
-          "@castai/ai-sdk": "latest",
+          "@castaisdk/ai-sdk": "latest",
           next: "latest",
           react: "latest",
           "react-dom": "latest",
@@ -333,7 +333,7 @@ function agentVercelAiTemplate({
       {
         dependencies: {
           "@ai-sdk/openai": "latest",
-          "@castai/ai-sdk": "latest",
+          "@castaisdk/ai-sdk": "latest",
           ai: "latest",
           dotenv: "latest",
         },
@@ -359,8 +359,8 @@ import { generateText } from "ai";
 import {
   createCasperMppFetch,
   createCasperX402Fetch,
-} from "@castai/ai-sdk";
-import { createCastaiVercelAITools } from "@castai/ai-sdk/adapters/vercel-ai";
+} from "@castaisdk/ai-sdk";
+import { createCastaiVercelAITools } from "@castaisdk/ai-sdk/adapters/vercel-ai";
 
 const x402Fetch = createCasperX402Fetch({
   networks: ["casper:testnet"],

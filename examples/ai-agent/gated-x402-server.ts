@@ -3,7 +3,7 @@ import { HTTPFacilitatorClient, x402ResourceServer } from "@x402/core/server";
 import { paymentMiddleware } from "@x402/hono";
 import { Hono } from "hono";
 
-import { registerExactCasperScheme } from "@castai/x402/server";
+import { registerExactCasperScheme } from "@castaisdk/x402/server";
 
 function env(name: string, fallback?: string) {
   const value = process.env[name] ?? fallback;

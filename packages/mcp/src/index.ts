@@ -8,14 +8,14 @@ import type {
   CreateMppFetchOptions,
   CreateX402FetchOptions,
   FetchLike,
-} from "@castai/ai-sdk";
+} from "@castaisdk/ai-sdk";
 import {
   castaiResourceRequestSchema,
   createCasperMppFetch,
   createCasperX402Fetch,
   fetchResource,
   paidResourceResponseToText,
-} from "@castai/ai-sdk";
+} from "@castaisdk/ai-sdk";
 
 export type CastaiMcpFetches = {
   mpp?: FetchLike | undefined;

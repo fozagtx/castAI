@@ -14,9 +14,9 @@ Use this skill when a task needs Casper x402 payments, MPP payments, castAI Reac
 ## SDK Imports
 
 ```ts
-import { createCasperMppFetch, createCasperX402Fetch } from "@castai/ai-sdk";
-import { CastaiCheckout } from "@castai/ai-sdk/react";
-import { createCastaiVercelAITools } from "@castai/ai-sdk/adapters/vercel-ai";
+import { createCasperMppFetch, createCasperX402Fetch } from "@castaisdk/ai-sdk";
+import { CastaiCheckout } from "@castaisdk/ai-sdk/react";
+import { createCastaiVercelAITools } from "@castaisdk/ai-sdk/adapters/vercel-ai";
 ```
 
 ## Server-Side Signer Boundary

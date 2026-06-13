@@ -1,6 +1,6 @@
 ---
 name: castai-web-agent
-description: Use when building web apps, docs, API routes, AI agents, or coding-agent workflows with castAI Casper x402, MPP, router, facilitator, or @castai/ai-sdk. Emphasizes real Casper payment flows, server-side signer handling, llms.txt, and developer verification.
+description: Use when building web apps, docs, API routes, AI agents, or coding-agent workflows with castAI Casper x402, MPP, router, facilitator, or @castaisdk/ai-sdk. Emphasizes real Casper payment flows, server-side signer handling, llms.txt, and developer verification.
 ---
 
 # castAI Web Agent
@@ -23,10 +23,10 @@ description: Use when building web apps, docs, API routes, AI agents, or coding-
 
 ## Package Selection
 
-- x402-protected HTTP resource: use `@castai/x402` or `createCasperX402Fetch`.
-- MPP-protected HTTP resource: use `@castai/mpp` or `createCasperMppFetch`.
-- AI agent fetching paid resources: use `@castai/ai-sdk`.
-- Local developer UI: use `PaymentTester` from `@castai/ai-sdk/react`.
+- x402-protected HTTP resource: use `@castaisdk/x402` or `createCasperX402Fetch`.
+- MPP-protected HTTP resource: use `@castaisdk/mpp` or `createCasperMppFetch`.
+- AI agent fetching paid resources: use `@castaisdk/ai-sdk`.
+- Local developer UI: use `PaymentTester` from `@castaisdk/ai-sdk/react`.
 - Router/facilitator service work: inspect `packages/router` and `packages/facilitator`.
 
 ## AI SDK Pattern
@@ -34,7 +34,7 @@ description: Use when building web apps, docs, API routes, AI agents, or coding-
 Use the high-level helper first:
 
 ```ts
-import { generateCastaiText } from "@castai/ai-sdk";
+import { generateCastaiText } from "@castaisdk/ai-sdk";
 
 const result = await generateCastaiText({
   model: "openai/gpt-4.1",
@@ -51,7 +51,7 @@ console.log(result.text);
 Use lower-level tools only when the app already has a paid fetcher:
 
 ```ts
-import { createCastaiAgentTools } from "@castai/ai-sdk";
+import { createCastaiAgentTools } from "@castaisdk/ai-sdk";
 import { generateText } from "ai";
 
 const result = await generateText({
@@ -66,7 +66,7 @@ const result = await generateText({
 When a paid response needs to become prompt text:
 
 ```ts
-import { getPaidResourceText, llm } from "@castai/ai-sdk";
+import { getPaidResourceText, llm } from "@castaisdk/ai-sdk";
 
 const text = await getPaidResourceText(x402Fetch, {
   url: "https://api.example.com/protected",

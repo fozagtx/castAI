@@ -3,7 +3,7 @@ import { Hono } from "hono";
 import { logger } from "hono/logger";
 import { Mppx } from "mppx/hono";
 
-import { casper } from "@castai/mpp/server";
+import { casper } from "@castaisdk/mpp/server";
 
 function env(name: string, fallback?: string) {
   const value = process.env[name] ?? fallback;

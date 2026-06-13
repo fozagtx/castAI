@@ -28,7 +28,7 @@ describe("castAI CLI library", () => {
     expect(createMcpConfig({ packageManager: "pnpm" })).toEqual({
       mcpServers: {
         castai: {
-          args: ["dlx", "@castai/mcp@latest"],
+          args: ["dlx", "@castaisdk/mcp@latest"],
           command: "pnpm",
         },
       },

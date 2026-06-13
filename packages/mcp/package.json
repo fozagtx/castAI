@@ -1,6 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/package.json",
-  "name": "@castai/mcp",
+  "name": "@castaisdk/mcp",
   "version": "0.0.1",
   "description": "MCP server for castAI Casper x402 and MPP paid resources",
   "license": "Apache-2.0",
@@ -60,14 +60,14 @@
     "dist"
   ],
   "scripts": {
-    "build": "bun --filter @castai/ai-sdk build && tsup",
+    "build": "bun --filter @castaisdk/ai-sdk build && tsup",
     "lint": "biome check",
     "lint-staged": "biome check --write --staged --files-ignore-unknown=true --no-errors-on-unmatched",
-    "typecheck": "bun --filter @castai/ai-sdk build && tsc --noEmit",
-    "test": "bun --filter @castai/ai-sdk build && vitest"
+    "typecheck": "bun --filter @castaisdk/ai-sdk build && tsc --noEmit",
+    "test": "bun --filter @castaisdk/ai-sdk build && vitest"
   },
   "dependencies": {
-    "@castai/ai-sdk": "^0.0.1",
+    "@castaisdk/ai-sdk": "^0.0.1",
     "@modelcontextprotocol/sdk": "1.29.0",
     "zod": "^4.3.6"
   },

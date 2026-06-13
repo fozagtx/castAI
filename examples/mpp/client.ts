@@ -1,6 +1,6 @@
 import { Mppx } from "mppx/client";
 
-import { casper } from "@castai/mpp/client";
+import { casper } from "@castaisdk/mpp/client";
 
 function env(name: string, fallback?: string) {
   const value = process.env[name] ?? fallback;

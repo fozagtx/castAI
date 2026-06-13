@@ -6,7 +6,7 @@ description: Configure castAI tools for Vercel AI, OpenAI, LangChain, AgentKit, 
 ## One-call text agent
 
 ```ts
-import { generateCastaiText } from "@castai/ai-sdk";
+import { generateCastaiText } from "@castaisdk/ai-sdk";
 
 const result = await generateCastaiText({
   model: "openai/gpt-4.1",
@@ -29,7 +29,7 @@ import { generateText } from "ai";
 import {
   createCastaiAgentTools,
   createCasperX402Fetch,
-} from "@castai/ai-sdk";
+} from "@castaisdk/ai-sdk";
 
 const x402Fetch = createCasperX402Fetch({
   networks: ["casper:testnet"],
@@ -54,7 +54,7 @@ import { generateText } from "ai";
 import {
   createCastaiAgentTools,
   createCasperMppFetch,
-} from "@castai/ai-sdk";
+} from "@castaisdk/ai-sdk";
 
 const mppFetch = createCasperMppFetch({
   network: "casper:testnet",
@@ -86,7 +86,7 @@ The model can choose `payX402Resource` or `payMppResource` based on the URL or i
 ## Agent factory
 
 ```ts
-import { createCastaiAgent } from "@castai/ai-sdk";
+import { createCastaiAgent } from "@castaisdk/ai-sdk";
 
 const agent = createCastaiAgent({
   x402: {
@@ -112,8 +112,8 @@ Use funded testnet keys for testnet payment tests.
 ```ts
 import { openai } from "@ai-sdk/openai";
 import { generateText } from "ai";
-import { createCasperX402Fetch } from "@castai/ai-sdk";
-import { createCastaiVercelAITools } from "@castai/ai-sdk/adapters/vercel-ai";
+import { createCasperX402Fetch } from "@castaisdk/ai-sdk";
+import { createCastaiVercelAITools } from "@castaisdk/ai-sdk/adapters/vercel-ai";
 
 const x402Fetch = createCasperX402Fetch({
   networks: ["casper:testnet"],
@@ -132,7 +132,7 @@ const result = await generateText({
 ## OpenAI Tool Calls
 
 ```ts
-import { createCastaiOpenAITools } from "@castai/ai-sdk/adapters/openai";
+import { createCastaiOpenAITools } from "@castaisdk/ai-sdk/adapters/openai";
 
 const castai = createCastaiOpenAITools({
   x402: { fetch: x402Fetch },
@@ -154,7 +154,7 @@ const toolResult = await castai.executeToolCallText({
 
 ```ts
 import { tool } from "@langchain/core/tools";
-import { createCastaiLangChainTools } from "@castai/ai-sdk/adapters/langchain";
+import { createCastaiLangChainTools } from "@castaisdk/ai-sdk/adapters/langchain";
 
 const tools = createCastaiLangChainTools({
   toolFactory: tool,
@@ -165,7 +165,7 @@ const tools = createCastaiLangChainTools({
 ## AgentKit
 
 ```ts
-import { createCastaiAgentKitActionProvider } from "@castai/ai-sdk/adapters/agentkit";
+import { createCastaiAgentKitActionProvider } from "@castaisdk/ai-sdk/adapters/agentkit";
 
 const actionProvider = createCastaiAgentKitActionProvider({
   x402: { fetch: x402Fetch },
@@ -175,7 +175,7 @@ const actionProvider = createCastaiAgentKitActionProvider({
 ## GOAT
 
 ```ts
-import { createCastaiGoatPlugin } from "@castai/ai-sdk/adapters/goat";
+import { createCastaiGoatPlugin } from "@castaisdk/ai-sdk/adapters/goat";
 
 const goatPlugin = createCastaiGoatPlugin({
   x402: { fetch: x402Fetch },

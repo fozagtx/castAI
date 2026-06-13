@@ -1,6 +1,6 @@
 import type { x402Facilitator } from "@x402/core/facilitator";
 
-import { registerExactCasperFacilitatorScheme } from "@castai/x402/facilitator";
+import { registerExactCasperFacilitatorScheme } from "@castaisdk/x402/facilitator";
 
 import type { CasperNetwork } from "../chains/casper";
 

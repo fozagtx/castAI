@@ -5,7 +5,7 @@ description: React hooks, headless components, and styled checkout UI.
 
 import { checkoutStory } from "@/components/checkout.story";
 
-`@castai/ai-sdk/react` ships three React layers:
+`@castaisdk/ai-sdk/react` ships three React layers:
 
 - Hooks for owning payment state.
 - Headless components for custom UI.
@@ -20,7 +20,7 @@ import { checkoutStory } from "@/components/checkout.story";
 Use `useCastaiPayment` when the product already has its own UI.
 
 ```tsx
-import { useCastaiPayment } from "@castai/ai-sdk/react/headless";
+import { useCastaiPayment } from "@castaisdk/ai-sdk/react/headless";
 
 export function PayButton({ x402Fetch }) {
   const payment = useCastaiPayment({
@@ -42,7 +42,7 @@ export function PayButton({ x402Fetch }) {
 ## Headless Component
 
 ```tsx
-import { CastaiCheckoutHeadless } from "@castai/ai-sdk/react/headless";
+import { CastaiCheckoutHeadless } from "@castaisdk/ai-sdk/react/headless";
 
 export function CheckoutState({ x402Fetch }) {
   return (
@@ -70,8 +70,8 @@ export function CheckoutState({ x402Fetch }) {
 Use `CastaiCheckout` when a page needs a ready-made payment panel.
 
 ```tsx
-import { createCasperX402Fetch } from "@castai/ai-sdk";
-import { CastaiCheckout } from "@castai/ai-sdk/react/ui";
+import { createCasperX402Fetch } from "@castaisdk/ai-sdk";
+import { CastaiCheckout } from "@castaisdk/ai-sdk/react/ui";
 
 const x402Fetch = createCasperX402Fetch({
   networks: ["casper:testnet"],
@@ -95,7 +95,7 @@ export function Checkout() {
 ## Programmatic Mount
 
 ```tsx
-import { renderCastaiCheckout } from "@castai/ai-sdk/react/ui";
+import { renderCastaiCheckout } from "@castaisdk/ai-sdk/react/ui";
 
 const checkout = await renderCastaiCheckout({
   amount: "0.001",
@@ -123,8 +123,8 @@ The target page needs a DOM node:
 import {
   createCasperMppFetch,
   createCasperX402Fetch,
-} from "@castai/ai-sdk";
-import { PaymentTester } from "@castai/ai-sdk/react/ui";
+} from "@castaisdk/ai-sdk";
+import { PaymentTester } from "@castaisdk/ai-sdk/react/ui";
 
 const x402Fetch = createCasperX402Fetch({
   networks: ["casper:testnet"],

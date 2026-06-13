@@ -9,7 +9,7 @@ RUN apt-get update \
 RUN git clone --depth=1 https://github.com/fozagtx/castAI.git .
 
 RUN bun install --frozen-lockfile \
-  && bun --filter @castai/mcp build
+  && bun --filter @castaisdk/mcp build
 
 ENV HOST=0.0.0.0
 ENV NODE_ENV=production

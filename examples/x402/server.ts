@@ -4,7 +4,7 @@ import { paymentMiddleware, x402ResourceServer } from "@x402/hono";
 import { Hono } from "hono";
 import { logger } from "hono/logger";
 
-import { registerExactCasperScheme } from "@castai/x402/server";
+import { registerExactCasperScheme } from "@castaisdk/x402/server";
 
 type PaymentNetwork = "casper:mainnet" | "casper:testnet";
 

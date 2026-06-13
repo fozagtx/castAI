@@ -1,7 +1,7 @@
 import { x402Client as X402Client } from "@x402/core/client";
 import { createMiddleware } from "hono/factory";
 
-import { registerExactCasperClientScheme } from "@castai/x402/client";
+import { registerExactCasperClientScheme } from "@castaisdk/x402/client";
 
 import type { SupportedNetwork } from "../config/chains";
 import type { Env } from "../env";

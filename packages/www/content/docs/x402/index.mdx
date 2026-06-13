@@ -3,7 +3,7 @@ title: x402 on Casper
 description: x402 exact scheme support for native CSPR transfer settlement.
 ---
 
-`@castai/x402` registers an x402 `exact` scheme for Casper.
+`@castaisdk/x402` registers an x402 `exact` scheme for Casper.
 
 The client creates a payment payload by submitting a native CSPR transfer. The resource server and facilitator verify the returned deploy or transaction hash through Casper RPC.
 
@@ -29,7 +29,7 @@ The client creates a payment payload by submitting a native CSPR transfer. The r
 ## Exports
 
 ```ts
-import { registerExactCasperScheme } from "@castai/x402/server";
-import { registerExactCasperClientScheme } from "@castai/x402/client";
-import { registerExactCasperFacilitatorScheme } from "@castai/x402/facilitator";
+import { registerExactCasperScheme } from "@castaisdk/x402/server";
+import { registerExactCasperClientScheme } from "@castaisdk/x402/client";
+import { registerExactCasperFacilitatorScheme } from "@castaisdk/x402/facilitator";
 ```

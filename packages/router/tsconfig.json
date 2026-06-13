@@ -5,8 +5,8 @@
     "moduleResolution": "Bundler",
     "baseUrl": ".",
     "paths": {
-      "@castai/x402/client": ["../sdk/js/x402/src/client.ts"],
-      "@castai/x402/server": ["../sdk/js/x402/src/server.ts"]
+      "@castaisdk/x402/client": ["../sdk/js/x402/src/client.ts"],
+      "@castaisdk/x402/server": ["../sdk/js/x402/src/server.ts"]
     },
     "strict": true,
     "skipLibCheck": true,

@@ -1,18 +1,18 @@
-# @castai/mpp
+# @castaisdk/mpp
 
 Casper CSPR payment method for MPP.
 
 ## Install
 
 ```sh
-bun add @castai/mpp mppx casper-js-sdk
+bun add @castaisdk/mpp mppx casper-js-sdk
 ```
 
 ## Server
 
 ```ts
 import { Mppx } from "mppx/server";
-import { casper } from "@castai/mpp/server";
+import { casper } from "@castaisdk/mpp/server";
 
 const mppx = Mppx.create({
   methods: [
@@ -28,7 +28,7 @@ const mppx = Mppx.create({
 
 ```ts
 import { Mppx } from "mppx/client";
-import { casper } from "@castai/mpp/client";
+import { casper } from "@castaisdk/mpp/client";
 
 const mppx = Mppx.create({
   methods: [

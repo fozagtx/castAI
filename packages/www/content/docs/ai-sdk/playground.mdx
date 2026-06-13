@@ -9,7 +9,7 @@ import { WebContainerPlayground } from "@/components/webcontainer-playground";
 The checkout UI has two docs surfaces:
 
 - Fumadocs Story renders the workspace React component with editable props.
-- StackBlitz WebContainers boot a Vite app that imports `@castai/ai-sdk/react`.
+- StackBlitz WebContainers boot a Vite app that imports `@castaisdk/ai-sdk/react`.
 
 ## Fumadocs Story
 
@@ -35,8 +35,8 @@ The runtime below installs the SDK package and renders `CastaiCheckout` plus `Ca
 Use this in an app when the checkout must be created from code instead of JSX:
 
 ```tsx
-import { createCasperX402Fetch } from "@castai/ai-sdk";
-import { renderCastaiCheckout } from "@castai/ai-sdk/react";
+import { createCasperX402Fetch } from "@castaisdk/ai-sdk";
+import { renderCastaiCheckout } from "@castaisdk/ai-sdk/react";
 
 const x402Fetch = createCasperX402Fetch({
   networks: ["casper:testnet"],

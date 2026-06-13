@@ -29,7 +29,7 @@ const files = {
       contents: JSON.stringify(
         {
           dependencies: {
-            "@castai/ai-sdk": "latest",
+            "@castaisdk/ai-sdk": "latest",
             "@vitejs/plugin-react": "latest",
             vite: "latest",
             react: "latest",
@@ -50,7 +50,7 @@ const files = {
     file: {
       contents: `import { useMemo, useState } from "react";
 import { createRoot } from "react-dom/client";
-import { CastaiCheckout, CastaiCheckoutHeadless } from "@castai/ai-sdk/react";
+import { CastaiCheckout, CastaiCheckoutHeadless } from "@castaisdk/ai-sdk/react";
 import "./style.css";
 
 const blockedFetch = async () => {

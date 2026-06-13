@@ -5,13 +5,13 @@ description: Use the Casper MPP charge method.
 
 ## Install
 
-<PackageInstall packages="@castai/mpp mppx casper-js-sdk" />
+<PackageInstall packages="@castaisdk/mpp mppx casper-js-sdk" />
 
 ## Server
 
 ```ts
 import { Mppx } from "mppx/server";
-import { casper } from "@castai/mpp/server";
+import { casper } from "@castaisdk/mpp/server";
 
 const mppx = Mppx.create({
   methods: [
@@ -27,7 +27,7 @@ const mppx = Mppx.create({
 
 ```ts
 import { Mppx } from "mppx/client";
-import { casper } from "@castai/mpp/client";
+import { casper } from "@castaisdk/mpp/client";
 
 const mppx = Mppx.create({
   methods: [

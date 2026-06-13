@@ -17,7 +17,7 @@ Give OpenClaw these URLs when it needs current castAI context:
 
 ## Install
 
-<PackageInstall packages="@castai/ai-sdk ai @castai/x402 @castai/mpp casper-js-sdk" />
+<PackageInstall packages="@castaisdk/ai-sdk ai @castaisdk/x402 @castaisdk/mpp casper-js-sdk" />
 
 ## Skill prompt
 
@@ -30,7 +30,7 @@ Read /skills/openclaw.md and follow it when building x402, MPP, or checkout UI w
 ## Agent code
 
 ```ts
-import { generateCastaiText } from "@castai/ai-sdk";
+import { generateCastaiText } from "@castaisdk/ai-sdk";
 
 const result = await generateCastaiText({
   model: "openai/gpt-4.1",
@@ -49,8 +49,8 @@ console.log(result.text);
 OpenClaw can ask a web app to mount checkout UI into a page DOM node:
 
 ```tsx
-import { createCasperX402Fetch } from "@castai/ai-sdk";
-import { renderCastaiCheckout } from "@castai/ai-sdk/react";
+import { createCasperX402Fetch } from "@castaisdk/ai-sdk";
+import { renderCastaiCheckout } from "@castaisdk/ai-sdk/react";
 
 const x402Fetch = createCasperX402Fetch({
   networks: ["casper:testnet"],

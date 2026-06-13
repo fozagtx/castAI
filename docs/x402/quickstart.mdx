@@ -6,14 +6,14 @@ description: Register Casper x402 schemes.
 Install:
 
 ```sh
-bun add @castai/x402 @x402/core @x402/fetch @x402/hono casper-js-sdk
+bun add @castaisdk/x402 @x402/core @x402/fetch @x402/hono casper-js-sdk
 ```
 
 Server:
 
 ```ts
 import { HTTPFacilitatorClient, x402ResourceServer } from "@x402/core/server";
-import { registerExactCasperScheme } from "@castai/x402/server";
+import { registerExactCasperScheme } from "@castaisdk/x402/server";
 
 const server = new x402ResourceServer(
   new HTTPFacilitatorClient({ url: process.env.FACILITATOR_URL })
@@ -27,7 +27,7 @@ registerExactCasperScheme(server, {
 Client:
 
 ```ts
-import { registerExactCasperClientScheme } from "@castai/x402/client";
+import { registerExactCasperClientScheme } from "@castaisdk/x402/client";
 import { x402Client } from "@x402/core/client";
 
 const client = new x402Client();

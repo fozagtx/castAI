@@ -9,8 +9,8 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@castai/ai-sdk": "workspace:*",
-    "@castai/x402": "workspace:*",
+    "@castaisdk/ai-sdk": "workspace:*",
+    "@castaisdk/x402": "workspace:*",
     "@hono/node-server": "^1.19.6",
     "@x402/core": "2.12.0",
     "@x402/hono": "2.12.0",

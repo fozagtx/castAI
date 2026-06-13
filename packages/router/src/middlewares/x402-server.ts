@@ -4,7 +4,7 @@ import {
 } from "@x402/core/server";
 import { createMiddleware } from "hono/factory";
 
-import { registerExactCasperScheme } from "@castai/x402/server";
+import { registerExactCasperScheme } from "@castaisdk/x402/server";
 
 import type { Env } from "../env";
 import { SUPPORTED_NETWORKS } from "../config/chains";

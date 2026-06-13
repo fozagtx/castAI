@@ -16,7 +16,7 @@
     "typescript": "^5"
   },
   "dependencies": {
-    "@castai/mpp": "workspace:*",
+    "@castaisdk/mpp": "workspace:*",
     "@hono/node-server": "^1.19.6",
     "casper-js-sdk": "^5.0.12",
     "hono": "^4.12.14",

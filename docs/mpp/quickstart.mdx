@@ -6,13 +6,13 @@ description: Use the Casper MPP charge method.
 Install:
 
 ```sh
-bun add @castai/mpp mppx casper-js-sdk
+bun add @castaisdk/mpp mppx casper-js-sdk
 ```
 
 Server:
 
 ```ts
-import { casper } from "@castai/mpp/server";
+import { casper } from "@castaisdk/mpp/server";
 
 casper({
   network: "casper:testnet",
@@ -23,7 +23,7 @@ casper({
 Client:
 
 ```ts
-import { casper } from "@castai/mpp/client";
+import { casper } from "@castaisdk/mpp/client";
 
 casper({
   network: "casper:testnet",

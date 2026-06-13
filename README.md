@@ -9,58 +9,58 @@ requests settled on Casper.
 
 | Package | Purpose |
 | --- | --- |
-| `@castai/ai-sdk` | AI SDK tools, `generateCastaiText`, `llm.text`, checkout UI, and React developer components |
-| `@castai/cli` | Scaffolder and config generator for checkout, agent, and MCP projects |
-| `@castai/mcp` | MCP server for x402 and MPP paid-resource tools |
-| `@castai/x402` | x402 `exact` scheme support for Casper CSPR transfers |
-| `@castai/mpp` | MPP `casper` charge method for native CSPR transfers |
-| `@castai/facilitator` | x402 verification and settlement service for Casper payments |
-| `@castai/router` | x402 payment router for protected HTTP resources |
+| `@castaisdk/ai-sdk` | AI SDK tools, `generateCastaiText`, `llm.text`, checkout UI, and React developer components |
+| `@castaisdk/cli` | Scaffolder and config generator for checkout, agent, and MCP projects |
+| `@castaisdk/mcp` | MCP server for x402 and MPP paid-resource tools |
+| `@castaisdk/x402` | x402 `exact` scheme support for Casper CSPR transfers |
+| `@castaisdk/mpp` | MPP `casper` charge method for native CSPR transfers |
+| `@castaisdk/facilitator` | x402 verification and settlement service for Casper payments |
+| `@castaisdk/router` | x402 payment router for protected HTTP resources |
 
 ## Install
 
 ```sh
-npm install @castai/ai-sdk ai @castai/x402 @castai/mpp casper-js-sdk
+npm install @castaisdk/ai-sdk ai @castaisdk/x402 @castaisdk/mpp casper-js-sdk
 ```
 
 ```sh
-pnpm add @castai/ai-sdk ai @castai/x402 @castai/mpp casper-js-sdk
+pnpm add @castaisdk/ai-sdk ai @castaisdk/x402 @castaisdk/mpp casper-js-sdk
 ```
 
 ```sh
-yarn add @castai/ai-sdk ai @castai/x402 @castai/mpp casper-js-sdk
+yarn add @castaisdk/ai-sdk ai @castaisdk/x402 @castaisdk/mpp casper-js-sdk
 ```
 
 ```sh
-bun add @castai/ai-sdk ai @castai/x402 @castai/mpp casper-js-sdk
+bun add @castaisdk/ai-sdk ai @castaisdk/x402 @castaisdk/mpp casper-js-sdk
 ```
 
 CLI and MCP:
 
 ```sh
-npm install -g @castai/cli
-npm install @castai/mcp
+npm install -g @castaisdk/cli
+npm install @castaisdk/mcp
 ```
 
 ```sh
-pnpm add -g @castai/cli
-pnpm add @castai/mcp
+pnpm add -g @castaisdk/cli
+pnpm add @castaisdk/mcp
 ```
 
 ```sh
-yarn global add @castai/cli
-yarn add @castai/mcp
+yarn global add @castaisdk/cli
+yarn add @castaisdk/mcp
 ```
 
 ```sh
-bun add -g @castai/cli
-bun add @castai/mcp
+bun add -g @castaisdk/cli
+bun add @castaisdk/mcp
 ```
 
 ## AI Agent
 
 ```ts
-import { generateCastaiText } from "@castai/ai-sdk";
+import { generateCastaiText } from "@castaisdk/ai-sdk";
 
 const result = await generateCastaiText({
   model: process.env.AI_MODEL ?? "openai/gpt-4.1",
@@ -84,8 +84,8 @@ console.log(result.text);
 React component:
 
 ```tsx
-import { createCasperX402Fetch } from "@castai/ai-sdk";
-import { CastaiCheckout } from "@castai/ai-sdk/react";
+import { createCasperX402Fetch } from "@castaisdk/ai-sdk";
+import { CastaiCheckout } from "@castaisdk/ai-sdk/react";
 
 const x402Fetch = createCasperX402Fetch({
   networks: ["casper:testnet"],
@@ -109,7 +109,7 @@ export function Checkout() {
 Headless React state:
 
 ```tsx
-import { useCastaiPayment } from "@castai/ai-sdk/react/headless";
+import { useCastaiPayment } from "@castaisdk/ai-sdk/react/headless";
 
 export function PayButton({ x402Fetch }) {
   const payment = useCastaiPayment({
@@ -129,11 +129,11 @@ export function PayButton({ x402Fetch }) {
 ## Framework Adapters
 
 ```ts
-import { createCastaiVercelAITools } from "@castai/ai-sdk/adapters/vercel-ai";
-import { createCastaiOpenAITools } from "@castai/ai-sdk/adapters/openai";
-import { createCastaiLangChainTools } from "@castai/ai-sdk/adapters/langchain";
-import { createCastaiAgentKitActionProvider } from "@castai/ai-sdk/adapters/agentkit";
-import { createCastaiGoatPlugin } from "@castai/ai-sdk/adapters/goat";
+import { createCastaiVercelAITools } from "@castaisdk/ai-sdk/adapters/vercel-ai";
+import { createCastaiOpenAITools } from "@castaisdk/ai-sdk/adapters/openai";
+import { createCastaiLangChainTools } from "@castaisdk/ai-sdk/adapters/langchain";
+import { createCastaiAgentKitActionProvider } from "@castaisdk/ai-sdk/adapters/agentkit";
+import { createCastaiGoatPlugin } from "@castaisdk/ai-sdk/adapters/goat";
 ```
 
 ## MCP and CLI
@@ -153,8 +153,8 @@ Hugging Face Docker Space files are in `spaces/huggingface-mcp`.
 Programmatic DOM mount:
 
 ```tsx
-import { createCasperX402Fetch } from "@castai/ai-sdk";
-import { renderCastaiCheckout } from "@castai/ai-sdk/react";
+import { createCasperX402Fetch } from "@castaisdk/ai-sdk";
+import { renderCastaiCheckout } from "@castaisdk/ai-sdk/react";
 
 const x402Fetch = createCasperX402Fetch({
   networks: ["casper:testnet"],
@@ -178,7 +178,7 @@ Server:
 
 ```ts
 import { HTTPFacilitatorClient, x402ResourceServer } from "@x402/core/server";
-import { registerExactCasperScheme } from "@castai/x402/server";
+import { registerExactCasperScheme } from "@castaisdk/x402/server";
 
 const server = new x402ResourceServer(
   new HTTPFacilitatorClient({ url: process.env.FACILITATOR_URL })
@@ -193,7 +193,7 @@ Client:
 
 ```ts
 import { x402Client } from "@x402/core/client";
-import { registerExactCasperClientScheme } from "@castai/x402/client";
+import { registerExactCasperClientScheme } from "@castaisdk/x402/client";
 
 const client = new x402Client();
 
@@ -209,7 +209,7 @@ Server:
 
 ```ts
 import { Mppx } from "mppx/server";
-import { casper } from "@castai/mpp/server";
+import { casper } from "@castaisdk/mpp/server";
 
 const mppx = Mppx.create({
   methods: [
@@ -225,7 +225,7 @@ Client:
 
 ```ts
 import { Mppx } from "mppx/client";
-import { casper } from "@castai/mpp/client";
+import { casper } from "@castaisdk/mpp/client";
 
 const mppx = Mppx.create({
   methods: [

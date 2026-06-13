@@ -5,7 +5,7 @@
     "moduleResolution": "Bundler",
     "baseUrl": ".",
     "paths": {
-      "@castai/x402/facilitator": ["../sdk/js/x402/src/facilitator.ts"]
+      "@castaisdk/x402/facilitator": ["../sdk/js/x402/src/facilitator.ts"]
     },
     "strict": true,
     "skipLibCheck": true,

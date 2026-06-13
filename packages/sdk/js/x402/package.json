@@ -1,6 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/package.json",
-  "name": "@castai/x402",
+  "name": "@castaisdk/x402",
   "type": "module",
   "version": "0.1.4",
   "description": "JavaScript SDK for x402 payments on Casper",

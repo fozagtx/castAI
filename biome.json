@@ -38,20 +38,20 @@
                   ":PACKAGE:",
                   ":PACKAGE_WITH_PROTOCOL:",
                   ":URL:",
-                  "!@castai/**"
+                  "!@castaisdk/**"
                 ]
               },
               [
                 ":PACKAGE:",
                 ":PACKAGE_WITH_PROTOCOL:",
                 ":URL:",
-                "!@castai/**"
+                "!@castaisdk/**"
               ],
 
               ":BLANK_LINE:",
 
-              { "type": true, "source": "@castai/**" },
-              "@castai/**",
+              { "type": true, "source": "@castaisdk/**" },
+              "@castaisdk/**",
 
               ":BLANK_LINE:",
 

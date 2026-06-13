@@ -14,10 +14,10 @@ Use this skill when building apps or agents that use castAI, Casper CSPR, x402, 
 
 ## Rules
 
-- Use `@castai/ai-sdk` for AI SDK agents.
-- Use `@castai/ai-sdk/react` for developer UI and checkout UI.
-- Use `@castai/x402` for x402 `exact` Casper payment flows.
-- Use `@castai/mpp` for MPP Casper payment flows.
+- Use `@castaisdk/ai-sdk` for AI SDK agents.
+- Use `@castaisdk/ai-sdk/react` for developer UI and checkout UI.
+- Use `@castaisdk/x402` for x402 `exact` Casper payment flows.
+- Use `@castaisdk/mpp` for MPP Casper payment flows.
 - Keep Casper private keys on the server side for browser apps.
 - Use funded Casper testnet keys for testnet payment tests.
 - Report payment errors from the SDK result instead of inventing settlement success.
@@ -25,19 +25,19 @@ Use this skill when building apps or agents that use castAI, Casper CSPR, x402, 
 ## Install
 
 ```sh
-npm install @castai/ai-sdk ai @castai/x402 @castai/mpp casper-js-sdk
+npm install @castaisdk/ai-sdk ai @castaisdk/x402 @castaisdk/mpp casper-js-sdk
 ```
 
 ```sh
-pnpm add @castai/ai-sdk ai @castai/x402 @castai/mpp casper-js-sdk
+pnpm add @castaisdk/ai-sdk ai @castaisdk/x402 @castaisdk/mpp casper-js-sdk
 ```
 
 ```sh
-yarn add @castai/ai-sdk ai @castai/x402 @castai/mpp casper-js-sdk
+yarn add @castaisdk/ai-sdk ai @castaisdk/x402 @castaisdk/mpp casper-js-sdk
 ```
 
 ```sh
-bun add @castai/ai-sdk ai @castai/x402 @castai/mpp casper-js-sdk
+bun add @castaisdk/ai-sdk ai @castaisdk/x402 @castaisdk/mpp casper-js-sdk
 ```
 
 ## Checkout UI
@@ -45,8 +45,8 @@ bun add @castai/ai-sdk ai @castai/x402 @castai/mpp casper-js-sdk
 React component:
 
 ```tsx
-import { createCasperX402Fetch } from "@castai/ai-sdk";
-import { CastaiCheckout } from "@castai/ai-sdk/react";
+import { createCasperX402Fetch } from "@castaisdk/ai-sdk";
+import { CastaiCheckout } from "@castaisdk/ai-sdk/react";
 
 const x402Fetch = createCasperX402Fetch({
   networks: ["casper:testnet"],
@@ -70,8 +70,8 @@ export function Checkout() {
 Programmatic DOM mount:
 
 ```tsx
-import { createCasperX402Fetch } from "@castai/ai-sdk";
-import { renderCastaiCheckout } from "@castai/ai-sdk/react";
+import { createCasperX402Fetch } from "@castaisdk/ai-sdk";
+import { renderCastaiCheckout } from "@castaisdk/ai-sdk/react";
 
 const x402Fetch = createCasperX402Fetch({
   networks: ["casper:testnet"],
@@ -92,7 +92,7 @@ await renderCastaiCheckout({
 ## AI Agent
 
 ```ts
-import { generateCastaiText } from "@castai/ai-sdk";
+import { generateCastaiText } from "@castaisdk/ai-sdk";
 
 const result = await generateCastaiText({
   model: "openai/gpt-4.1",

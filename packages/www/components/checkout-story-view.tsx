@@ -1,7 +1,7 @@
 "use client";
 
-import type { PaymentScheme } from "@castai/ai-sdk";
-import { CastaiCheckout } from "@castai/ai-sdk/react";
+import type { PaymentScheme } from "@castaisdk/ai-sdk";
+import { CastaiCheckout } from "@castaisdk/ai-sdk/react";
 
 type CheckoutStoryViewProps = {
   amount: string;

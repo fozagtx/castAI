@@ -1,4 +1,4 @@
-import { generateCastaiText } from "@castai/ai-sdk";
+import { generateCastaiText } from "@castaisdk/ai-sdk";
 
 type PaymentNetwork = "casper:mainnet" | "casper:testnet";
 
