@@ -15,9 +15,14 @@ interface CustomDocument extends DocumentData {
   content: string;
 }
 
+type SearchIndex = {
+  docs: CustomDocument[];
+  search: Document<CustomDocument>;
+};
+
 const searchServer = createSearchServer();
 
-async function createSearchServer() {
+async function createSearchServer(): Promise<SearchIndex> {
   const search = new Document<CustomDocument>({
     document: {
       id: "url",
@@ -43,7 +48,10 @@ async function createSearchServer() {
     if (doc) search.add(doc);
   }
 
-  return search;
+  return {
+    docs: docs.filter((doc): doc is CustomDocument => Boolean(doc)),
+    search,
+  };
 }
 
 async function chunkedAll<O>(promises: Promise<O>[]): Promise<O[]> {
@@ -89,7 +97,8 @@ function getModelPool() {
 }
 
 const systemPrompt = [
-  "You answer questions about the castAI documentation.",
+  "You answer questions about the castAI documentation for Casper payments for AI agents.",
+  "castAI is this open-source SDK project; do not answer as the unrelated Cast AI cloud platform/company.",
   "Use the search tool before answering unless the answer is already present in the conversation.",
   "Ground answers in returned docs. Cite source pages with markdown links using the url field.",
   "Keep answers brief, practical, and implementation-focused.",
@@ -211,26 +220,83 @@ const searchTool = tool({
     limit: z.number().int().min(1).max(8).default(5),
   }),
   async execute({ query, limit }) {
-    const search = await searchServer;
-    const results = (await search.searchAsync(query, {
+    const index = await searchServer;
+    const results = (await index.search.searchAsync(query, {
       limit,
       merge: true,
       enrich: true,
     })) as Array<{ result?: Array<{ doc?: CustomDocument }> }>;
 
-    return results
+    const flexDocs = results
       .flatMap((group) => group.result ?? [])
       .map((item) => item.doc)
-      .filter((doc): doc is CustomDocument => Boolean(doc))
-      .map((doc) => ({
-        title: doc.title,
-        description: doc.description,
-        url: doc.url,
-        content: excerpt(doc.content, query),
-      }))
-      .slice(0, limit);
+      .filter((doc): doc is CustomDocument => Boolean(doc));
+    const docs = mergeDocs(flexDocs, fallbackSearch(index.docs, query)).slice(
+      0,
+      limit
+    );
+
+    return docs.map((doc) => ({
+      title: doc.title,
+      description: doc.description,
+      url: doc.url,
+      content: excerpt(doc.content, query),
+    }));
   },
 }) satisfies SearchTool;
+
+function mergeDocs(...groups: CustomDocument[][]) {
+  const seen = new Set<string>();
+  const docs: CustomDocument[] = [];
+
+  for (const group of groups) {
+    for (const doc of group) {
+      if (seen.has(doc.url)) continue;
+      seen.add(doc.url);
+      docs.push(doc);
+    }
+  }
+
+  return docs;
+}
+
+function fallbackSearch(docs: CustomDocument[], query: string) {
+  const tokens = queryTokens(query);
+  if (tokens.length === 0) return [];
+
+  return docs
+    .map((doc) => ({
+      doc,
+      score: scoreDoc(doc, tokens),
+    }))
+    .filter((item) => item.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .map((item) => item.doc);
+}
+
+function queryTokens(query: string) {
+  return query
+    .toLowerCase()
+    .split(/[^a-z0-9@/_-]+/)
+    .map((token) => token.trim())
+    .filter((token) => token.length >= 2);
+}
+
+function scoreDoc(doc: CustomDocument, tokens: string[]) {
+  const title = doc.title.toLowerCase();
+  const url = doc.url.toLowerCase();
+  const description = doc.description.toLowerCase();
+  const content = doc.content.toLowerCase();
+
+  return tokens.reduce((score, token) => {
+    if (title === token) return score + 80;
+    if (title.includes(token)) score += 40;
+    if (url.includes(token)) score += 28;
+    if (description.includes(token)) score += 16;
+    if (content.includes(token)) score += 6;
+    return score;
+  }, 0);
+}
 
 function excerpt(content: string, query: string) {
   const normalized = content.replace(/\s+/g, " ").trim();
