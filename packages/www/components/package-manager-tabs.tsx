@@ -1,6 +1,10 @@
 "use client";
 
 import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+import { Check, Copy } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+
+import { Button } from "@/components/ui/button";
 
 type PackageManagerTabsProps = {
   packages?: string;
@@ -13,11 +17,60 @@ type PackageManagerTabsProps = {
 };
 
 function CodeLine({ children }: { children: string }) {
+  const [copied, setCopied] = useState(false);
+  const timeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const command = children.trim();
+
+  useEffect(() => {
+    return () => {
+      if (timeout.current) clearTimeout(timeout.current);
+    };
+  }, []);
+
+  async function copyCommand() {
+    if (!command) return;
+
+    try {
+      await navigator.clipboard.writeText(command);
+    } catch {
+      copyWithTextarea(command);
+    }
+
+    setCopied(true);
+    if (timeout.current) clearTimeout(timeout.current);
+    timeout.current = setTimeout(() => setCopied(false), 1200);
+  }
+
   return (
-    <pre className="package-manager-code">
-      <code>{children}</code>
-    </pre>
+    <div className="package-manager-command">
+      <pre className="package-manager-code">
+        <code>{command}</code>
+      </pre>
+      <Button
+        aria-label={`Copy command: ${command}`}
+        className="package-manager-copy"
+        onClick={copyCommand}
+        size="icon-sm"
+        title={copied ? "Copied" : "Copy command"}
+        type="button"
+        variant="outline"
+      >
+        {copied ? <Check aria-hidden="true" /> : <Copy aria-hidden="true" />}
+      </Button>
+    </div>
   );
+}
+
+function copyWithTextarea(value: string) {
+  const textarea = document.createElement("textarea");
+  textarea.value = value;
+  textarea.setAttribute("readonly", "");
+  textarea.style.position = "fixed";
+  textarea.style.left = "-9999px";
+  document.body.appendChild(textarea);
+  textarea.select();
+  document.execCommand("copy");
+  document.body.removeChild(textarea);
 }
 
 export function PackageInstall({ packages = "" }: PackageManagerTabsProps) {

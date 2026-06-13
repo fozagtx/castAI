@@ -214,7 +214,10 @@ select {
 async function getWebContainer() {
   if (!webContainerPromise) {
     webContainerPromise = import("@webcontainer/api").then(({ WebContainer }) =>
-      WebContainer.boot()
+      WebContainer.boot({
+        coep: "require-corp",
+        forwardPreviewErrors: "exceptions-only",
+      })
     );
   }
 

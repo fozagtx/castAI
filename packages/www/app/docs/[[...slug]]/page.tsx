@@ -30,7 +30,7 @@ type DocsPageProps = {
 
 export default async function Page({ params }: DocsPageProps) {
   const { slug } = await params;
-  const page = source.getPage(slug);
+  const page = source.getPage(normalizeDocsSlug(slug));
   if (!page) notFound();
 
   const data = page.data as MdxPageData;
@@ -62,14 +62,28 @@ export default async function Page({ params }: DocsPageProps) {
 }
 
 export async function generateStaticParams() {
-  return source.generateParams();
+  const params = source.generateParams();
+
+  return params.flatMap((param) => {
+    const slug = param.slug;
+    const last = slug?.at(-1);
+    if (!last || last.endsWith(".mdx")) return [param];
+
+    return [
+      param,
+      {
+        ...param,
+        slug: [...slug.slice(0, -1), `${last}.mdx`],
+      },
+    ];
+  });
 }
 
 export async function generateMetadata({
   params,
 }: DocsPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const page = source.getPage(slug);
+  const page = source.getPage(normalizeDocsSlug(slug));
   if (!page) notFound();
   const data = page.data as MdxPageData;
 
@@ -77,6 +91,15 @@ export async function generateMetadata({
     title: data.title,
     description: data.description,
   };
+}
+
+function normalizeDocsSlug(slug: string[] | undefined) {
+  if (!slug?.length) return slug;
+
+  const last = slug.at(-1);
+  if (!last?.endsWith(".mdx")) return slug;
+
+  return [...slug.slice(0, -1), last.replace(/\.mdx$/, "")];
 }
 
 function ChatGptMark(props: ComponentProps<"svg">) {
