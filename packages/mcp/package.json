@@ -19,7 +19,8 @@
     "access": "public"
   },
   "bin": {
-    "castai-mcp": "./dist/esm/stdio.js"
+    "castai-mcp-http": "dist/esm/http.js",
+    "castai-mcp": "dist/esm/stdio.js"
   },
   "exports": {
     ".": {
@@ -41,6 +42,16 @@
         "types": "./dist/cjs/stdio.d.cts",
         "default": "./dist/cjs/stdio.cjs"
       }
+    },
+    "./http": {
+      "import": {
+        "types": "./dist/esm/http.d.ts",
+        "default": "./dist/esm/http.js"
+      },
+      "require": {
+        "types": "./dist/cjs/http.d.cts",
+        "default": "./dist/cjs/http.cjs"
+      }
     }
   },
   "main": "./dist/esm/index.js",
@@ -56,16 +67,16 @@
     "test": "bun --filter @castai/ai-sdk build && vitest"
   },
   "dependencies": {
-    "@castai/ai-sdk": "workspace:*",
+    "@castai/ai-sdk": "^0.0.1",
     "@modelcontextprotocol/sdk": "1.29.0",
-    "zod": "catalog:"
+    "zod": "^4.3.6"
   },
   "devDependencies": {
-    "@biomejs/biome": "catalog:",
-    "@tsconfig/node22": "catalog:",
-    "@types/node": "catalog:",
+    "@biomejs/biome": "2.4.10",
+    "@tsconfig/node22": "22.0.5",
+    "@types/node": "22.19.15",
     "tsup": "8.5.1",
-    "typescript": "catalog:",
-    "vitest": "catalog:"
+    "typescript": "6.0.2",
+    "vitest": "4.1.4"
   }
 }

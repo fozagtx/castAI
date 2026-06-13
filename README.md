@@ -143,9 +143,12 @@ castai templates
 castai scaffold next-checkout ./my-checkout --package-manager pnpm
 castai claude-code --json
 castai-mcp
+PORT=7860 castai-mcp-http
 ```
 
 Claude Code plugin files are in `plugins/claude-code/castai`.
+
+Hugging Face Docker Space files are in `spaces/huggingface-mcp`.
 
 Programmatic DOM mount:
 

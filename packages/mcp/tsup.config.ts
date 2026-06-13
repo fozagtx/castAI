@@ -2,6 +2,7 @@ import { defineConfig } from "tsup";
 
 const baseConfig = {
   entry: {
+    http: "src/http.ts",
     index: "src/index.ts",
     stdio: "src/stdio.ts",
   },

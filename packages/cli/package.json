@@ -19,7 +19,7 @@
     "access": "public"
   },
   "bin": {
-    "castai": "./dist/esm/bin.js"
+    "castai": "dist/esm/bin.js"
   },
   "exports": {
     ".": {
@@ -46,11 +46,11 @@
     "test": "vitest"
   },
   "devDependencies": {
-    "@biomejs/biome": "catalog:",
-    "@tsconfig/node22": "catalog:",
-    "@types/node": "catalog:",
+    "@biomejs/biome": "2.4.10",
+    "@tsconfig/node22": "22.0.5",
+    "@types/node": "22.19.15",
     "tsup": "8.5.1",
-    "typescript": "catalog:",
-    "vitest": "catalog:"
+    "typescript": "6.0.2",
+    "vitest": "4.1.4"
   }
 }

@@ -78,12 +78,19 @@ export async function main(argv = process.argv.slice(2)) {
 }
 
 function parseArgs(argv: string[]): ParsedArgs {
-  const [command, ...rest] = argv;
+  const [rawCommand, ...rest] = argv;
+  const command = rawCommand?.startsWith("-") ? undefined : rawCommand;
+  const values = rawCommand?.startsWith("-") ? argv : rest;
   const flags = new Map<string, string | boolean>();
   const positionals: string[] = [];
 
-  for (let index = 0; index < rest.length; index += 1) {
-    const value = rest[index];
+  for (let index = 0; index < values.length; index += 1) {
+    const value = values[index];
+    if (value === "-h") {
+      flags.set("help", true);
+      continue;
+    }
+
     if (!value?.startsWith("--")) {
       if (value) positionals.push(value);
       continue;

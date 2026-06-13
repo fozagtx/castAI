@@ -123,13 +123,13 @@
     "test": "vitest"
   },
   "dependencies": {
-    "@castai/mpp": "workspace:*",
-    "@castai/x402": "workspace:*",
+    "@castai/mpp": "^0.0.6",
+    "@castai/x402": "^0.1.4",
     "@x402/core": "2.12.0",
     "@x402/fetch": "2.12.0",
     "ai": "^5.0.0",
     "mppx": "0.6.20",
-    "zod": "catalog:"
+    "zod": "^4.3.6"
   },
   "peerDependencies": {
     "react": ">=18.3.0 || >=19.0.0",
@@ -144,13 +144,13 @@
     }
   },
   "devDependencies": {
-    "@biomejs/biome": "catalog:",
-    "@tsconfig/node22": "catalog:",
-    "@types/node": "catalog:",
+    "@biomejs/biome": "2.4.10",
+    "@tsconfig/node22": "22.0.5",
+    "@types/node": "22.19.15",
     "@types/react": "19.2.17",
     "@types/react-dom": "19.2.3",
     "tsup": "8.5.1",
-    "typescript": "catalog:",
-    "vitest": "catalog:"
+    "typescript": "6.0.2",
+    "vitest": "4.1.4"
   }
 }
