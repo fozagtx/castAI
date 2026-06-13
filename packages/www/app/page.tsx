@@ -181,11 +181,12 @@ export default function HomePage() {
           <Image
             alt="castAI"
             className="landing-logo"
-            height={30}
+            height={34}
             priority
-            src="/castai.svg"
-            width={120}
+            src="/favicon.svg"
+            width={34}
           />
+          <span>castAI</span>
         </Link>
         <nav aria-label="Primary navigation" className="landing-nav__links">
           <Link href="/docs">Docs</Link>
@@ -463,19 +464,20 @@ export default function HomePage() {
 
       <footer className="landing-footer">
         <div className="footer-brand">
-          <Image
-            alt="castAI"
-            className="landing-logo landing-logo--footer"
-            height={34}
-            src="/castai.svg"
-            width={136}
-          />
-          <div>
-            <p>
-              Casper payment infrastructure for x402, MPP, facilitators,
-              routers, AI SDK tools, and HTTP services.
-            </p>
+          <div className="footer-brand__heading">
+            <Image
+              alt="castAI"
+              className="landing-logo landing-logo--footer"
+              height={36}
+              src="/favicon.svg"
+              width={36}
+            />
+            <strong>castAI</strong>
           </div>
+          <p>
+            Casper payment infrastructure for x402, MPP, facilitators, routers,
+            AI SDK tools, and HTTP services.
+          </p>
         </div>
         <div className="footer-mark" aria-hidden="true">
           <Network />

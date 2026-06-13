@@ -526,14 +526,14 @@ body {
 
 .landing-logo {
   display: block;
-  height: 30px;
-  width: 120px;
+  height: 34px;
+  width: 34px;
   object-fit: contain;
 }
 
 .landing-logo--footer {
-  height: 34px;
-  width: 136px;
+  height: 36px;
+  width: 36px;
 }
 
 .landing-nav__links {
@@ -1328,6 +1328,12 @@ body {
 .footer-brand {
   align-items: flex-start;
   flex-direction: column;
+}
+
+.footer-brand__heading {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .footer-brand strong {
