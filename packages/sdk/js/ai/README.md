@@ -52,8 +52,8 @@ const text = llm.text(response);
 ## React tester
 
 ```tsx
-import { PaymentTester } from "@castai/ai-sdk/react";
 import { createCasperX402Fetch } from "@castai/ai-sdk";
+import { PaymentTester } from "@castai/ai-sdk/react";
 
 const x402Fetch = createCasperX402Fetch({
   networks: ["casper:testnet"],
@@ -63,4 +63,39 @@ const x402Fetch = createCasperX402Fetch({
 export function DevPaymentPanel() {
   return <PaymentTester defaultUrl="https://api.example.com/weather" x402Fetch={x402Fetch} />;
 }
+```
+
+## Checkout UI
+
+```tsx
+import { createCasperX402Fetch } from "@castai/ai-sdk";
+import { CastaiCheckout, renderCastaiCheckout } from "@castai/ai-sdk/react";
+
+const x402Fetch = createCasperX402Fetch({
+  networks: ["casper:testnet"],
+  privateKeyPem: process.env.CASPER_PRIVATE_KEY_PEM,
+});
+
+export function Checkout() {
+  return (
+    <CastaiCheckout
+      amount="0.001"
+      network="casper:testnet"
+      recipient={process.env.CASPER_RECIPIENT}
+      request={{ url: "https://api.example.com/weather" }}
+      scheme="x402"
+      x402Fetch={x402Fetch}
+    />
+  );
+}
+
+await renderCastaiCheckout({
+  amount: "0.001",
+  container: "#castai-checkout",
+  network: "casper:testnet",
+  recipient: process.env.CASPER_RECIPIENT,
+  request: { url: "https://api.example.com/weather" },
+  scheme: "x402",
+  x402Fetch,
+});
 ```

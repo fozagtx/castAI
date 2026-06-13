@@ -11,8 +11,9 @@ It provides:
 | --- | --- |
 | `@castai/x402` | x402 `exact` scheme support for Casper CSPR payments |
 | `@castai/mpp` | MPP `casper` method for native CSPR transfers |
-| `@castai/facilitator` | Cloudflare Worker that verifies and settles x402 Casper payments |
-| `@castai/router` | Cloudflare Worker that forwards x402-protected traffic through Casper payment |
+| `@castai/ai-sdk` | AI SDK tools, `llm.text`, checkout UI, and React developer components |
+| `@castai/facilitator` | Service package that verifies and settles x402 Casper payments |
+| `@castai/router` | Service package that forwards x402-protected traffic through Casper payment |
 
 ## Supported networks
 
@@ -36,9 +37,11 @@ It provides:
 
 ## Install
 
-```sh
-bun install --ignore-scripts
-bun run lint
-bun run typecheck
-bun run build
-```
+<PackageScripts
+  scripts={{
+    npm: "npm install --ignore-scripts && npm run lint && npm run typecheck && npm run build",
+    pnpm: "pnpm install --ignore-scripts && pnpm lint && pnpm typecheck && pnpm build",
+    yarn: "yarn install --ignore-scripts && yarn lint && yarn typecheck && yarn build",
+    bun: "bun install --ignore-scripts && bun run lint && bun run typecheck && bun run build",
+  }}
+/>

@@ -1,0 +1,79 @@
+---
+title: OpenClaw
+description: Use castAI docs and SDK helpers from OpenClaw agents.
+---
+
+OpenClaw agents can use castAI through the same TypeScript SDK and agent-readable docs that other coding agents use.
+
+## Agent docs
+
+Give OpenClaw these URLs when it needs current castAI context:
+
+| URL | Use |
+| --- | --- |
+| `/llms.txt` | Docs index |
+| `/llms-full.txt` | Full docs text |
+| `/skills/openclaw.md` | castAI OpenClaw skill |
+
+## Install
+
+<PackageInstall packages="@castai/ai-sdk ai @castai/x402 @castai/mpp casper-js-sdk" />
+
+## Skill prompt
+
+Use this from an OpenClaw chat or coding session:
+
+```txt
+Read /skills/openclaw.md and follow it when building x402, MPP, or checkout UI with castAI.
+```
+
+## Agent code
+
+```ts
+import { generateCastaiText } from "@castai/ai-sdk";
+
+const result = await generateCastaiText({
+  model: "openai/gpt-4.1",
+  x402: {
+    networks: ["casper:testnet"],
+    privateKeyPem: process.env.CASPER_PRIVATE_KEY_PEM,
+  },
+  prompt: "Fetch the paid resource and summarize the JSON.",
+});
+
+console.log(result.text);
+```
+
+## Checkout UI
+
+OpenClaw can ask a web app to mount checkout UI into a page DOM node:
+
+```tsx
+import { createCasperX402Fetch } from "@castai/ai-sdk";
+import { renderCastaiCheckout } from "@castai/ai-sdk/react";
+
+const x402Fetch = createCasperX402Fetch({
+  networks: ["casper:testnet"],
+  privateKeyPem: process.env.CASPER_PRIVATE_KEY_PEM,
+});
+
+await renderCastaiCheckout({
+  amount: "0.001",
+  container: "#castai-checkout",
+  network: "casper:testnet",
+  recipient: process.env.CASPER_RECIPIENT,
+  request: {
+    url: "https://api.example.com/protected",
+  },
+  scheme: "x402",
+  x402Fetch,
+});
+```
+
+The target page needs a real DOM node:
+
+```html
+<div id="castai-checkout"></div>
+```
+
+Keep signer material on the server side for browser apps. Use a server route or session-scoped signer service when the checkout is rendered in a public client.

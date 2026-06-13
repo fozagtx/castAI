@@ -4,15 +4,15 @@
   "type": "module",
   "version": "0.1.4",
   "description": "JavaScript SDK for x402 payments on Casper",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/castai/protocol.git",
+    "url": "git+https://github.com/fozagtx/castAI.git",
     "directory": "packages/sdk/js/x402"
   },
-  "homepage": "https://github.com/castai/protocol#readme",
+  "homepage": "https://github.com/fozagtx/castAI#readme",
   "bugs": {
-    "url": "https://github.com/castai/protocol/issues"
+    "url": "https://github.com/fozagtx/castAI/issues"
   },
   "keywords": [
     "castai",

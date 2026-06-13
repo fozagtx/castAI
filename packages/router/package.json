@@ -2,6 +2,16 @@
   "name": "@castai/router",
   "version": "0.1.1",
   "type": "module",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fozagtx/castAI.git",
+    "directory": "packages/router"
+  },
+  "homepage": "https://github.com/fozagtx/castAI#readme",
+  "bugs": {
+    "url": "https://github.com/fozagtx/castAI/issues"
+  },
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy --minify",

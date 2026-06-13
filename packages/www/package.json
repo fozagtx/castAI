@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.0.9",
   "type": "module",
+  "license": "Apache-2.0",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -25,6 +26,7 @@
     "fumadocs-core": "16.10.2",
     "fumadocs-mdx": "15.0.12",
     "fumadocs-ui": "16.10.2",
+    "lucide-react": "1.18.0",
     "next": "16.2.9",
     "react": "19.2.7",
     "react-dom": "19.2.7"

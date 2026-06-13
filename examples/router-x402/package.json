@@ -2,14 +2,22 @@
   "name": "castai-router-x402-example",
   "type": "module",
   "private": true,
+  "license": "Apache-2.0",
+  "scripts": {
+    "client": "tsx client.ts",
+    "server": "tsx server.ts",
+    "typecheck": "tsc --noEmit"
+  },
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "tsx": "^4.21.0"
   },
   "peerDependencies": {
     "typescript": "^5"
   },
   "dependencies": {
     "@castai/x402": "workspace:*",
+    "@hono/node-server": "^1.19.6",
     "@x402/core": "^2.12.0",
     "@x402/fetch": "^2.12.0",
     "@x402/hono": "^2.12.0",

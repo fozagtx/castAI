@@ -1,8 +1,9 @@
-import { registerExactCasperScheme } from "@castai/x402/server";
+import { serve } from "@hono/node-server";
 import { HTTPFacilitatorClient, x402ResourceServer } from "@x402/core/server";
 import { paymentMiddleware } from "@x402/hono";
-import { serve } from "@hono/node-server";
 import { Hono } from "hono";
+
+import { registerExactCasperScheme } from "@castai/x402/server";
 
 function env(name: string, fallback?: string) {
   const value = process.env[name] ?? fallback;
@@ -13,6 +14,16 @@ function env(name: string, fallback?: string) {
 const network = env("PAYMENT_NETWORK", "casper:testnet") as
   | "casper:mainnet"
   | "casper:testnet";
+const port = Number(env("PORT", "3000"));
+const resourceUrl = `http://localhost:${port}/weather`;
+const upstreamUrl = env(
+  "RESOURCE_UPSTREAM_URL",
+  "https://api.weather.gov/gridpoints/TOP/32,81/forecast"
+);
+const upstreamUserAgent = env(
+  "RESOURCE_USER_AGENT",
+  "castai-ai-agent-example/0.1"
+);
 
 const resourceServer = new x402ResourceServer(
   new HTTPFacilitatorClient({
@@ -36,26 +47,43 @@ app.use(
         {
           network,
           payTo: env("CASPER_RECIPIENT"),
-          price: "0.001",
+          price: env("PAYMENT_PRICE", "0.001"),
           scheme: "exact",
         },
       ],
       description: "Paid weather data",
       mimeType: "application/json",
-      resource: "http://localhost:3000/weather",
+      resource: resourceUrl,
     },
     resourceServer
   )
 );
 
-app.get("/weather", (c) =>
-  c.json({
-    report: {
-      temperature: 70,
-      weather: "sunny",
+app.get("/weather", async (c) => {
+  const response = await fetch(upstreamUrl, {
+    headers: {
+      "User-Agent": upstreamUserAgent,
     },
-  })
-);
+  });
 
-serve({ fetch: app.fetch, port: 3000 });
-console.log("x402 gated server listening on http://localhost:3000");
+  if (!response.ok) {
+    return c.json(
+      {
+        error: "upstream_request_failed",
+        source: upstreamUrl,
+        status: response.status,
+        statusText: response.statusText,
+      },
+      502
+    );
+  }
+
+  return c.json({
+    fetchedAt: new Date().toISOString(),
+    source: upstreamUrl,
+    value: await response.json(),
+  });
+});
+
+serve({ fetch: app.fetch, port });
+console.log(`x402 gated server listening on http://localhost:${port}`);

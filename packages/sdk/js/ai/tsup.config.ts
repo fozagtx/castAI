@@ -8,7 +8,7 @@ const baseConfig = {
   dts: {
     resolve: true,
   },
-  external: ["react", "react/jsx-runtime"],
+  external: ["react", "react-dom/client", "react/jsx-runtime"],
   sourcemap: true,
   target: "es2020",
 };

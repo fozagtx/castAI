@@ -1,43 +1,112 @@
-<div align="center">
-  <img width="80%" height="auto" src="assets/castai.svg" />
+# castAI
 
-  <hr/>
-</div>
+Casper CSPR payments for x402, MPP, and AI agents.
 
-## castAI
+castAI provides TypeScript packages for services and agents that need paid HTTP
+requests settled on Casper.
 
-castAI is a Casper payment toolkit for AI agents and HTTP services.
+## Packages
 
-It provides:
-
-| Package | Role |
-|---|---|
-| `@castai/ai-sdk` | AI SDK tools and React test components for x402 and MPP agents |
-| `@castai/x402` | x402 `exact` scheme support for Casper CSPR payments |
+| Package | Purpose |
+| --- | --- |
+| `@castai/ai-sdk` | AI SDK tools, `generateCastaiText`, `llm.text`, checkout UI, and React developer components |
+| `@castai/x402` | x402 `exact` scheme support for Casper CSPR transfers |
 | `@castai/mpp` | MPP `casper` charge method for native CSPR transfers |
-| `@castai/facilitator` | Cloudflare Worker facilitator for x402 verify/settle |
-| `@castai/router` | Cloudflare Worker router for Casper x402 payment forwarding |
+| `@castai/facilitator` | x402 verification and settlement service for Casper payments |
+| `@castai/router` | x402 payment router for protected HTTP resources |
 
-## Casper Support
+## Install
 
-Supported networks:
+```sh
+npm install @castai/ai-sdk ai @castai/x402 @castai/mpp casper-js-sdk
+```
 
-| Network | Chain name | Default RPC |
-|---|---|---|
-| `casper:mainnet` | `casper` | `https://node.mainnet.casper.network/rpc` |
-| `casper:testnet` | `casper-test` | `https://node.testnet.casper.network/rpc` |
+```sh
+pnpm add @castai/ai-sdk ai @castai/x402 @castai/mpp casper-js-sdk
+```
 
-Supported asset:
+```sh
+yarn add @castai/ai-sdk ai @castai/x402 @castai/mpp casper-js-sdk
+```
 
-| Asset | Unit | Decimals |
-|---|---|---|
-| `CSPR` | motes | 9 |
+```sh
+bun add @castai/ai-sdk ai @castai/x402 @castai/mpp casper-js-sdk
+```
+
+## AI Agent
+
+```ts
+import { generateCastaiText } from "@castai/ai-sdk";
+
+const result = await generateCastaiText({
+  model: process.env.AI_MODEL ?? "openai/gpt-4.1",
+  x402: {
+    networks: ["casper:testnet"],
+    privateKeyPem: process.env.CASPER_PRIVATE_KEY_PEM,
+  },
+  mpp: {
+    network: "casper:testnet",
+    privateKeyPem: process.env.CASPER_PRIVATE_KEY_PEM,
+  },
+  prompt:
+    "Fetch the paid x402 weather resource at http://localhost:3000/weather and summarize the JSON.",
+});
+
+console.log(result.text);
+```
+
+## Checkout UI
+
+React component:
+
+```tsx
+import { createCasperX402Fetch } from "@castai/ai-sdk";
+import { CastaiCheckout } from "@castai/ai-sdk/react";
+
+const x402Fetch = createCasperX402Fetch({
+  networks: ["casper:testnet"],
+  privateKeyPem: process.env.CASPER_PRIVATE_KEY_PEM,
+});
+
+export function Checkout() {
+  return (
+    <CastaiCheckout
+      amount="0.001"
+      network="casper:testnet"
+      recipient={process.env.CASPER_RECIPIENT}
+      request={{ url: "https://api.example.com/protected" }}
+      scheme="x402"
+      x402Fetch={x402Fetch}
+    />
+  );
+}
+```
+
+Programmatic DOM mount:
+
+```tsx
+import { createCasperX402Fetch } from "@castai/ai-sdk";
+import { renderCastaiCheckout } from "@castai/ai-sdk/react";
+
+const x402Fetch = createCasperX402Fetch({
+  networks: ["casper:testnet"],
+  privateKeyPem: process.env.CASPER_PRIVATE_KEY_PEM,
+});
+
+await renderCastaiCheckout({
+  amount: "0.001",
+  container: "#castai-checkout",
+  network: "casper:testnet",
+  recipient: process.env.CASPER_RECIPIENT,
+  request: { url: "https://api.example.com/protected" },
+  scheme: "x402",
+  x402Fetch,
+});
+```
 
 ## x402
 
-`@castai/x402` registers an x402 `exact` scheme for Casper.
-
-Server side:
+Server:
 
 ```ts
 import { HTTPFacilitatorClient, x402ResourceServer } from "@x402/core/server";
@@ -52,7 +121,7 @@ registerExactCasperScheme(server, {
 });
 ```
 
-Client side:
+Client:
 
 ```ts
 import { x402Client } from "@x402/core/client";
@@ -66,45 +135,7 @@ registerExactCasperClientScheme(client, {
 });
 ```
 
-Facilitator side:
-
-```ts
-import { x402Facilitator } from "@x402/core/facilitator";
-import { registerExactCasperFacilitatorScheme } from "@castai/x402/facilitator";
-
-const facilitator = new x402Facilitator();
-
-registerExactCasperFacilitatorScheme(facilitator, {
-  networks: ["casper:testnet"],
-});
-```
-
-## AI SDK
-
-`@castai/ai-sdk` exposes AI SDK tools for agents that can call paid x402 or
-MPP resources.
-
-```ts
-import { createCastaiAgentTools, createCasperX402Fetch } from "@castai/ai-sdk";
-import { generateText } from "ai";
-
-const x402Fetch = createCasperX402Fetch({
-  networks: ["casper:testnet"],
-  privateKeyPem: process.env.CASPER_PRIVATE_KEY_PEM,
-});
-
-const result = await generateText({
-  model: "openai/gpt-4.1",
-  tools: createCastaiAgentTools({
-    x402: { fetch: x402Fetch },
-  }),
-  prompt: "Fetch the protected endpoint and summarize it.",
-});
-```
-
 ## MPP
-
-`@castai/mpp` exposes a `casper` method for native CSPR transfer payments.
 
 Server:
 
@@ -116,7 +147,7 @@ const mppx = Mppx.create({
   methods: [
     casper({
       network: "casper:testnet",
-      recipient: "01...",
+      recipient: process.env.CASPER_RECIPIENT,
     }),
   ],
 });
@@ -138,36 +169,50 @@ const mppx = Mppx.create({
 });
 ```
 
-## Worker Environment
+## Agent-Readable Docs
 
-Facilitator:
+The documentation exposes AI-readable Markdown routes:
 
-```txt
-CASPER_MAINNET_RPC_URL=https://node.mainnet.casper.network/rpc
-CASPER_TESTNET_RPC_URL=https://node.testnet.casper.network/rpc
-CASPER_FACILITATOR_SIGNERS=
+| Route | Purpose |
+| --- | --- |
+| `/llms.txt` | Index of docs pages for coding agents |
+| `/llms-full.txt` | Full Markdown export of docs pages |
+| `/docs-md/...` | Markdown for a single docs page |
+| `/skills/openclaw.md` | OpenClaw skill for castAI builds |
+
+Each docs page also includes top actions for copying Markdown, viewing Markdown,
+opening the page in ChatGPT, and opening the source on GitHub.
+
+## Development
+
+```sh
+npm install --ignore-scripts
+npm run lint
+npm run typecheck
+npm run build
 ```
 
-Router:
-
-```txt
-FACILITATOR_URL=https://your-facilitator.example
-CASPER_MAINNET_PAY_TO=01...
-CASPER_TESTNET_PAY_TO=01...
-CASPER_MAINNET_PRIVATE_KEY=
-CASPER_TESTNET_PRIVATE_KEY=
+```sh
+pnpm install --ignore-scripts
+pnpm lint
+pnpm typecheck
+pnpm build
 ```
 
-## Scripts
+```sh
+yarn install --ignore-scripts
+yarn lint
+yarn typecheck
+yarn build
+```
 
 ```sh
 bun install --ignore-scripts
+bun run lint
 bun run typecheck
 bun run build
 ```
 
-## Status
+## License
 
-- `.git` has been removed from this cloned workspace.
-- Active packages are named `@castai/*`.
-- Active source uses Casper CSPR payments.
+Apache-2.0. See [LICENSE](./LICENSE).

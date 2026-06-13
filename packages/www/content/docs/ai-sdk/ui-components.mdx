@@ -7,6 +7,68 @@ description: Premade React components for testing x402 and MPP payment flows.
 
 It is intended for local development and payment flow verification.
 
+## Checkout UI
+
+Use `CastaiCheckout` when a page needs a ready-made payment panel.
+
+```tsx
+import { createCasperX402Fetch } from "@castai/ai-sdk";
+import { CastaiCheckout } from "@castai/ai-sdk/react";
+
+const x402Fetch = createCasperX402Fetch({
+  networks: ["casper:testnet"],
+  privateKeyPem: process.env.CASPER_PRIVATE_KEY_PEM,
+});
+
+export function Checkout() {
+  return (
+    <CastaiCheckout
+      amount="0.001"
+      network="casper:testnet"
+      recipient={process.env.CASPER_RECIPIENT}
+      request={{
+        url: "https://api.example.com/protected",
+      }}
+      scheme="x402"
+      x402Fetch={x402Fetch}
+    />
+  );
+}
+```
+
+Use `renderCastaiCheckout` when code needs to create and mount checkout UI programmatically.
+
+```tsx
+import { createCasperX402Fetch } from "@castai/ai-sdk";
+import { renderCastaiCheckout } from "@castai/ai-sdk/react";
+
+const x402Fetch = createCasperX402Fetch({
+  networks: ["casper:testnet"],
+  privateKeyPem: process.env.CASPER_PRIVATE_KEY_PEM,
+});
+
+const checkout = await renderCastaiCheckout({
+  amount: "0.001",
+  container: "#castai-checkout",
+  network: "casper:testnet",
+  recipient: process.env.CASPER_RECIPIENT,
+  request: {
+    url: "https://api.example.com/protected",
+  },
+  scheme: "x402",
+  x402Fetch,
+});
+
+checkout.update({ amount: "0.002" });
+checkout.unmount();
+```
+
+The target page needs a DOM node:
+
+```html
+<div id="castai-checkout"></div>
+```
+
 ## PaymentTester
 
 ```tsx
@@ -46,5 +108,7 @@ export function DevPaymentPanel() {
 - Sends a real paid request through the configured fetcher.
 - Renders status, headers, and response body.
 - Shows setup errors when a payment fetcher is missing.
+- `CastaiCheckout` renders a focused payment panel for one configured resource.
+- `renderCastaiCheckout` mounts that panel into a DOM container and returns `update` and `unmount` controls.
 
 Do not put private keys directly in browser bundles. For browser apps, call a server route that owns the signer.

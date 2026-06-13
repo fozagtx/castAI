@@ -1,27 +1,75 @@
 # castAI AI Agent Example
 
-This example shows an AI SDK agent that can request paid x402 and MPP resources
+This example runs an AI SDK agent that can request paid x402 and MPP resources
 with Casper CSPR payments.
 
-## Environment
+The gated x402 server fetches JSON from `RESOURCE_UPSTREAM_URL` after payment
+middleware accepts the request.
 
-```txt
-CASPER_PRIVATE_KEY_PEM=-----BEGIN PRIVATE KEY-----
-CASPER_RECIPIENT=01...
-FACILITATOR_URL=http://localhost:8787
-PAYMENT_NETWORK=casper:testnet
-AI_MODEL=openai/gpt-4.1
+## Configure
+
+```sh
+cp .env.example .env
 ```
 
-Use funded Casper testnet keys for real payment tests.
+Required values:
 
-## Run gated x402 resource
+| Variable | Description |
+| --- | --- |
+| `CASPER_PRIVATE_KEY_PEM` | Funded Casper buyer private key in PEM format |
+| `CASPER_RECIPIENT` | Seller Casper public key |
+| `FACILITATOR_URL` | x402 facilitator URL |
+| `PAYMENT_NETWORK` | `casper:testnet` or `casper:mainnet` |
+
+## Install
+
+```sh
+npm install
+```
+
+```sh
+pnpm install
+```
+
+```sh
+yarn install
+```
+
+```sh
+bun install
+```
+
+## Run Gated x402 Resource
+
+```sh
+npm run server
+```
+
+```sh
+pnpm server
+```
+
+```sh
+yarn server
+```
 
 ```sh
 bun run server
 ```
 
-## Run agent
+## Run Agent
+
+```sh
+npm run agent
+```
+
+```sh
+pnpm agent
+```
+
+```sh
+yarn agent
+```
 
 ```sh
 bun run agent
@@ -29,9 +77,10 @@ bun run agent
 
 The agent receives two tools:
 
-- `payX402Resource`
-- `payMppResource`
+| Tool | Purpose |
+| --- | --- |
+| `payX402Resource` | Request an x402-protected HTTP resource |
+| `payMppResource` | Request an MPP-protected HTTP resource |
 
-The example uses `generateCastaiText`, which wires those tools into Vercel AI SDK `generateText` and enables multi-step tool calls.
-
-The tools use configured payment fetchers. Settlement success must come from the payment flow.
+`generateCastaiText` wires those tools into Vercel AI SDK `generateText` with
+multi-step tool calls enabled.

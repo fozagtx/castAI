@@ -5,9 +5,7 @@ description: Use the Casper MPP charge method.
 
 ## Install
 
-```sh
-bun add @castai/mpp mppx casper-js-sdk
-```
+<PackageInstall packages="@castai/mpp mppx casper-js-sdk" />
 
 ## Server
 
@@ -19,7 +17,7 @@ const mppx = Mppx.create({
   methods: [
     casper({
       network: "casper:testnet",
-      recipient: "01...",
+      recipient: process.env.CASPER_RECIPIENT,
     }),
   ],
 });

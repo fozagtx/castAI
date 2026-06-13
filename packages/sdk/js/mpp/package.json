@@ -3,10 +3,15 @@
   "name": "@castai/mpp",
   "version": "0.0.6",
   "description": "Casper CSPR payment method for the Machine Payments Protocol",
+  "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/castai/protocol.git",
+    "url": "git+https://github.com/fozagtx/castAI.git",
     "directory": "packages/sdk/js/mpp"
+  },
+  "homepage": "https://github.com/fozagtx/castAI#readme",
+  "bugs": {
+    "url": "https://github.com/fozagtx/castAI/issues"
   },
   "publishConfig": {
     "access": "public"

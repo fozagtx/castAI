@@ -5,9 +5,7 @@ description: Register Casper x402 schemes for server, client, and facilitator.
 
 ## Install
 
-```sh
-bun add @castai/x402 @x402/core @x402/fetch @x402/hono casper-js-sdk
-```
+<PackageInstall packages="@castai/x402 @x402/core @x402/fetch @x402/hono casper-js-sdk" />
 
 ## Server
 
@@ -58,6 +56,6 @@ registerExactCasperFacilitatorScheme(facilitator, {
 
 ```txt
 FACILITATOR_URL=https://your-facilitator.example
-CASPER_PRIVATE_KEY_PEM=-----BEGIN PRIVATE KEY-----
+CASPER_PRIVATE_KEY_PEM=
 CASPER_TESTNET_RPC_URL=https://node.testnet.casper.network/rpc
 ```

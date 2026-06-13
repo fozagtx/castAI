@@ -1,6 +1,7 @@
-import { registerExactCasperClientScheme } from "@castai/x402/client";
 import { x402Client, x402HTTPClient } from "@x402/core/client";
 import { wrapFetchWithPayment } from "@x402/fetch";
+
+import { registerExactCasperClientScheme } from "@castai/x402/client";
 
 function env(name: string, fallback?: string) {
   const value = process.env[name] ?? fallback;

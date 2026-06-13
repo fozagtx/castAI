@@ -1,6 +1,6 @@
 ---
-title: Router Deploy
-description: Configure and deploy the Casper x402 router Worker.
+title: Router Runtime
+description: Configure the Casper x402 router service.
 ---
 
 ## Required environment
@@ -13,12 +13,11 @@ CASPER_MAINNET_PRIVATE_KEY=
 CASPER_TESTNET_PRIVATE_KEY=
 ```
 
-## Deploy
+## Runtime
 
-```sh
-cd packages/router
-wrangler deploy --minify
-```
+Run the router package in the HTTP runtime you choose. The service needs the
+environment values above and outbound access to the facilitator and destination
+URLs it forwards.
 
 ## Runtime checks
 

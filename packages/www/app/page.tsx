@@ -19,6 +19,8 @@ export default function HomePage() {
           <nav aria-label="Primary" className="floating-doc-nav">
             <Link href="/docs">Docs</Link>
             <Link href="/docs/ai-sdk">AI SDK</Link>
+            <Link href="/docs/ai-sdk/llm-text">llm.text</Link>
+            <Link href="/docs/ai-sdk/openclaw">OpenClaw</Link>
             <Link href="/docs/x402/quickstart">x402</Link>
             <Link href="/docs/mpp/quickstart">MPP</Link>
             <Link href="/docs/router">Router</Link>
@@ -36,7 +38,9 @@ export default function HomePage() {
         </p>
         <div className="home-actions">
           <Link href="/docs">Open docs</Link>
-          <Link href="/docs/ai-sdk/agent-tools">Agent tools</Link>
+          <Link href="/docs/ai-sdk/llm-text">llm.text</Link>
+          <Link href="/docs/ai-sdk/openclaw">OpenClaw</Link>
+          <Link href="/llms.txt">llms.txt</Link>
           <Link href="/docs/x402/quickstart">x402 quickstart</Link>
           <Link href="/docs/mpp/quickstart">MPP quickstart</Link>
         </div>

@@ -39,12 +39,14 @@
       "name": "castai-mpp-example",
       "dependencies": {
         "@castai/mpp": "workspace:*",
+        "@hono/node-server": "^1.19.6",
         "casper-js-sdk": "^5.0.12",
         "hono": "^4.12.14",
         "mppx": ">=0.4.8",
       },
       "devDependencies": {
         "@types/bun": "latest",
+        "tsx": "^4.21.0",
       },
       "peerDependencies": {
         "typescript": "^5",
@@ -54,6 +56,7 @@
       "name": "castai-router-x402-example",
       "dependencies": {
         "@castai/x402": "workspace:*",
+        "@hono/node-server": "^1.19.6",
         "@x402/core": "^2.12.0",
         "@x402/fetch": "^2.12.0",
         "@x402/hono": "^2.12.0",
@@ -62,6 +65,7 @@
       },
       "devDependencies": {
         "@types/bun": "latest",
+        "tsx": "^4.21.0",
       },
       "peerDependencies": {
         "typescript": "^5",
@@ -71,6 +75,7 @@
       "name": "castai-x402-example",
       "dependencies": {
         "@castai/x402": "workspace:*",
+        "@hono/node-server": "^1.19.6",
         "@x402/core": "^2.12.0",
         "@x402/fetch": "^2.12.0",
         "@x402/hono": "^2.12.0",
@@ -79,6 +84,7 @@
       },
       "devDependencies": {
         "@types/bun": "latest",
+        "tsx": "^4.21.0",
       },
       "peerDependencies": {
         "typescript": "^5",
@@ -141,15 +147,18 @@
         "@tsconfig/node22": "catalog:",
         "@types/node": "catalog:",
         "@types/react": "19.2.17",
+        "@types/react-dom": "19.2.3",
         "tsup": "8.5.1",
         "typescript": "catalog:",
         "vitest": "catalog:",
       },
       "peerDependencies": {
         "react": ">=18.3.0 || >=19.0.0",
+        "react-dom": ">=18.3.0 || >=19.0.0",
       },
       "optionalPeers": [
         "react",
+        "react-dom",
       ],
     },
     "packages/sdk/js/mpp": {
@@ -195,6 +204,7 @@
         "fumadocs-core": "16.10.2",
         "fumadocs-mdx": "15.0.12",
         "fumadocs-ui": "16.10.2",
+        "lucide-react": "1.18.0",
         "next": "16.2.9",
         "react": "19.2.7",
         "react-dom": "19.2.7",
