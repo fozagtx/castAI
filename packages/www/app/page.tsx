@@ -36,44 +36,7 @@ import {
 } from "@/components/ui/card";
 import { HugeIcon } from "@/components/ui/huge-icon";
 import { Separator } from "@/components/ui/separator";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
-
-const packages = [
-  {
-    name: "@castaisdk/x402",
-    role: "x402",
-    description: "x402 exact scheme support for Casper CSPR payments",
-    badges: ["exact", "CSPR", "HTTP"],
-  },
-  {
-    name: "@castaisdk/mpp",
-    role: "MPP",
-    description: "MPP Casper method for native CSPR transfers",
-    badges: ["motes", "transfer", "agent"],
-  },
-  {
-    name: "@castaisdk/ai-sdk",
-    role: "AI SDK",
-    description:
-      "AI SDK tools, llm.text, checkout UI, and React developer components",
-    badges: ["tools", "React", "llm.text"],
-  },
-  {
-    name: "@castaisdk/facilitator",
-    role: "Verifier",
-    description:
-      "Service package that verifies and settles x402 Casper payments",
-    badges: ["RPC", "settle", "replay"],
-  },
-  {
-    name: "@castaisdk/router",
-    role: "Router",
-    description:
-      "Forwards x402-protected traffic after successful Casper payment",
-    badges: ["proxy", "gate", "HTTP"],
-  },
-];
 
 const networkStats = [
   ["casper:mainnet", "Chain: casper"],
@@ -81,7 +44,7 @@ const networkStats = [
   ["CSPR", "Native asset"],
   ["motes", "Smallest unit"],
   ["9 decimals", "Asset precision"],
-  ["RPC verified", "Deploy and transaction checks"],
+  ["RPC checked", "Payment receipt lookup"],
   ["Replay protected", "Prevent duplicate payment use"],
   ["HTTP gated", "Protected routes unlock after payment"],
 ];
@@ -94,13 +57,13 @@ const paymentSteps = [
   },
   {
     icon: ShieldEnergyIcon,
-    title: "2. Facilitator Verifies",
-    copy: "Checks network, recipient, amount, execution state, sender, and replay use.",
+    title: "2. Server Checks Payment",
+    copy: "Reads Casper RPC for amount, recipient, sender, and replay use.",
   },
   {
     icon: LockIcon,
     title: "3. x402 Middleware Accepts",
-    copy: "Protected request is approved after payment verification.",
+    copy: "Protected request is approved after the payment check passes.",
   },
   {
     icon: Route01Icon,
@@ -125,7 +88,7 @@ const developerCards = [
   {
     icon: ServerStack01Icon,
     title: "Protected HTTP Routes",
-    copy: "Gate APIs, model endpoints, tools, and services behind verified CSPR payments.",
+    copy: "Gate APIs, model endpoints, tools, and services behind CSPR payment checks.",
     code: "router.forwardAfterPayment(request)",
   },
 ];
@@ -159,7 +122,7 @@ const faqs = [
   ],
   [
     "How does x402 work with Casper?",
-    "The client submits a native CSPR transfer. The server or facilitator verifies the deploy or transaction through Casper RPC before unlocking the protected HTTP resource.",
+    "The client submits a native CSPR transfer. The server or facilitator checks the transaction through Casper RPC before unlocking the protected HTTP resource.",
   ],
   [
     "What networks are supported?",
@@ -210,20 +173,14 @@ export default function HomePage() {
       <section className="landing-hero">
         <div className="hero-visual" aria-hidden="true">
           <NetworkOrb />
-          <div className="hero-terminal hero-terminal--top">
-            <span>payment.required</span>
-            <strong>x402 exact CSPR</strong>
-          </div>
-          <div className="hero-terminal hero-terminal--bottom">
-            <span>settlement</span>
-            <strong>RPC verified</strong>
-          </div>
+          <HeroTerminalFlow />
         </div>
         <div className="hero-copy">
           <h1>Casper Payments Infrastructure Layer for AI Agents.</h1>
           <p>
-            castAI is an open-source infrastructure layer for AI agents to pay,
-            verify, route, and unlock x402 resources with native Casper CSPR.
+            castAI gives agents a simple path to request a paid resource, send
+            CSPR, and unlock the response through x402, MPP, routers, and
+            checkout UI.
           </p>
           <div className="hero-actions">
             <LandingButton href="/docs/ai-sdk" tone="primary">
@@ -259,77 +216,66 @@ export default function HomePage() {
         />
         <FeatureStripItem
           title="Facilitators & Routers"
-          copy="Verify, settle, and forward protected HTTP traffic after payment."
+          copy="Check payment receipts and forward protected HTTP traffic after payment."
         />
       </section>
 
       <LandingSection
-        badge="Open Source Toolkit"
-        copy="Use modular packages for x402 payments, MPP transfers, AI SDK integrations, payment verification, and protected routing."
+        badge="How It Fits"
+        copy="The SDK gives each part of the payment path a focused package instead of forcing developers to wire every step from scratch."
         id="packages"
-        title="Everything You Need to Monetize AI Services."
+        title="One Payment Path, Split Into Useful Building Blocks."
       >
-        <Card className="ecosystem-panel">
-          <CardContent>
-            <Tabs defaultValue="packages">
-              <TabsList aria-label="Package categories">
-                {[
-                  "packages",
-                  "x402",
-                  "mpp",
-                  "ai sdk",
-                  "facilitator",
-                  "router",
-                ].map((tab) => (
-                  <TabsTrigger key={tab} value={tab}>
-                    {tab === "mpp"
-                      ? "MPP"
-                      : tab === "ai sdk"
-                        ? "AI SDK"
-                        : titleCase(tab)}
-                  </TabsTrigger>
-                ))}
-              </TabsList>
-              {[
-                "packages",
-                "x402",
-                "mpp",
-                "ai sdk",
-                "facilitator",
-                "router",
-              ].map((tab) => (
-                <TabsContent key={tab} value={tab}>
-                  <div className="package-grid">
-                    {packages
-                      .filter((item) =>
-                        tab === "packages"
-                          ? true
-                          : item.role.toLowerCase() === tab ||
-                            item.name
-                              .toLowerCase()
-                              .includes(tab.replace(" ", "-"))
-                      )
-                      .map((item) => (
-                        <PackageCard key={item.name} {...item} />
-                      ))}
-                  </div>
-                </TabsContent>
-              ))}
-            </Tabs>
-            <LandingButton
-              className="ecosystem-button"
-              href="/docs"
-              tone="primary"
-            >
-              Explore Packages
-            </LandingButton>
-          </CardContent>
-        </Card>
+        <div className="story-bento-grid">
+          <BentoCard
+            className="story-bento-card--wide"
+            icon={CodeXmlIcon}
+            label="@castaisdk/ai-sdk"
+            title="Agent asks for a paid resource"
+            copy="Tools expose x402 and MPP calls to AI agents without hiding the payment path."
+          />
+          <BentoCard
+            icon={Wallet01Icon}
+            label="@castaisdk/mpp"
+            title="CSPR moves on Casper"
+            copy="Native transfers use motes, account hashes, and the selected Casper network."
+          />
+          <BentoCard
+            icon={Route01Icon}
+            label="@castaisdk/router"
+            title="HTTP opens after payment"
+            copy="The router forwards the request only after the payment path succeeds."
+          />
+          <BentoCard
+            icon={ServerStack01Icon}
+            label="@castaisdk/facilitator"
+            title="Server checks the receipt"
+            copy="Amount, recipient, sender, network, and replay use are checked through Casper RPC."
+          />
+          <BentoCard
+            className="story-bento-card--tall"
+            icon={PackageIcon}
+            label="@castaisdk/x402"
+            title="x402 becomes Casper-native"
+            copy="The package turns payment-required HTTP resources into a CSPR-based request flow."
+          />
+          <BentoCard
+            icon={Globe02Icon}
+            label="React UI"
+            title="Checkout gets a real interface"
+            copy="Prebuilt components help developers test payment prompts without building UI first."
+          />
+        </div>
+        <div className="section-actions">
+          <LandingButton href="/docs" tone="primary">
+            Explore Packages
+          </LandingButton>
+        </div>
       </LandingSection>
 
       <LandingSection
         badge="Casper Native"
-        copy="Native Casper transfers, RPC verification, and replay protection are first-class parts of the payment path."
+        copy="Native Casper transfers, RPC checks, and replay protection are part of the payment path."
         id="networks"
         title="Built Around CSPR Payments."
       >
@@ -343,8 +289,8 @@ export default function HomePage() {
       <LandingSection
         badge="Payment Flow"
         className="payment-section"
-        copy="castAI signs, submits, verifies, and routes paid AI requests through Casper-native payment paths."
-        title="From Agent Request to Settled CSPR."
+        copy="An agent requests a resource, receives payment instructions, sends CSPR, and gets the response."
+        title="From Agent Request to Paid Response."
       >
         <div className="payment-flow">
           <div className="payment-flow__column">
@@ -378,8 +324,8 @@ export default function HomePage() {
 
       <LandingSection
         badge="Quickstart"
-        copy="Install the packages, run checks, and wire Casper payment fetchers into agents or server routes."
-        title="Install, Typecheck, Build."
+        copy="Install the SDK, connect a Casper payment fetcher, and place the payment step in front of the resource."
+        title="Wire the Flow Into Your App."
       >
         <div className="quickstart-grid">
           <TerminalCard
@@ -559,35 +505,30 @@ function FeatureStripItem({ copy, title }: { copy: string; title: string }) {
   );
 }
 
-function PackageCard({
-  badges,
-  description,
-  name,
-  role,
+function BentoCard({
+  className,
+  copy,
+  icon: Icon,
+  label,
+  title,
 }: {
-  badges: string[];
-  description: string;
-  name: string;
-  role: string;
+  className?: string;
+  copy: string;
+  icon: IconSvgElement;
+  label: string;
+  title: string;
 }) {
   return (
-    <Card className="package-card">
+    <Card className={cn("story-bento-card", className)}>
       <CardContent>
-        <div className="package-card__icon">
-          <HugeIcon aria-hidden="true" icon={PackageIcon} />
-        </div>
-        <div className="package-card__body">
-          <span>{role}</span>
-          <h3>{name}</h3>
-          <p>{description}</p>
-          <div>
-            {badges.map((badge) => (
-              <Badge key={badge} variant="outline">
-                {badge}
-              </Badge>
-            ))}
+        <div className="story-bento-card__top">
+          <div className="icon-square">
+            <HugeIcon aria-hidden="true" icon={Icon} />
           </div>
+          <span>{label}</span>
         </div>
+        <h3>{title}</h3>
+        <p>{copy}</p>
       </CardContent>
     </Card>
   );
@@ -710,6 +651,33 @@ function TerminalCard({
   );
 }
 
+function HeroTerminalFlow() {
+  return (
+    <div className="hero-terminal-flow">
+      <div className="terminal-dots" aria-hidden="true">
+        <span />
+        <span />
+        <span />
+      </div>
+      <div className="hero-terminal-flow__lines">
+        <span className="hero-terminal-flow__line hero-terminal-flow__line--one">
+          agent requests paid model output
+        </span>
+        <span className="hero-terminal-flow__line hero-terminal-flow__line--two">
+          x402 returns Casper payment instructions
+        </span>
+        <span className="hero-terminal-flow__line hero-terminal-flow__line--three">
+          wallet sends CSPR on Casper
+        </span>
+        <span className="hero-terminal-flow__line hero-terminal-flow__line--four">
+          resource opens for the agent
+        </span>
+      </div>
+      <span className="hero-terminal-flow__cursor" />
+    </div>
+  );
+}
+
 function NetworkOrb({ compact = false }: { compact?: boolean }) {
   return (
     <div className={cn("network-orb", compact && "network-orb--compact")}>
@@ -726,13 +694,6 @@ function NetworkOrb({ compact = false }: { compact?: boolean }) {
       </div>
     </div>
   );
-}
-
-function titleCase(value: string) {
-  return value
-    .split(" ")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
 }
 
 function slugify(value: string) {

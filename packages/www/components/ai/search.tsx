@@ -5,14 +5,17 @@ import type { Tool, UIMessage, UIToolInvocation } from "ai";
 import type { ComponentProps, ReactNode, SyntheticEvent } from "react";
 import { useChat } from "@ai-sdk/react";
 import {
+  ArrowUpRight01Icon,
   Cancel01Icon,
-  ChatIcon,
+  FileSearchIcon,
+  LinkSquare02Icon,
   Loading03Icon,
   MailSend02Icon,
   RefreshIcon,
-  Search01Icon,
+  SparklesIcon,
 } from "@hugeicons/core-free-icons";
 import { DefaultChatTransport } from "ai";
+import Image from "next/image";
 import {
   createContext,
   useCallback,
@@ -39,6 +42,9 @@ export type ChatUIMessage = UIMessage<
 >;
 
 export type SearchTool = Tool<{ query: string; limit: number }>;
+
+const panelId = "castai-docs-ai";
+const inputId = "castai-docs-ai-input";
 
 const Context = createContext<{
   open: boolean;
@@ -69,12 +75,15 @@ export function AISearchTrigger({
 
   return (
     <button
+      aria-controls={panelId}
+      aria-expanded={open}
       data-state={open ? "open" : "closed"}
       className={cn(
+        "docs-ai-trigger",
         position === "float" && [
           "fixed bottom-4 z-20 min-w-24 gap-2 shadow-lg transition-[translate,opacity]",
           "inset-e-[calc(--spacing(4)+var(--removed-body-scroll-bar-size,0px))]",
-          open && "translate-y-10 opacity-0",
+          open && "pointer-events-none translate-y-10 opacity-0",
         ],
         className
       )}
@@ -90,6 +99,7 @@ export function AISearchTrigger({
 export function AISearchPanel() {
   const { open, setOpen } = useAISearchContext();
   useHotKey();
+  useBodyScrollLock(open);
 
   if (!open) return null;
 
@@ -97,24 +107,24 @@ export function AISearchPanel() {
     <>
       <button
         aria-label="Close Ask AI"
-        className="fixed inset-0 z-30 cursor-default border-0 bg-fd-overlay/65 p-0 backdrop-blur-xs lg:hidden"
+        className="docs-ai-backdrop"
         onClick={() => setOpen(false)}
+        tabIndex={-1}
         type="button"
       />
       <aside
+        aria-modal="true"
         aria-label="Ask AI"
-        className={cn(
-          "fixed inset-x-2 inset-y-4 z-30 overflow-hidden rounded-2xl border bg-fd-card text-fd-card-foreground shadow-xl",
-          "lg:inset-y-0 lg:right-0 lg:left-auto lg:w-[400px] lg:rounded-none lg:border-y-0 lg:border-e-0 lg:border-s",
-          "2xl:w-[460px]"
-        )}
+        className="docs-ai-panel"
+        id={panelId}
+        role="dialog"
       >
-        <div className="flex size-full flex-col gap-3 p-3">
+        <div className="docs-ai-shell">
           <AISearchPanelHeader />
-          <AISearchPanelList className="flex-1" />
-          <div className="rounded-xl border bg-fd-secondary text-fd-secondary-foreground shadow-sm focus-within:shadow-md">
+          <AISearchPanelList />
+          <div className="docs-ai-composer">
             <AISearchInput />
-            <div className="flex items-center gap-1.5 p-1 empty:hidden">
+            <div className="docs-ai-actions">
               <AISearchInputActions />
             </div>
           </div>
@@ -131,18 +141,13 @@ export function AISearchPanelHeader({
   const { setOpen } = useAISearchContext();
 
   return (
-    <div
-      className={cn(
-        "flex items-start gap-2 rounded-xl border bg-fd-secondary text-fd-secondary-foreground shadow-sm",
-        className
-      )}
-      {...props}
-    >
-      <div className="flex-1 px-3 py-2">
-        <p className="mb-1 text-sm font-medium">Ask AI</p>
-        <p className="text-xs text-fd-muted-foreground">
-          Answers come from the docs. Verify details before shipping.
-        </p>
+    <div className={cn("docs-ai-header", className)} {...props}>
+      <div className="docs-ai-brand" aria-hidden="true">
+        <Image alt="" height={24} src="/favicon.svg" width={24} />
+      </div>
+      <div className="docs-ai-heading">
+        <p>Ask castAI docs</p>
+        <span>Setup help for x402, MPP, checkout UI, and agent tools.</span>
       </div>
 
       <button
@@ -151,11 +156,10 @@ export function AISearchPanelHeader({
           buttonVariants({
             size: "icon-sm",
             variant: "ghost",
-            className: "m-1 rounded-full text-fd-muted-foreground",
+            className: "docs-ai-close",
           })
         )}
         onClick={() => setOpen(false)}
-        tabIndex={-1}
         type="button"
       >
         <HugeIcon aria-hidden="true" icon={Cancel01Icon} size={16} />
@@ -171,78 +175,101 @@ export function AISearchPanelList({
 }: ComponentProps<"div">) {
   const chat = useChatContext();
   const messages = chat.messages.filter((msg) => msg.role !== "system");
+  const isLoading = chat.status === "submitted" || chat.status === "streaming";
 
   return (
-    <List
-      className={cn("py-4 overscroll-contain", className)}
-      style={{
-        maskImage:
-          "linear-gradient(to bottom, transparent, white 1rem, white calc(100% - 1rem), transparent 100%)",
-        ...style,
-      }}
-      {...props}
-    >
-      {messages.length === 0 ? (
-        <div className="flex size-full flex-col items-center justify-center gap-2 text-center text-sm text-fd-muted-foreground/80">
-          <HugeIcon aria-hidden="true" icon={ChatIcon} size={22} />
-          <p>Ask about x402, MPP, checkout UI, or agent setup.</p>
-        </div>
-      ) : (
-        <div className="flex flex-col gap-4 px-3">
-          {chat.error && (
-            <div className="rounded-lg border bg-fd-secondary p-2 text-fd-secondary-foreground">
-              <p className="mb-1 text-xs text-fd-muted-foreground">
-                Request failed
-              </p>
-              <p className="text-sm">Docs AI is temporarily unavailable.</p>
+    <List className={cn("docs-ai-list", className)} style={style} {...props}>
+      <div className="docs-ai-thread">
+        {chat.error && (
+          <div className="docs-ai-error" role="status">
+            <strong>Docs AI is unavailable.</strong>
+            <span>Try again after a moment.</span>
+          </div>
+        )}
+
+        {messages.length === 0 ? (
+          <div className="docs-ai-empty">
+            <div className="docs-ai-empty__icon" aria-hidden="true">
+              <HugeIcon icon={SparklesIcon} size={24} />
             </div>
-          )}
-          {messages.map((item) => (
-            <Message key={item.id} message={item} />
-          ))}
-        </div>
-      )}
+            <p>Ask about x402, MPP, checkout UI, or agent setup.</p>
+            <span>
+              Answers cite matching documentation pages when available.
+            </span>
+          </div>
+        ) : (
+          messages.map((item) => <Message key={item.id} message={item} />)
+        )}
+
+        {isLoading && (
+          <div className="docs-ai-thinking" role="status">
+            <HugeIcon
+              aria-hidden="true"
+              className="animate-spin"
+              icon={Loading03Icon}
+              size={16}
+            />
+            Reading docs...
+          </div>
+        )}
+      </div>
     </List>
   );
 }
 
 export function AISearchInputActions() {
-  const { messages, status, setMessages, regenerate } = useChatContext();
-  const isLoading = status === "streaming";
+  const { error, messages, status, setMessages, regenerate } = useChatContext();
+  const isLoading = status === "submitted" || status === "streaming";
 
-  if (messages.length === 0) return null;
+  if (messages.length === 0) {
+    return (
+      <span className="docs-ai-action-note">
+        Searches docs before answering.
+      </span>
+    );
+  }
 
   return (
     <>
-      {!isLoading && messages.at(-1)?.role === "assistant" && (
+      <span className="docs-ai-action-note">
+        {error
+          ? "Request failed."
+          : isLoading
+            ? "Answering from docs."
+            : "Docs answer ready."}
+      </span>
+      <div className="docs-ai-action-buttons">
+        {!isLoading && (error || messages.at(-1)?.role === "assistant") && (
+          <button
+            className={cn(
+              buttonVariants({
+                variant: "secondary",
+                size: "sm",
+                className: "gap-1.5 rounded-full",
+              })
+            )}
+            onClick={() => regenerate()}
+            type="button"
+          >
+            <HugeIcon aria-hidden="true" icon={RefreshIcon} size={16} />
+            Retry
+          </button>
+        )}
         <button
           className={cn(
             buttonVariants({
               variant: "secondary",
               size: "sm",
-              className: "gap-1.5 rounded-full",
+              className: "rounded-full",
             })
           )}
-          onClick={() => regenerate()}
+          disabled={isLoading}
+          onClick={() => setMessages([])}
           type="button"
         >
-          <HugeIcon aria-hidden="true" icon={RefreshIcon} size={16} />
-          Retry
+          Clear
         </button>
-      )}
-      <button
-        className={cn(
-          buttonVariants({
-            variant: "secondary",
-            size: "sm",
-            className: "rounded-full",
-          })
-        )}
-        onClick={() => setMessages([])}
-        type="button"
-      >
-        Clear
-      </button>
+      </div>
     </>
   );
 }
@@ -255,7 +282,7 @@ export function AISearchInput(props: ComponentProps<"form">) {
   const isLoading = status === "streaming" || status === "submitted";
 
   useEffect(() => {
-    setInput(localStorage.getItem(storageKeyInput) ?? "");
+    setInput(readStoredInput());
   }, []);
 
   const onStart = (e?: SyntheticEvent) => {
@@ -279,33 +306,46 @@ export function AISearchInput(props: ComponentProps<"form">) {
       ],
     });
     setInput("");
-    localStorage.removeItem(storageKeyInput);
+    writeStoredInput("");
   };
 
   useEffect(() => {
-    if (isLoading) document.getElementById("nd-ai-input")?.focus();
+    document.getElementById(inputId)?.focus();
+  }, []);
+
+  useEffect(() => {
+    if (!isLoading) document.getElementById(inputId)?.focus();
   }, [isLoading]);
 
   return (
     <form
       {...props}
-      className={cn("flex items-start pe-2", props.className)}
+      className={cn("docs-ai-form", props.className)}
       onSubmit={onStart}
     >
       <Input
+        aria-label="Ask the castAI docs"
         autoFocus
-        className="p-3"
+        className="docs-ai-input"
         disabled={isLoading}
         onChange={(e) => {
           setInput(e.target.value);
-          localStorage.setItem(storageKeyInput, e.target.value);
+          writeStoredInput(e.target.value);
         }}
         onKeyDown={(event) => {
-          if (!event.shiftKey && event.key === "Enter") {
+          if (
+            !event.shiftKey &&
+            event.key === "Enter" &&
+            !event.nativeEvent.isComposing
+          ) {
             onStart(event);
           }
         }}
-        placeholder={isLoading ? "Answering..." : "Ask the docs"}
+        placeholder={
+          isLoading
+            ? "Reading documentation..."
+            : "Ask about x402, MPP, checkout UI..."
+        }
         value={input}
       />
       {isLoading ? (
@@ -313,11 +353,12 @@ export function AISearchInput(props: ComponentProps<"form">) {
           className={cn(
             buttonVariants({
               variant: "secondary",
-              className: "mt-2 gap-2 rounded-full transition-all",
+              className: "docs-ai-submit docs-ai-submit--stop",
             })
           )}
           key="stop"
           onClick={stop}
+          aria-label="Stop response"
           type="button"
         >
           <HugeIcon
@@ -333,11 +374,12 @@ export function AISearchInput(props: ComponentProps<"form">) {
           className={cn(
             buttonVariants({
               variant: "default",
-              className: "mt-2 rounded-full transition-all",
+              className: "docs-ai-submit",
             })
           )}
           disabled={input.length === 0}
           key="send"
+          aria-label="Send message"
           type="submit"
         >
           <HugeIcon aria-hidden="true" icon={MailSend02Icon} size={16} />
@@ -369,41 +411,63 @@ function Message({
     }
   }
 
+  const role = message.role === "assistant" ? "castAI" : "you";
+
   return (
-    <div {...props}>
-      <p
-        className={cn(
-          "mb-1 text-sm font-medium text-fd-muted-foreground",
-          message.role === "assistant" && "text-fd-primary"
+    <article
+      {...props}
+      className={cn("docs-ai-message", `docs-ai-message--${message.role}`)}
+    >
+      <div className="docs-ai-message__meta">{role}</div>
+      <div className="docs-ai-message__bubble">
+        {markdown.trim() ? (
+          <div className="docs-ai-markdown">
+            <Markdown text={markdown} />
+          </div>
+        ) : (
+          <span className="docs-ai-message__empty">Preparing response...</span>
         )}
-      >
-        {message.role === "assistant" ? "castAI" : "you"}
-      </p>
-      <div className="prose text-sm">
-        <Markdown text={markdown} />
+
+        {searchCalls.map((call) => (
+          <SearchCallCard call={call} key={call.toolCallId} />
+        ))}
+      </div>
+    </article>
+  );
+}
+
+function SearchCallCard({ call }: { call: UIToolInvocation<SearchTool> }) {
+  const results = getSearchResults(call.output);
+  const hasFailed =
+    call.state === "output-error" || call.state === "output-denied";
+
+  return (
+    <div className="docs-ai-sources" data-state={call.state}>
+      <div className="docs-ai-sources__header">
+        <HugeIcon aria-hidden="true" icon={FileSearchIcon} size={15} />
+        {hasFailed
+          ? call.errorText || "Docs search failed"
+          : call.output
+            ? `${results.length} docs result${results.length === 1 ? "" : "s"}`
+            : "Searching docs..."}
       </div>
 
-      {searchCalls.map((call) => {
-        const count = Array.isArray(call.output) ? call.output.length : 0;
-
-        return (
-          <div
-            className="mt-3 flex flex-row items-center gap-2 rounded-lg border bg-fd-secondary p-2 text-xs text-fd-muted-foreground"
-            key={call.toolCallId}
-          >
-            <HugeIcon aria-hidden="true" icon={Search01Icon} size={16} />
-            {call.state === "output-error" || call.state === "output-denied" ? (
-              <p className="text-fd-error">
-                {call.errorText ?? "Search failed"}
-              </p>
-            ) : (
-              <p>
-                {!call.output ? "Searching docs..." : `${count} docs results`}
-              </p>
-            )}
-          </div>
-        );
-      })}
+      {results.slice(0, 3).map((result) => (
+        <a className="docs-ai-source-card" href={result.url} key={result.url}>
+          <span>
+            <HugeIcon aria-hidden="true" icon={LinkSquare02Icon} size={14} />
+            {result.title}
+            <HugeIcon
+              aria-hidden="true"
+              className="docs-ai-source-card__arrow"
+              icon={ArrowUpRight01Icon}
+              size={13}
+            />
+          </span>
+          {result.description ? <p>{result.description}</p> : null}
+          <small>{result.url}</small>
+        </a>
+      ))}
     </div>
   );
 }
@@ -412,9 +476,9 @@ function Input(props: ComponentProps<"textarea">) {
   const shared = cn("col-start-1 row-start-1", props.className);
 
   return (
-    <div className="grid flex-1">
+    <div className="docs-ai-input-wrap">
       <textarea
-        id="nd-ai-input"
+        id={inputId}
         {...props}
         className={cn(
           "resize-none bg-transparent placeholder:text-fd-muted-foreground focus-visible:outline-none",
@@ -437,7 +501,7 @@ function List(props: Omit<ComponentProps<"div">, "dir">) {
     function callback() {
       containerRef.current?.scrollTo({
         top: containerRef.current.scrollHeight,
-        behavior: "instant",
+        behavior: "auto",
       });
     }
 
@@ -462,6 +526,66 @@ function List(props: Omit<ComponentProps<"div">, "dir">) {
       {props.children}
     </div>
   );
+}
+
+type SearchResult = {
+  title: string;
+  description?: string;
+  url: string;
+};
+
+function getSearchResults(output: unknown): SearchResult[] {
+  if (!Array.isArray(output)) return [];
+
+  return output.flatMap((item) => {
+    if (!isSearchResult(item)) return [];
+    return item;
+  });
+}
+
+function isSearchResult(value: unknown): value is SearchResult {
+  if (!value || typeof value !== "object") return false;
+
+  const candidate = value as Record<string, unknown>;
+  return (
+    typeof candidate.title === "string" &&
+    typeof candidate.url === "string" &&
+    (candidate.description === undefined ||
+      typeof candidate.description === "string")
+  );
+}
+
+function readStoredInput() {
+  try {
+    return localStorage.getItem(storageKeyInput) ?? "";
+  } catch {
+    return "";
+  }
+}
+
+function writeStoredInput(value: string) {
+  try {
+    if (value) {
+      localStorage.setItem(storageKeyInput, value);
+    } else {
+      localStorage.removeItem(storageKeyInput);
+    }
+  } catch {
+    // Ignore storage failures; the composer still works without draft restore.
+  }
+}
+
+function useBodyScrollLock(locked: boolean) {
+  useEffect(() => {
+    if (!locked) return;
+
+    const original = document.documentElement.style.overflow;
+    document.documentElement.style.overflow = "hidden";
+
+    return () => {
+      document.documentElement.style.overflow = original;
+    };
+  }, [locked]);
 }
 
 export function useHotKey() {
