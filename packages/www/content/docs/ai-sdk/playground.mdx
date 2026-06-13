@@ -1,0 +1,63 @@
+---
+title: Checkout Playground
+description: Fumadocs Story and WebContainer previews for checkout UI.
+---
+
+import { checkoutStory } from "@/components/checkout.story";
+import { WebContainerPlayground } from "@/components/webcontainer-playground";
+
+The checkout UI has two docs surfaces:
+
+- Fumadocs Story renders the React component with editable props.
+- StackBlitz WebContainers boot a browser Node runtime and render a checkout surface into a DOM node.
+
+## Fumadocs Story
+
+Fumadocs Story is used here as the component preview layer for docs. It is close to Storybook in purpose, but focused on docs pages and component props.
+
+<checkoutStory.WithControl />
+
+## WebContainer Runtime
+
+WebContainers run in the browser. They require cross-origin isolation headers:
+
+```txt
+Cross-Origin-Embedder-Policy: require-corp
+Cross-Origin-Opener-Policy: same-origin
+```
+
+The runtime below mounts a small Node server and renders checkout UI into:
+
+```html
+<div id="castai-checkout"></div>
+```
+
+<WebContainerPlayground />
+
+## SDK Mount API
+
+Use this in an app when the checkout must be created from code instead of JSX:
+
+```tsx
+import { createCasperX402Fetch } from "@castai/ai-sdk";
+import { renderCastaiCheckout } from "@castai/ai-sdk/react";
+
+const x402Fetch = createCasperX402Fetch({
+  networks: ["casper:testnet"],
+  privateKeyPem: process.env.CASPER_PRIVATE_KEY_PEM,
+});
+
+await renderCastaiCheckout({
+  amount: "0.001",
+  container: "#castai-checkout",
+  network: "casper:testnet",
+  recipient: process.env.CASPER_RECIPIENT,
+  request: {
+    url: "https://api.example.com/protected",
+  },
+  scheme: "x402",
+  x402Fetch,
+});
+```
+
+Keep signer material behind a server route when this UI is rendered in a public browser.

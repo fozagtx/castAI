@@ -1,4 +1,11 @@
 {
   "title": "AI SDK",
-  "pages": ["index", "llm-text", "openclaw", "agent-tools", "ui-components"]
+  "pages": [
+    "index",
+    "llm-text",
+    "openclaw",
+    "agent-tools",
+    "ui-components",
+    "playground"
+  ]
 }

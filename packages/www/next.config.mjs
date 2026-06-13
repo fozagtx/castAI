@@ -1,5 +1,6 @@
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { createNextStory } from "@fumadocs/story/next";
 import { createMDX } from "fumadocs-mdx/next";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -18,5 +19,6 @@ const config = {
 };
 
 const withMDX = createMDX();
+const withStory = createNextStory();
 
-export default withMDX(config);
+export default withStory(withMDX(config));

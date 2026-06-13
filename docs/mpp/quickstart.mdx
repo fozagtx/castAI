@@ -16,7 +16,7 @@ import { casper } from "@castai/mpp/server";
 
 casper({
   network: "casper:testnet",
-  recipient: "01...",
+  recipient: process.env.CASPER_RECIPIENT,
 });
 ```
 

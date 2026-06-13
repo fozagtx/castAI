@@ -61,43 +61,44 @@ export type CastaiCheckoutController = {
 };
 
 const shellStyle = {
-  background: "#0b0c0e",
-  border: "1px solid rgba(148, 163, 184, 0.25)",
+  background: "var(--card, #ffffff)",
+  border: "1px solid var(--border, #e5e7eb)",
   borderRadius: 8,
-  color: "#e2e8f0",
+  boxShadow: "0 1px 2px rgba(15, 23, 42, 0.04)",
+  color: "var(--card-foreground, #0f172a)",
   display: "grid",
-  gap: 14,
+  gap: 16,
   maxWidth: 760,
-  padding: 16,
+  padding: 20,
 } satisfies CSSProperties;
 
 const mutedStyle = {
-  color: "#94a3b8",
-  fontSize: "0.85rem",
-  lineHeight: 1.55,
+  color: "var(--muted-foreground, #64748b)",
+  fontSize: "0.9rem",
+  lineHeight: 1.6,
   margin: 0,
 } satisfies CSSProperties;
 
 const metaGridStyle = {
   display: "grid",
-  gap: 8,
-  gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))",
+  gap: 10,
+  gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
 } satisfies CSSProperties;
 
 const metaItemStyle = {
-  background: "#111318",
-  border: "1px solid rgba(148, 163, 184, 0.2)",
+  background: "var(--muted, #f8fafc)",
+  border: "1px solid var(--border, #e5e7eb)",
   borderRadius: 6,
   display: "grid",
-  gap: 4,
-  padding: 10,
+  gap: 6,
+  padding: "11px 12px",
 } satisfies CSSProperties;
 
 const inputStyle = {
-  background: "#111318",
-  border: "1px solid rgba(148, 163, 184, 0.28)",
+  background: "var(--background, #ffffff)",
+  border: "1px solid var(--input, #e5e7eb)",
   borderRadius: 6,
-  color: "#f8fafc",
+  color: "var(--foreground, #0f172a)",
   font: "inherit",
   padding: "10px 12px",
   width: "100%",
@@ -110,23 +111,49 @@ const rowStyle = {
 } satisfies CSSProperties;
 
 const buttonStyle = {
-  background: "#caa0ff",
-  border: "1px solid #caa0ff",
+  background: "var(--primary, #171717)",
+  border: "1px solid var(--primary, #171717)",
   borderRadius: 6,
-  color: "#0b0c0e",
+  color: "var(--primary-foreground, #fafafa)",
   cursor: "pointer",
   fontWeight: 700,
+  minHeight: 36,
   padding: "10px 12px",
 } satisfies CSSProperties;
 
 const secondaryButtonStyle = {
-  background: "transparent",
-  border: "1px solid rgba(148, 163, 184, 0.35)",
+  background: "var(--background, #ffffff)",
+  border: "1px solid var(--border, #e5e7eb)",
   borderRadius: 6,
-  color: "#e2e8f0",
+  color: "var(--foreground, #0f172a)",
   cursor: "pointer",
   fontWeight: 700,
+  minHeight: 36,
   padding: "10px 12px",
+} satisfies CSSProperties;
+
+const titleStyle = {
+  color: "var(--card-foreground, #0f172a)",
+  fontSize: "1rem",
+  fontWeight: 650,
+  letterSpacing: 0,
+  lineHeight: 1.35,
+  margin: 0,
+} satisfies CSSProperties;
+
+const labelStyle = {
+  color: "var(--muted-foreground, #64748b)",
+  fontSize: "0.74rem",
+  fontWeight: 600,
+  lineHeight: 1.2,
+} satisfies CSSProperties;
+
+const codeStyle = {
+  color: "var(--foreground, #0f172a)",
+  fontFamily:
+    "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace",
+  fontSize: "0.82rem",
+  overflowWrap: "anywhere",
 } satisfies CSSProperties;
 
 export function PaymentTester({
@@ -183,10 +210,9 @@ export function PaymentTester({
     <section style={shellStyle}>
       <h2
         style={{
-          color: "#f8fafc",
+          ...titleStyle,
           fontSize: "0.9rem",
-          letterSpacing: "0.12em",
-          margin: 0,
+          letterSpacing: "0.08em",
           textTransform: "uppercase",
         }}
       >
@@ -194,7 +220,7 @@ export function PaymentTester({
       </h2>
 
       <label style={rowStyle}>
-        <span>Scheme</span>
+        <span style={labelStyle}>Scheme</span>
         <select
           onChange={(event) =>
             setScheme(event.currentTarget.value as PaymentScheme)
@@ -208,7 +234,7 @@ export function PaymentTester({
       </label>
 
       <label style={rowStyle}>
-        <span>URL</span>
+        <span style={labelStyle}>URL</span>
         <input
           onChange={(event) => setUrl(event.currentTarget.value)}
           placeholder="https://api.example.com/protected"
@@ -219,7 +245,7 @@ export function PaymentTester({
       </label>
 
       <label style={rowStyle}>
-        <span>Method</span>
+        <span style={labelStyle}>Method</span>
         <select
           onChange={(event) => setMethod(event.currentTarget.value)}
           style={inputStyle}
@@ -234,7 +260,7 @@ export function PaymentTester({
       </label>
 
       <label style={{ display: "grid", gap: 8 }}>
-        <span>Headers</span>
+        <span style={labelStyle}>Headers</span>
         <textarea
           onChange={(event) => setHeaders(event.currentTarget.value)}
           placeholder='Optional JSON object, for example {"accept":"application/json"}'
@@ -245,7 +271,7 @@ export function PaymentTester({
       </label>
 
       <label style={{ display: "grid", gap: 8 }}>
-        <span>Body</span>
+        <span style={labelStyle}>Body</span>
         <textarea
           onChange={(event) => setBody(event.currentTarget.value)}
           placeholder="Optional raw body"
@@ -321,17 +347,7 @@ export function CastaiCheckout({
   return (
     <section aria-busy={busy} style={shellStyle}>
       <div style={{ display: "grid", gap: 8 }}>
-        <h2
-          style={{
-            color: "#f8fafc",
-            fontSize: "0.95rem",
-            letterSpacing: "0.08em",
-            margin: 0,
-            textTransform: "uppercase",
-          }}
-        >
-          {title}
-        </h2>
+        <h2 style={titleStyle}>{title}</h2>
         <p style={mutedStyle}>{description}</p>
       </div>
 
@@ -347,16 +363,8 @@ export function CastaiCheckout({
       </div>
 
       <div style={metaItemStyle}>
-        <span style={{ color: "#94a3b8", fontSize: "0.72rem" }}>Resource</span>
-        <code
-          style={{
-            color: "#f8fafc",
-            fontFamily:
-              "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace",
-            fontSize: "0.82rem",
-            overflowWrap: "anywhere",
-          }}
-        >
+        <span style={labelStyle}>Resource</span>
+        <code style={codeStyle}>
           {request.method ?? "GET"} {request.url}
         </code>
       </div>
@@ -417,10 +425,10 @@ export function PaymentResult({ result }: { result: AgentResourceResponse }) {
   return (
     <pre
       style={{
-        background: "#111318",
-        border: "1px solid rgba(148, 163, 184, 0.25)",
+        background: "var(--muted, #f8fafc)",
+        border: "1px solid var(--border, #e5e7eb)",
         borderRadius: 6,
-        color: "#e2e8f0",
+        color: "var(--foreground, #0f172a)",
         margin: 0,
         overflowX: "auto",
         padding: 12,
@@ -436,10 +444,12 @@ export function PaymentError({ message }: { message: string }) {
     <div
       role="alert"
       style={{
-        background: "rgba(239, 68, 68, 0.12)",
-        border: "1px solid rgba(239, 68, 68, 0.35)",
+        background:
+          "color-mix(in oklab, var(--destructive, #ef4444) 10%, transparent)",
+        border:
+          "1px solid color-mix(in oklab, var(--destructive, #ef4444) 30%, transparent)",
         borderRadius: 6,
-        color: "#fecaca",
+        color: "var(--destructive, #dc2626)",
         padding: 12,
       }}
     >
@@ -451,12 +461,13 @@ export function PaymentError({ message }: { message: string }) {
 function CheckoutMeta({ label, value }: { label: string; value: string }) {
   return (
     <div style={metaItemStyle}>
-      <span style={{ color: "#94a3b8", fontSize: "0.72rem" }}>{label}</span>
+      <span style={labelStyle}>{label}</span>
       <span
         style={{
-          color: "#f8fafc",
+          color: "var(--foreground, #0f172a)",
           fontSize: "0.86rem",
-          overflowWrap: "anywhere",
+          lineHeight: 1.4,
+          overflowWrap: "break-word",
         }}
       >
         {value}
