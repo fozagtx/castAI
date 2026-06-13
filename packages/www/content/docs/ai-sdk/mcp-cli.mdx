@@ -97,7 +97,9 @@ MCP tools:
 - `castai_pay_mpp_resource`
 - `castai_format_paid_resource`
 
-```mermaid
+<MermaidDiagram
+  title="MCP payment flow"
+  chart={`
 flowchart LR
   agent["Coding agent or app"] --> client["MCP client"]
   client --> transport{"Transport"}
@@ -111,7 +113,8 @@ flowchart LR
   mpp --> casper
   casper --> resource["Paid payload as text"]
   resource --> agent
-```
+`}
+/>
 
 Set signer configuration in the process environment:
 

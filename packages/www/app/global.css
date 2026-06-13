@@ -151,6 +151,48 @@ body {
   color: rgb(248, 250, 252);
 }
 
+.mermaid-diagram {
+  margin: 24px 0;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--card);
+}
+
+.mermaid-diagram figcaption {
+  border-bottom: 1px solid var(--border);
+  color: var(--muted-foreground);
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 10px 14px;
+  text-transform: uppercase;
+}
+
+.mermaid-diagram__canvas {
+  overflow-x: auto;
+  padding: 18px;
+}
+
+.mermaid-diagram__canvas svg {
+  display: block;
+  max-width: 100%;
+  min-width: 720px;
+}
+
+.mermaid-diagram__fallback {
+  margin: 0;
+  overflow-x: auto;
+  border-top: 1px solid var(--border);
+  background: var(--muted);
+  color: var(--foreground);
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  line-height: 1.55;
+  padding: 14px;
+}
+
 .checkout-story-frame {
   border: 1px solid var(--border);
   border-radius: 8px;
