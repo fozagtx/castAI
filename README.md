@@ -138,24 +138,104 @@ import { createCastaiGoatPlugin } from "@castaisdk/ai-sdk/adapters/goat";
 
 ## MCP and CLI
 
-Use the deployed Hugging Face MCP endpoint through one environment variable:
+The MCP server exposes castAI tools over Streamable HTTP. The hosted Hugging Face
+Space uses port `7860` and these paths:
+
+| Path | Purpose |
+| --- | --- |
+| `/health` | JSON health check and endpoint list |
+| `/mcp` | Streamable HTTP MCP endpoint |
+| `/gradio_api/mcp` | Hugging Face/Gradio-compatible MCP endpoint |
+| `/gradio_api/mcp/sse` | SSE-compatible MCP endpoint |
+
+If the Space is deployed as `fozagtx/castai-mcp`, the public endpoint is:
 
 ```sh
-# CASTAI_MCP_URL must contain the deployed Hugging Face MCP endpoint.
+export CASTAI_MCP_URL="https://fozagtx-castai-mcp.hf.space/mcp"
+```
+
+If the Space is deployed under another Hugging Face owner or Space name, use this
+format:
+
+```sh
+export CASTAI_MCP_URL="https://<hf-owner>-<space-name>.hf.space/mcp"
+```
+
+Health check the deployed Space before wiring it into an agent:
+
+```sh
+curl "https://fozagtx-castai-mcp.hf.space/health"
+```
+
+Generate Claude Code MCP config for the hosted endpoint:
+
+```sh
 castai claude-code --url "$CASTAI_MCP_URL" --json
 ```
+
+Write the config to `.mcp.json`:
+
+```sh
+castai claude-code --url "$CASTAI_MCP_URL" --json > .mcp.json
+```
+
+The JSON shape is:
+
+```json
+{
+  "mcpServers": {
+    "castai": {
+      "url": "https://fozagtx-castai-mcp.hf.space/mcp"
+    }
+  }
+}
+```
+
+Generate local stdio MCP config instead of using the hosted endpoint:
+
+```sh
+castai claude-code --package-manager npm --json
+castai claude-code --package-manager pnpm --json
+castai claude-code --package-manager yarn --json
+castai claude-code --package-manager bun --json
+```
+
+Run the MCP server yourself:
+
+```sh
+castai-mcp
+PORT=7860 castai-mcp-http
+```
+
+CLI commands:
 
 ```sh
 castai templates
 castai scaffold next-checkout ./my-checkout --package-manager pnpm
-castai claude-code --json
-castai-mcp
-PORT=7860 castai-mcp-http
+castai scaffold agent-vercel-ai ./my-agent --package-manager pnpm
+castai scaffold mcp-claude-code ./my-mcp-config --package-manager pnpm
+castai doctor --json
+castai mcp-config --url "$CASTAI_MCP_URL" --json
+castai claude-code --url "$CASTAI_MCP_URL" --json
 ```
 
 Claude Code plugin files are in `plugins/claude-code/castai`.
 
 Hugging Face Docker Space files are in `spaces/huggingface-mcp`.
+
+Required Hugging Face Space secrets for real Casper payments:
+
+```sh
+CASTAI_CASPER_PRIVATE_KEY_HEX=
+CASTAI_CASPER_PRIVATE_KEY_PEM=
+CASTAI_CASPER_PUBLIC_KEY=
+CASTAI_CASPER_NETWORK=casper:testnet
+CASTAI_CASPER_KEY_ALGORITHM=ed25519
+```
+
+Use either `CASTAI_CASPER_PRIVATE_KEY_HEX` or
+`CASTAI_CASPER_PRIVATE_KEY_PEM`. Set `CASTAI_CASPER_NETWORK` to
+`casper:mainnet` only when the signer is funded for mainnet.
 
 ```mermaid
 flowchart LR
