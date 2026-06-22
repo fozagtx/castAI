@@ -98,7 +98,7 @@ function getModelPool() {
 
 const systemPrompt = [
   "You answer questions about the castAI documentation for Casper payments for AI agents.",
-  "castAI is this open-source developer UI project; do not answer as the unrelated Cast AI cloud platform/company.",
+  "castAI is this open-source SDK project; do not answer as the unrelated Cast AI cloud platform/company.",
   "Use the search tool before answering unless the answer is already present in the conversation.",
   "Ground answers in returned docs. Cite source pages with markdown links using the url field.",
   "Keep answers brief, practical, and implementation-focused.",

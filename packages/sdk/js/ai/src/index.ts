@@ -40,6 +40,12 @@ export type AgentResourceResponse = {
   url: string;
 };
 
+export type FetchResourceOptions = {
+  signal?: AbortSignal | undefined;
+  throwOnError?: boolean | undefined;
+  timeoutMs?: number | undefined;
+};
+
 export type CreateX402FetchOptions = CasperSignerOptions & {
   fetch?: FetchLike | undefined;
   networks?: ("casper:mainnet" | "casper:testnet")[] | undefined;
@@ -108,6 +114,20 @@ export const castaiResourceRequestSchema = z.object({
     .describe("HTTP method. Defaults to GET."),
   url: z.url().describe("HTTP resource URL to request."),
 });
+
+export class CastaiResourceError extends Error {
+  readonly response: AgentResourceResponse;
+
+  constructor(response: AgentResourceResponse) {
+    super(
+      `castAI resource request failed with ${response.status} ${
+        response.statusText || "status"
+      } for ${response.url}`.trim()
+    );
+    this.name = "CastaiResourceError";
+    this.response = response;
+  }
+}
 
 export function createCasperX402Fetch(
   options: CreateX402FetchOptions
@@ -204,15 +224,30 @@ export async function generateCastaiText(
 
 export async function fetchResource(
   paymentFetch: FetchLike,
-  request: AgentResourceRequest
+  request: AgentResourceRequest,
+  options: FetchResourceOptions = {}
 ): Promise<AgentResourceResponse> {
-  const response = await paymentFetch(request.url, {
-    body: request.body,
-    headers: request.headers,
-    method: request.method ?? "GET",
-  });
+  const normalizedRequest = castaiResourceRequestSchema.parse(request);
+  const { cleanup, signal } = createRequestSignal(options);
 
-  return readResponse(response, request.url);
+  try {
+    const response = await paymentFetch(normalizedRequest.url, {
+      body: normalizedRequest.body,
+      headers: normalizedRequest.headers,
+      method: normalizedRequest.method ?? "GET",
+      signal,
+    });
+
+    const result = await readResponse(response, normalizedRequest.url);
+
+    if (options.throwOnError && !result.ok) {
+      throw new CastaiResourceError(result);
+    }
+
+    return result;
+  } finally {
+    cleanup();
+  }
 }
 
 export async function getPaidResourceText(
@@ -279,11 +314,56 @@ async function readResponse(
 
 function parseBody(body: string, contentType: string | null): unknown {
   if (!body) return null;
-  if (!contentType?.includes("application/json")) return body;
+  if (!isJsonContentType(contentType)) return body;
 
   try {
     return JSON.parse(body);
   } catch {
     return body;
   }
+}
+
+function isJsonContentType(contentType: string | null) {
+  if (!contentType) return false;
+
+  return /\bapplication\/(?:[\w.+-]+\+)?json\b/i.test(contentType);
+}
+
+function createRequestSignal(options: FetchResourceOptions): {
+  cleanup: () => void;
+  signal: AbortSignal | undefined;
+} {
+  if (!options.timeoutMs && !options.signal) {
+    return { cleanup: () => undefined, signal: undefined };
+  }
+
+  const controller = new AbortController();
+  const abortFromSignal = () => {
+    controller.abort(options.signal?.reason);
+  };
+  let timeout: ReturnType<typeof setTimeout> | undefined;
+
+  if (options.signal?.aborted) {
+    abortFromSignal();
+  } else {
+    options.signal?.addEventListener("abort", abortFromSignal, { once: true });
+  }
+
+  if (options.timeoutMs) {
+    timeout = setTimeout(() => {
+      controller.abort(
+        new Error(
+          `castAI resource request timed out after ${options.timeoutMs}ms`
+        )
+      );
+    }, options.timeoutMs);
+  }
+
+  return {
+    cleanup: () => {
+      if (timeout) clearTimeout(timeout);
+      options.signal?.removeEventListener("abort", abortFromSignal);
+    },
+    signal: controller.signal,
+  };
 }

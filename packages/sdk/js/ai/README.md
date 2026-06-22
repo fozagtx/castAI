@@ -44,10 +44,18 @@ import { fetchResource, llm } from "@castaisdk/ai-sdk";
 
 const response = await fetchResource(x402Fetch, {
   url: "https://api.example.com/weather",
+}, {
+  timeoutMs: 15_000,
+  throwOnError: true,
 });
 
 const text = llm.text(response);
 ```
+
+`fetchResource` validates the URL/method before calling the paid fetcher,
+passes abort signals through to the underlying request, parses `application/json`
+and `application/*+json` responses, and can throw `CastaiResourceError` for
+non-2xx responses when `throwOnError` is enabled.
 
 ## React tester
 

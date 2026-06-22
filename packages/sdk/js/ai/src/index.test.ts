@@ -52,6 +52,96 @@ describe("castAI AI SDK tools", () => {
     });
   });
 
+  it("validates resource requests before calling payment fetchers", async () => {
+    const paymentFetch = vi.fn();
+
+    await expect(
+      fetchResource(paymentFetch, {
+        method: "TRACE",
+        url: "not-a-url",
+      })
+    ).rejects.toThrow();
+    expect(paymentFetch).not.toHaveBeenCalled();
+  });
+
+  it("parses structured JSON response content types", async () => {
+    const paymentFetch = vi.fn().mockResolvedValue(
+      new Response(JSON.stringify({ error: "payment-required" }), {
+        headers: { "content-type": "application/problem+json" },
+        status: 402,
+        statusText: "Payment Required",
+      })
+    );
+
+    const response = await fetchResource(paymentFetch, {
+      url: "https://api.castai.test/problem",
+    });
+
+    expect(response.body).toEqual({ error: "payment-required" });
+    expect(response.ok).toBe(false);
+  });
+
+  it("can throw typed errors for non-ok resource responses", async () => {
+    const paymentFetch = vi.fn().mockResolvedValue(
+      new Response("payment required", {
+        status: 402,
+        statusText: "Payment Required",
+      })
+    );
+
+    await expect(
+      fetchResource(
+        paymentFetch,
+        {
+          url: "https://api.castai.test/protected",
+        },
+        { throwOnError: true }
+      )
+    ).rejects.toMatchObject({
+      name: "CastaiResourceError",
+      response: {
+        body: "payment required",
+        status: 402,
+        url: "https://api.castai.test/protected",
+      },
+    });
+  });
+
+  it("passes abort signals and timeout signals to payment fetchers", async () => {
+    vi.useFakeTimers();
+    const paymentFetch = vi.fn(
+      (_url: string | URL | Request, init?: RequestInit) => {
+        return new Promise<Response>((_resolve, reject) => {
+          init?.signal?.addEventListener("abort", () => {
+            reject(init.signal?.reason);
+          });
+        });
+      }
+    );
+
+    const pending = fetchResource(
+      paymentFetch,
+      {
+        url: "https://api.castai.test/slow",
+      },
+      { timeoutMs: 25 }
+    );
+    const pendingExpectation = expect(pending).rejects.toThrow(
+      "castAI resource request timed out after 25ms"
+    );
+
+    await vi.advanceTimersByTimeAsync(25);
+    await pendingExpectation;
+    expect(paymentFetch).toHaveBeenCalledWith(
+      "https://api.castai.test/slow",
+      expect.objectContaining({
+        method: "GET",
+        signal: expect.any(AbortSignal),
+      })
+    );
+    vi.useRealTimers();
+  });
+
   it("exposes x402 and MPP executable tools", async () => {
     const x402Fetch = vi.fn().mockResolvedValue(new Response("x402-ok"));
     const mppFetch = vi.fn().mockResolvedValue(new Response("mpp-ok"));

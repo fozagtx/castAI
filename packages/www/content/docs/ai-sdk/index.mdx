@@ -24,6 +24,7 @@ import {
   createCasperMppFetch,
   createCasperX402Fetch,
   generateCastaiText,
+  CastaiResourceError,
   llm,
 } from "@castaisdk/ai-sdk";
 ```
@@ -50,3 +51,31 @@ The tools do not simulate payment. If a payment fetcher is missing, the tool thr
 | `createCastaiAgent` | Builds x402/MPP fetchers, AI SDK tools, and a default system instruction from one config |
 | `generateCastaiText` | Calls Vercel AI SDK `generateText` with castAI tools and multi-step tool calling |
 | `llm.text` | Formats paid resource responses as plain text for model context |
+
+## Resource request controls
+
+`fetchResource` validates resource URLs and methods before calling the configured paid fetcher. It also accepts timeout and error-handling options:
+
+```ts
+import { CastaiResourceError, fetchResource } from "@castaisdk/ai-sdk";
+
+try {
+  const response = await fetchResource(
+    x402Fetch,
+    {
+      method: "GET",
+      url: "https://api.example.com/weather",
+    },
+    {
+      timeoutMs: 15_000,
+      throwOnError: true,
+    }
+  );
+} catch (error) {
+  if (error instanceof CastaiResourceError) {
+    console.error(error.response.status, error.response.body);
+  }
+}
+```
+
+Responses with `application/json` and `application/*+json` content types are parsed as JSON. Other response bodies are returned as text.

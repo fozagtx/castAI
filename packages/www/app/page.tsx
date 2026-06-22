@@ -105,7 +105,7 @@ const startPaths = [
 const developerCards = [
   {
     icon: CodeXmlIcon,
-    title: "AI UI Tools",
+    title: "AI SDK Tools",
     copy: "Give agents the ability to pay for x402 and MPP resources with Casper CSPR.",
     code: "createCastaiAgentTools({ x402Fetch })",
     href: "/docs/ai-sdk/agent-tools",
@@ -157,7 +157,7 @@ const faqs = [
   ],
   [
     "What packages are included?",
-    "The toolkit includes x402, MPP, AI UI, facilitator, router, MCP, CLI, and React developer components under the @castaisdk scope.",
+    "The toolkit includes x402, MPP, AI SDK, facilitator, router, MCP, CLI, and React developer components under the @castaisdk scope.",
   ],
   [
     "How does x402 work with Casper?",
@@ -169,7 +169,7 @@ const faqs = [
   ],
   [
     "Can AI agents make payments with this?",
-    "Yes. The AI UI tools let agents call x402 or MPP paid resources and format responses into model-ready text.",
+    "Yes. The AI SDK tools let agents call x402 or MPP paid resources and format responses into model-ready text.",
   ],
   [
     "Is castAI open source?",
@@ -251,8 +251,8 @@ export default function HomePage() {
           orientation="vertical"
         />
         <FeatureStripItem
-          title="Agent-Ready UI"
-          copy="AI UI tools, llm.text helpers, checkout UI, and React components."
+          title="Agent-Ready SDKs"
+          copy="AI SDK tools, llm.text helpers, checkout UI, and React components."
         />
         <Separator
           className="feature-strip__separator"
@@ -278,7 +278,7 @@ export default function HomePage() {
 
       <LandingSection
         badge="How It Fits"
-        copy="The UI gives each part of the payment path a focused package instead of forcing developers to wire every step from scratch."
+        copy="The SDK gives each part of the payment path a focused package instead of forcing developers to wire every step from scratch."
         id="packages"
         title="One Payment Path, Split Into Useful Building Blocks."
       >
@@ -380,7 +380,7 @@ export default function HomePage() {
 
       <LandingSection
         badge="Quickstart"
-        copy="Install the UI packages, connect a Casper payment fetcher, and place the payment step in front of the resource."
+        copy="Install the SDK, connect a Casper payment fetcher, and place the payment step in front of the resource."
         title="Wire the Flow Into Your App."
       >
         <div className="quickstart-grid">
@@ -481,7 +481,7 @@ export default function HomePage() {
           </div>
           <p>
             Casper payments infrastructure layer for AI agents, x402, MPP,
-            facilitators, routers, AI UI tools, and HTTP services.
+            facilitators, routers, AI SDK tools, and HTTP services.
           </p>
         </div>
         <div className="footer-links">
