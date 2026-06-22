@@ -11,5 +11,5 @@
     <circle cx="132" cy="78" r="10" fill="#E2E8F0"/>
   </g>
   <text x="260" y="145" fill="#F8FAFC" font-family="Inter, Arial, sans-serif" font-size="96" font-weight="800" letter-spacing="0">castAI</text>
-  <text x="264" y="180" fill="#94A3B8" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="600" letter-spacing="0">CASPER PAYMENT SDK</text>
+  <text x="264" y="180" fill="#94A3B8" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="600" letter-spacing="0">CASPER PAYMENT UI</text>
 </svg>
