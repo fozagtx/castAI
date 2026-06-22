@@ -4,7 +4,6 @@ import {
   CodeXmlIcon,
   Coins01Icon,
   ComputerTerminal01Icon,
-  ExternalLinkIcon,
   GithubIcon,
   Globe02Icon,
   LockIcon,
@@ -72,25 +71,65 @@ const paymentSteps = [
   },
 ];
 
+const startPaths = [
+  {
+    icon: ZapIcon,
+    title: "AI agent payments",
+    copy: "Add x402 and MPP paid-resource calls to agent workflows.",
+    href: "/docs/ai-sdk/agent-tools",
+    cta: "Open agent tools",
+  },
+  {
+    icon: LockIcon,
+    title: "Protected HTTP APIs",
+    copy: "Gate an endpoint and unlock it after a verified Casper transfer.",
+    href: "/docs/x402/quickstart",
+    cta: "Start x402 quickstart",
+  },
+  {
+    icon: Wallet01Icon,
+    title: "Checkout UI",
+    copy: "Drop a payment prompt into React without inventing the state model.",
+    href: "/docs/ai-sdk/ui-components",
+    cta: "View UI components",
+  },
+  {
+    icon: ComputerTerminal01Icon,
+    title: "MCP and CLI",
+    copy: "Scaffold agent, checkout, and MCP projects from the command line.",
+    href: "/docs/ai-sdk/mcp-cli",
+    cta: "Set up tools",
+  },
+];
+
 const developerCards = [
   {
     icon: CodeXmlIcon,
     title: "AI SDK Tools",
     copy: "Give agents the ability to pay for x402 and MPP resources with Casper CSPR.",
     code: "createCastaiAgentTools({ x402Fetch })",
+    href: "/docs/ai-sdk/agent-tools",
   },
   {
     icon: Wallet01Icon,
     title: "Checkout UI",
     copy: "Drop in React components for payment prompts and developer-friendly checkout flows.",
     code: '<CastaiCheckout scheme="x402" />',
+    href: "/docs/ai-sdk/ui-components",
   },
   {
     icon: ServerStack01Icon,
     title: "Protected HTTP Routes",
     copy: "Gate APIs, model endpoints, tools, and services behind CSPR payment checks.",
     code: "router.forwardAfterPayment(request)",
+    href: "/docs/router",
   },
+];
+
+const proofPoints = [
+  "Open-source TypeScript packages",
+  "Casper mainnet and testnet docs",
+  "x402, MPP, MCP, CLI, and checkout paths",
 ];
 
 const useCases = [
@@ -172,7 +211,7 @@ export default function HomePage() {
 
       <section className="landing-hero">
         <div className="hero-visual" aria-hidden="true">
-          <NetworkOrb />
+          <LogoPlate />
           <HeroTerminalFlow />
         </div>
         <div className="hero-copy">
@@ -194,6 +233,11 @@ export default function HomePage() {
             <HugeIcon aria-hidden="true" icon={ComputerTerminal01Icon} />
             <code>npm install @castaisdk/ai-sdk @castaisdk/x402</code>
           </div>
+          <ul className="hero-proof-list" aria-label="Project signals">
+            {proofPoints.map((point) => (
+              <li key={point}>{point}</li>
+            ))}
+          </ul>
         </div>
       </section>
 
@@ -219,6 +263,18 @@ export default function HomePage() {
           copy="Check payment receipts and forward protected HTTP traffic after payment."
         />
       </section>
+
+      <LandingSection
+        badge="Start Here"
+        copy="Choose the integration path that matches the thing you are building. Each path opens the relevant docs first, not a generic landing page."
+        title="Get to the Right Implementation Fast."
+      >
+        <div className="start-path-grid">
+          {startPaths.map((path) => (
+            <StartPathCard key={path.title} {...path} />
+          ))}
+        </div>
+      </LandingSection>
 
       <LandingSection
         badge="How It Fits"
@@ -299,7 +355,7 @@ export default function HomePage() {
             ))}
           </div>
           <div className="payment-flow__center" aria-hidden="true">
-            <NetworkOrb compact />
+            <LogoPlate compact />
           </div>
           <div className="payment-flow__column">
             {paymentSteps.slice(2).map((step) => (
@@ -435,9 +491,6 @@ export default function HomePage() {
           <Link aria-label="Docs" href="/docs">
             <HugeIcon aria-hidden="true" icon={BookOpenTextIcon} />
           </Link>
-          <Link aria-label="X" href="https://x.com">
-            <HugeIcon aria-hidden="true" icon={ExternalLinkIcon} />
-          </Link>
           <span>© 2026 castAI</span>
         </div>
       </footer>
@@ -502,6 +555,33 @@ function FeatureStripItem({ copy, title }: { copy: string; title: string }) {
       <h3>{title}</h3>
       <p>{copy}</p>
     </div>
+  );
+}
+
+function StartPathCard({
+  copy,
+  cta,
+  href,
+  icon: Icon,
+  title,
+}: {
+  copy: string;
+  cta: string;
+  href: string;
+  icon: IconSvgElement;
+  title: string;
+}) {
+  return (
+    <Link className="start-path-card" href={href}>
+      <div className="icon-square">
+        <HugeIcon aria-hidden="true" icon={Icon} />
+      </div>
+      <div>
+        <h3>{title}</h3>
+        <p>{copy}</p>
+      </div>
+      <span>{cta}</span>
+    </Link>
   );
 }
 
@@ -578,11 +658,13 @@ function PaymentStepCard({
 function DeveloperFeatureCard({
   code,
   copy,
+  href,
   icon: Icon,
   title,
 }: {
   code: string;
   copy: string;
+  href: string;
   icon: IconSvgElement;
   title: string;
 }) {
@@ -597,6 +679,9 @@ function DeveloperFeatureCard({
       </CardHeader>
       <CardContent>
         <code>{code}</code>
+        <Link className="developer-card__link" href={href}>
+          Open docs
+        </Link>
       </CardContent>
     </Card>
   );
@@ -634,10 +719,8 @@ function TerminalCard({
   return (
     <Card className={cn("terminal-card", compact && "terminal-card--compact")}>
       <CardContent>
-        <div className="terminal-dots" aria-hidden="true">
-          <span />
-          <span />
-          <span />
+        <div className="terminal-label" aria-hidden="true">
+          terminal
         </div>
         <pre>
           <code>
@@ -654,10 +737,9 @@ function TerminalCard({
 function HeroTerminalFlow() {
   return (
     <div className="hero-terminal-flow">
-      <div className="terminal-dots" aria-hidden="true">
-        <span />
-        <span />
-        <span />
+      <div className="hero-terminal-flow__header" aria-hidden="true">
+        <span>castAI flow</span>
+        <span>x402 + CSPR</span>
       </div>
       <div className="hero-terminal-flow__lines">
         <span className="hero-terminal-flow__line hero-terminal-flow__line--one">
@@ -678,15 +760,14 @@ function HeroTerminalFlow() {
   );
 }
 
-function NetworkOrb({ compact = false }: { compact?: boolean }) {
+function LogoPlate({ compact = false }: { compact?: boolean }) {
   return (
-    <div className={cn("network-orb", compact && "network-orb--compact")}>
-      <div className="network-orb__ring" />
-      <div className="network-orb__core">
+    <div className={cn("logo-plate", compact && "logo-plate--compact")}>
+      <div className="logo-plate__core">
         <Image
           alt=""
           aria-hidden="true"
-          className="network-orb__logo"
+          className="logo-plate__logo"
           height={compact ? 116 : 156}
           src="/favicon.svg"
           width={compact ? 116 : 156}
